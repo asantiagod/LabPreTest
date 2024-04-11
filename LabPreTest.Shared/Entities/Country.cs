@@ -6,9 +6,13 @@ namespace LabPreTest.Shared.Entities
     {
         public int Id { get; set; }
 
-        [Display(Name = "Country")]
-        [MaxLength(100, ErrorMessage = "The field {0} can't be more than {1} characters.")]
-        [Required(ErrorMessage = "The field {0} is required.")]
+        [Display(Name = "CountryDisplayName",
+                 ResourceType = typeof(Resources.EntitiesResources))]
+        [MaxLength(100,
+                   ErrorMessageResourceType = typeof(Resources.EntitiesResources),
+                   ErrorMessageResourceName = "MaxLengthErrorMessage")]
+        [Required(ErrorMessageResourceName = "RequiredErrorMessage",
+                  ErrorMessageResourceType = typeof(Resources.EntitiesResources))]
         public string Name { get; set; } = null!;
     }
 }
