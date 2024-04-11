@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabPreTest.Backend", "LabPreTest.Backend\LabPreTest.Backend.csproj", "{5286873B-6F2F-4AAA-9952-DF7CE3F0A502}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabPreTest.Backend", "LabPreTest.Backend\LabPreTest.Backend.csproj", "{5286873B-6F2F-4AAA-9952-DF7CE3F0A502}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabPreTest.Shared", "LabPreTest.Shared\LabPreTest.Shared.csproj", "{1CB1274B-401A-4E79-B5D2-F998FBF808DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabPreTest.Shared", "LabPreTest.Shared\LabPreTest.Shared.csproj", "{1CB1274B-401A-4E79-B5D2-F998FBF808DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabPreTest.Frontend", "LabPreTest.Frontend\LabPreTest.Frontend.csproj", "{EF9F3352-858B-4D6F-ADB6-5034BA34E0B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{1CB1274B-401A-4E79-B5D2-F998FBF808DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CB1274B-401A-4E79-B5D2-F998FBF808DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CB1274B-401A-4E79-B5D2-F998FBF808DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF9F3352-858B-4D6F-ADB6-5034BA34E0B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF9F3352-858B-4D6F-ADB6-5034BA34E0B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF9F3352-858B-4D6F-ADB6-5034BA34E0B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF9F3352-858B-4D6F-ADB6-5034BA34E0B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
