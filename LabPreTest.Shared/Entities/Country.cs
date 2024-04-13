@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LabPreTest.Shared.Messages;
+using System.ComponentModel.DataAnnotations;
 
 namespace LabPreTest.Shared.Entities
 {
@@ -6,13 +7,9 @@ namespace LabPreTest.Shared.Entities
     {
         public int Id { get; set; }
 
-        [Display(Name = "CountryDisplayName",
-                 ResourceType = typeof(Resources.EntitiesResources))]
-        [MaxLength(100,
-                   ErrorMessageResourceType = typeof(Resources.EntitiesResources),
-                   ErrorMessageResourceName = "MaxLengthErrorMessage")]
-        [Required(ErrorMessageResourceName = "RequiredErrorMessage",
-                  ErrorMessageResourceType = typeof(Resources.EntitiesResources))]
+        [Display(Name = EntityMessages.CountryDisplayName)]
+        [MaxLength(100,ErrorMessage= EntityMessages.MaxLengthErrorMessage)]
+        [Required(ErrorMessage= EntityMessages.RequiredErrorMessage)]
         public string Name { get; set; } = null!;
     }
 }
