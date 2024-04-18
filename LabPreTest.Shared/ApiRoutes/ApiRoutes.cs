@@ -2,6 +2,7 @@
 {
     public static class ApiRoutes
     {
-        public const string CountriesRoute = "api/Coountries";
+        public const string CountriesRoute = "api/Countries";
+        public const string CitiesRoute = "api/City";
     }
 }

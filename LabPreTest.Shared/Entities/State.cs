@@ -12,6 +12,9 @@ namespace LabPreTest.Shared.Entities
         [MaxLength (100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         [Required (ErrorMessage = EntityMessages.RequiredErrorMessage)]
         public string Name { get; set; }
+        public int CountryId { get; set; }
+
+        public Country? Country { get; set; }
 
     }
 }

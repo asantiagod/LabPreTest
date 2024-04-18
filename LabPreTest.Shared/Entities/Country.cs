@@ -11,5 +11,10 @@ namespace LabPreTest.Shared.Entities
         [MaxLength(100,ErrorMessage= EntityMessages.MaxLengthErrorMessage)]
         [Required(ErrorMessage= EntityMessages.RequiredErrorMessage)]
         public string Name { get; set; } = null!;
+        
+        public ICollection<State>? states { get; set; }
+
+
+
     }
 }
