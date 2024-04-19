@@ -1,15 +1,14 @@
-﻿using LabPreTest.Backend.Data;
+﻿using LabPreTest.Backend.Repository.Interfaces;
 using LabPreTest.Backend.UnitOfWork.Interfaces;
 using LabPreTest.Shared.Responses;
-using Microsoft.EntityFrameworkCore;
 
 namespace LabPreTest.Backend.UnitOfWork.Implementations
 {
     public class GenericUnitOfWork<T> : IGenericUnitOfWork<T> where T : class
     {
-        private readonly IGenericUnitOfWork<T> _repository;
+        private readonly IGenericRepository<T> _repository;
 
-        public GenericUnitOfWork(IGenericUnitOfWork<T> repository)
+        public GenericUnitOfWork(IGenericRepository<T> repository)
         {
             _repository = repository;
         }
