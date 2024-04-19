@@ -13,8 +13,11 @@ namespace LabPreTest.Shared.Entities
         [Required (ErrorMessage = EntityMessages.RequiredErrorMessage)]
         public string Name { get; set; }
         public int CountryId { get; set; }
-
         public Country? Country { get; set; }
+        public ICollection<City>? Cities { get; set; }
+
+        [Display(Name = EntityMessages.CitiesDisplayMessage)]
+        public int CitiesNumber => Cities == null || Cities.Count == 0 ? 0 : Cities.Count;
 
     }
 }

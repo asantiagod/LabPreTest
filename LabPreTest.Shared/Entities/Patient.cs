@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LabPreTest.Shared.Entities
 {
-    public class Patient
+    public class Medician
     {
         public int Id { get; set; }
 

@@ -12,9 +12,10 @@ namespace LabPreTest.Shared.Entities
         [Required(ErrorMessage= EntityMessages.RequiredErrorMessage)]
         public string Name { get; set; } = null!;
         
-        public ICollection<State>? states { get; set; }
+        public ICollection<State>? States { get; set; }
 
-
+        [Display(Name = EntityMessages.StatesCitiesDisplayMessage)]
+        public int StatesNumber => States == null || States.Count == 0 ? 0 : States.Count;
 
     }
 }
