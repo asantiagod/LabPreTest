@@ -22,7 +22,6 @@ namespace LabPreTest.Shared.Entities
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
         public string Name { get; set; }
 
-
         [DataType(DataType.Date)]
         public string BirthDay { get; set; }
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]

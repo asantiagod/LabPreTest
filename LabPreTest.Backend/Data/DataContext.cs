@@ -24,8 +24,12 @@ namespace LabPreTest.Backend.Data
             modelBuilder.Entity<Country>().HasIndex(x => x.Name).IsUnique();
             modelBuilder.Entity<City>().HasIndex(x => new { x.StateId, x.Name }).IsUnique();
             modelBuilder.Entity<State>().HasIndex(x => new { x.CountryId, x.Name }).IsUnique();
-            modelBuilder.Entity<Medician>().HasIndex(x => x.Name).IsUnique();
-            modelBuilder.Entity<Patient>().HasIndex(x => x.Name).IsUnique();
+            modelBuilder.Entity<Patient>().HasIndex(x => x.Email).IsUnique();
+            modelBuilder.Entity<Patient>().HasIndex(x => x.DocumentId).IsUnique();
+            modelBuilder.Entity<Patient>().HasIndex(x => x.UserName).IsUnique();
+            modelBuilder.Entity<Medician>().HasIndex(x => x.Email).IsUnique();
+            modelBuilder.Entity<Medician>().HasIndex(x => x.DocumentId).IsUnique();
+            modelBuilder.Entity<Medician>().HasIndex(x => x.UserName).IsUnique();
             DisableCascadingDelete(modelBuilder);
         }
         private void DisableCascadingDelete(ModelBuilder modelBuilder)
