@@ -8,33 +8,32 @@ using System.Threading.Tasks;
 
 namespace LabPreTest.Shared.Entities
 {
-    public class Patient
+    public class Medician
     {
         public int Id { get; set; }
 
   
         [MaxLength(20, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
-        public string DocumentId { get; set; }
+        public string? DocumentId { get; set; }
 
         [Display(Name = EntityMessages.MedicianDisplayName)]
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
-        public string Name { get; set; }
-
+        public string? Name { get; set; }
 
         [DataType(DataType.Date)]
-        public string BirthDay { get; set; }
+        public string? BirthDay { get; set; }
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         [DataType(DataType.PhoneNumber)]
-        public int Cellphone { get; set; }
+        public int? Cellphone { get; set; }
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
-        public string Address { get; set; }
+        public string? Address { get; set; }
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
+        public string? Email { get; set; }
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
-        public string UserName { get; set; }
+        public string? UserName { get; set; }
 
     }
 }

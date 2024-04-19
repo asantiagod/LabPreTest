@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LabPreTest.Shared.Entities
 {
-    public class Medician
+    public class Patient
     {
         public int Id { get; set; }
 
@@ -29,10 +29,10 @@ namespace LabPreTest.Shared.Entities
         [DataType(DataType.PhoneNumber)]
         public int Cellphone { get; set; }
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
-        public string Address { get; set; }
+        public string? Address { get; set; }
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
+        public string? Email { get; set; }
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         public string UserName { get; set; }
 
