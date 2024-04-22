@@ -12,15 +12,15 @@ namespace LabPreTest.Shared.Entities
     {
         public int Id { get; set; }
 
-  
+
         [MaxLength(20, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
-        public string? DocumentId { get; set; }
+        public string DocumentId { get; set; } = null!;
 
         [Display(Name = EntityMessages.MedicianDisplayName)]
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
-        public string? Name { get; set; }
+        public string Name { get; set; } = null!;
 
         [DataType(DataType.Date)]
         public string? BirthDay { get; set; }
