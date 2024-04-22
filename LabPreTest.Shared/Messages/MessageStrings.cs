@@ -6,5 +6,6 @@
         public const string DbRecordNotFoundMessage = "Record not found.";
         public const string DbDeleteErrorMessage = "It cannot be deleted because it has related records.";
         public const string DbCountryNotFoundMessage = "The Country doesn't exist.";
+        public const string DbStateNotFoundMessage = "The State doesn't exist.";
     }
 }
