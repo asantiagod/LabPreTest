@@ -1,10 +1,10 @@
 using LabPreTest.Backend.Data;
-using LabPreTest.Backend.Repository.Interfaces;
 using LabPreTest.Backend.Repository.Implementations;
+using LabPreTest.Backend.Repository.Interfaces;
+using LabPreTest.Backend.UnitOfWork.Implementations;
+using LabPreTest.Backend.UnitOfWork.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
-using LabPreTest.Backend.UnitOfWork.Interfaces;
-using LabPreTest.Backend.UnitOfWork.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,11 +23,14 @@ builder.Services.AddTransient<SeedDB>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
 
-builder.Services.AddScoped(typeof(ICountriesRepository), typeof(CountriesRepository));
-builder.Services.AddScoped(typeof(ICountriesUnitOfWork), typeof(CountriesUnitOfWork));
+builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
+builder.Services.AddScoped<ICountriesUnitOfWork, CountriesUnitOfWork>();
 
-builder.Services.AddScoped(typeof(IStatesRepository), typeof(StatesRepository));
-builder.Services.AddScoped(typeof(IStatesUnitOfWork), typeof(StatesUnitOfWork));
+builder.Services.AddScoped<IStatesRepository, StatesRepository>();
+builder.Services.AddScoped<IStatesUnitOfWork, StatesUnitOfWork>();
+
+builder.Services.AddScoped<ICitiesRepository, CitiesRepository>();
+builder.Services.AddScoped<ICitiesUnitOfWork, CitiesUnitOfWork>();
 
 var app = builder.Build();
 

@@ -1,66 +1,39 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using LabPreTest.Backend.Data;
 using LabPreTest.Shared.Entities;
+using LabPreTest.Backend.UnitOfWork.Interfaces;
+using LabPreTest.Shared.ApiRoutes;
 
 namespace LabPreTest.Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-
-    public class CitiesController : ControllerBase
+    public class CitiesController : GenericController<City>
     {
-        private readonly DataContext _context;
+        private readonly ICitiesUnitOfWork _citiesUnitOfWork;
 
-        public CitiesController(DataContext context)
+        public CitiesController(IGenericUnitOfWork<City> unitOfWork, ICitiesUnitOfWork citiesUnitOfWork) : base(unitOfWork)
         {
-            _context = context;
+            _citiesUnitOfWork = citiesUnitOfWork;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAsync()
+        [HttpGet(ApiRoutes.Full)]
+        public override async Task<IActionResult> GetAsync()
         {
-            return Ok(await _context.Cities.AsNoTracking().ToListAsync());
+            var action = await _citiesUnitOfWork.GetAsync();
+            if (action.WasSuccess)
+                return Ok(action.Result);
+            return BadRequest();
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAsync(int id)
+        public override async Task<IActionResult> GetAsync(int id)
         {
-            var cities = await _context.Cities.FindAsync(id);
-            if (cities == null)
-            {
-                return NotFound();
-            }
-            return Ok(cities);
-        }
+            var action = await _citiesUnitOfWork.GetAsync(id);
 
-        [HttpPost]
-        public async Task<IActionResult> PostAsync(City cities)
-        {
-            _context.Add(cities);
-            await _context.SaveChangesAsync();
-            return Ok(cities);
-        }
+            if (action.WasSuccess)
+                return Ok(action.Result);
 
-        [HttpPut]
-        public async Task<IActionResult> PutAsync(City cities)
-        {
-            _context.Update(cities);
-            await _context.SaveChangesAsync();
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(int id)
-        {
-            var cities = await _context.Cities.FindAsync(id);
-            if (cities == null)
-            {
-                return NotFound();
-            }
-            _context.Remove(cities);
-            await _context.SaveChangesAsync();
-            return NoContent();
+            return NotFound(action.Message);
         }
     }
 }
