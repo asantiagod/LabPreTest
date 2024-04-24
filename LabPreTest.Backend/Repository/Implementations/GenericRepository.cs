@@ -1,5 +1,7 @@
 ﻿using LabPreTest.Backend.Data;
+using LabPreTest.Backend.Helpers;
 using LabPreTest.Backend.Repository.Interfaces;
+using LabPreTest.Shared.DTO;
 using LabPreTest.Shared.Messages;
 using LabPreTest.Shared.Responses;
 using Microsoft.EntityFrameworkCore;
@@ -101,6 +103,29 @@ namespace LabPreTest.Backend.Repository.Implementations
             {
                 WasSuccess = true,
                 Result = row
+            };
+        }
+
+        public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync(PagingDTO paging)
+        {
+            var queryable = _entity.AsQueryable();
+            return new ActionResponse<IEnumerable<T>>
+            {
+                WasSuccess = true,
+                Result = await queryable.Paginate(paging).ToListAsync()
+            };
+        }
+
+        public virtual async Task<ActionResponse<int>> GetTotalPagesAsync(PagingDTO paging)
+
+        {
+            var queryable = _entity.AsQueryable();
+            var count = await queryable.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)count / paging.RecordsNumber);
+            return new ActionResponse<int>
+            {
+                WasSuccess = true,
+                Result = totalPages
             };
         }
 

@@ -8,5 +8,6 @@
         public const string StatesRoute = "api/States";
 
         public const string Full = "full";
+        public const string TotalPages = "totalPages";
     }
 }

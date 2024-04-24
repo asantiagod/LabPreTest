@@ -1,5 +1,6 @@
 ﻿using LabPreTest.Backend.Repository.Interfaces;
 using LabPreTest.Backend.UnitOfWork.Interfaces;
+using LabPreTest.Shared.DTO;
 using LabPreTest.Shared.Responses;
 
 namespace LabPreTest.Backend.UnitOfWork.Implementations
@@ -22,5 +23,9 @@ namespace LabPreTest.Backend.UnitOfWork.Implementations
         public virtual async Task<ActionResponse<T>> UpdateAsync(T model) => await _repository.UpdateAsync(model);
 
         public virtual async Task<ActionResponse<T>> DeleteAsync(int id) => await _repository.DeleteAsync(id);
+
+        public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync(PagingDTO paging) => await _repository.GetAsync(paging);
+
+        public virtual async Task<ActionResponse<int>> GetTotalPagesAsync(PagingDTO paging) => await _repository.GetTotalPagesAsync(paging);
     }
 }

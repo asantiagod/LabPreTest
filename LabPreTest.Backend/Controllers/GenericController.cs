@@ -1,5 +1,7 @@
 ﻿using LabPreTest.Backend.UnitOfWork.Interfaces;
 using LabPreTest.Shared.ApiRoutes;
+using LabPreTest.Shared.DTO;
+using LabPreTest.Backend.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LabPreTest.Backend.Controllers
@@ -17,7 +19,7 @@ namespace LabPreTest.Backend.Controllers
         public virtual async Task<IActionResult> GetAsync()
         {
             var action = await _unitOfWork.GetAsync();
-            if(action.WasSuccess)
+            if (action.WasSuccess)
                 return Ok(action.Result);
 
             return BadRequest();
@@ -27,19 +29,34 @@ namespace LabPreTest.Backend.Controllers
         public virtual async Task<IActionResult> GetAsync(int id)
         {
             var action = await _unitOfWork.GetAsync(id);
-            if(action.WasSuccess)
+            if (action.WasSuccess)
                 return Ok(action.Result);
             return NotFound();
         }
 
-        // TODO: get with paging information
-        //....
+        [HttpGet]
+        public virtual async Task<IActionResult> GetAsync([FromQuery] PagingDTO paging)
+        {
+            var action = await _unitOfWork.GetAsync(paging);
+            if (action.WasSuccess)
+                return Ok(action.Result);
+            return BadRequest();
+        }
+
+        [HttpGet(ApiRoutes.TotalPages)]
+        public virtual async Task<IActionResult> GetPagesAsync([FromQuery] PagingDTO paging)
+        {
+            var action = await _unitOfWork.GetTotalPagesAsync(paging);
+            if (action.WasSuccess)
+                return Ok(action.Result);
+            return BadRequest();
+        }
 
         [HttpPost]
         public virtual async Task<IActionResult> PostAsync(T model)
         {
             var action = await _unitOfWork.AddAsync(model);
-            if(action.WasSuccess)
+            if (action.WasSuccess)
                 return Ok(action.Result);
             return BadRequest(action.Message);
         }
@@ -48,7 +65,7 @@ namespace LabPreTest.Backend.Controllers
         public virtual async Task<IActionResult> PutAsync(T model)
         {
             var action = await _unitOfWork.UpdateAsync(model);
-            if(action.WasSuccess)
+            if (action.WasSuccess)
                 return Ok(action.Result);
             return BadRequest(action.Message);
         }
@@ -57,7 +74,7 @@ namespace LabPreTest.Backend.Controllers
         public virtual async Task<IActionResult> DeleteAsync(int id)
         {
             var action = await _unitOfWork.DeleteAsync(id);
-            if(action.WasSuccess)
+            if (action.WasSuccess)
                 return NoContent();
 
             return BadRequest(action.Message);

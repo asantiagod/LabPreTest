@@ -1,5 +1,6 @@
-﻿using LabPreTest.Shared.Responses;
-using LabPreTest.Shared.Entities;
+﻿using LabPreTest.Shared.Entities;
+using LabPreTest.Shared.Responses;
+using LabPreTest.Shared.DTO;
 
 namespace LabPreTest.Backend.UnitOfWork.Interfaces
 {
@@ -9,7 +10,8 @@ namespace LabPreTest.Backend.UnitOfWork.Interfaces
 
         Task<ActionResponse<Country>> GetAsync(int id);
 
-        // TODO: get with paging information
-        //....
+        Task<ActionResponse<IEnumerable<Country>>> GetAsync(PagingDTO paging);
+
+        Task<ActionResponse<int>> GetTotalPagesAsync(PagingDTO pagination);
     }
 }
