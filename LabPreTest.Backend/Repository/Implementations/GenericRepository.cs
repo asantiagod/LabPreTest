@@ -81,7 +81,7 @@ namespace LabPreTest.Backend.Repository.Implementations
             return new ActionResponse<IEnumerable<T>>
             {
                 WasSuccess = true,
-                Result = await _entity.ToListAsync()
+                Result = await _entity.AsNoTracking().ToListAsync()
             };
         }
 
