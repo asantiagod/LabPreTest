@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Backend.UnitOfWork.Interfaces;
+using LabPreTest.Shared.DTO;
 
 namespace LabPreTest.Backend.Controllers
 {
@@ -35,6 +36,24 @@ namespace LabPreTest.Backend.Controllers
                 return Ok(response.Result);
             }
             return NotFound(response.Message);
+        }
+
+        [HttpGet]
+        public override async Task<IActionResult> GetAsync([FromQuery] PagingDTO paging)
+        {
+            var action = await _countriesUnitOfWork.GetAsync(paging);
+            if(action.WasSuccess)
+                return Ok(action.Result);
+            return BadRequest();
+        }
+
+        [HttpGet(ApiRoutes.TotalPages)]
+        public override async Task<IActionResult> GetPagesAsync([FromQuery] PagingDTO paging)
+        {
+            var action = await _countriesUnitOfWork.GetTotalPagesAsync(paging);
+            if (action.WasSuccess)
+                return Ok(action.Result);
+            return BadRequest();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using LabPreTest.Backend.UnitOfWork.Interfaces;
 using LabPreTest.Shared.ApiRoutes;
+using LabPreTest.Shared.DTO;
 using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Messages;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,24 @@ namespace LabPreTest.Backend.Controllers
             if (action.WasSuccess)
                 return Ok(action.Result);
             return NotFound(action.Message);
+        }
+        
+        [HttpGet]
+        public override async Task<IActionResult> GetAsync([FromQuery] PagingDTO paging)
+        {
+            var action = await _statesUnitOfWork.GetAsync(paging);
+            if(action.WasSuccess)
+                return Ok(action.Result);
+            return BadRequest();
+        }
+
+        [HttpGet(ApiRoutes.TotalPages)]
+        public override async Task<IActionResult> GetPagesAsync([FromQuery] PagingDTO paging)
+        {
+            var action = await _statesUnitOfWork.GetTotalPagesAsync(paging);
+            if (action.WasSuccess)
+                return Ok(action.Result);
+            return BadRequest();
         }
     }
 }

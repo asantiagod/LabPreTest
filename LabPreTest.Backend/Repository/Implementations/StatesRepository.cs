@@ -1,5 +1,7 @@
 ﻿using LabPreTest.Backend.Data;
+using LabPreTest.Backend.Helpers;
 using LabPreTest.Backend.Repository.Interfaces;
+using LabPreTest.Shared.DTO;
 using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Messages;
 using LabPreTest.Shared.Responses;
@@ -47,8 +49,40 @@ namespace LabPreTest.Backend.Repository.Implementations
                 Result = state
             };
         }
-        
-        // TODO: get with paging information
-        //....
+
+        public override async Task<ActionResponse<IEnumerable<State>>> GetAsync(PagingDTO paging)
+        {
+            var queryable = _context.States
+                .Include(s => s.Cities)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(paging.Filter))
+                queryable = queryable.Where(x => x.Name.ToLower().Contains(paging.Filter.ToLower()));
+
+            return new ActionResponse<IEnumerable<State>>
+            {
+                WasSuccess = true,
+                Result = await queryable
+                .OrderBy(x => x.Name)
+                .Paginate(paging)
+                .ToListAsync()
+            };
+        }
+
+        public override async Task<ActionResponse<int>> GetTotalPagesAsync(PagingDTO paging)
+        {
+            var queryable = _context.States.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(paging.Filter))
+                queryable = queryable.Where(x => x.Name.ToLower().Contains(paging.Filter.ToLower()));
+
+            int count = await queryable.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)count / paging.RecordsNumber);
+            return new ActionResponse<int>
+            {
+                WasSuccess = true,
+                Result = totalPages
+            };
+        }
     }
 }
