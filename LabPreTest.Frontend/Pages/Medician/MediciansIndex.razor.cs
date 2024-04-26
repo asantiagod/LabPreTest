@@ -8,7 +8,7 @@ namespace LabPreTest.Frontend.Pages.Medicians
     {
         [Inject] private IRepository Repository {  get; set; } = null!;
 
-        public List<Country>? Medician { get; set; };
+        public List<Country>? Medician { get; set; }
 
 
     }
