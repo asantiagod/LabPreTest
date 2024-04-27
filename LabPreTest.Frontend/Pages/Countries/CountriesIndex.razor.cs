@@ -78,6 +78,20 @@ namespace LabPreTest.Frontend.Pages.Countries
             return true;
         }
 
+        private async Task FilterCallback(string filter)
+        {
+            Console.WriteLine($"CountriesIndex.FilterCallback(): Filter = {filter}");
+            Filter = filter;
+            await ApplyFilterAsync();
+            StateHasChanged();
+        }
+
+        private async Task ApplyFilterAsync()
+        {
+            int page = 1;
+            await SelectedPageAsync(page);
+        }
+
         private async Task DeleteAsycn(Country country)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
