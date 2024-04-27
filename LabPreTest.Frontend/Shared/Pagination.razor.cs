@@ -6,11 +6,13 @@ namespace LabPreTest.Frontend.Shared
     public partial class Pagination
     {
         private List<PageModel> links = null!;
+        private string RecordsNumber { get; set; } = "10";
 
         [Parameter] public int CurrentPage { get; set; } = 1;
         [Parameter] public int TotalPages { get; set; } = 1;
         [Parameter] public int Radio { get; set; } = 10;
         [Parameter] public EventCallback<int> SelectedPage { get; set; }
+        [Parameter] public EventCallback<string> SelectedRedordsNumber { get; set; }
 
         protected override void OnParametersSet()
         {
@@ -62,6 +64,11 @@ namespace LabPreTest.Frontend.Shared
                 Page = CurrentPage != TotalPages ? CurrentPage + 1 : CurrentPage,
                 Enable = CurrentPage != TotalPages
             });
+        }
+
+        private async Task SelectCallback()
+        {
+            await SelectedRedordsNumber.InvokeAsync(RecordsNumber);
         }
 
         private async Task InternalSelectedPage(PageModel pageModel)
