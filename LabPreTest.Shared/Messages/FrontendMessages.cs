@@ -14,5 +14,13 @@ namespace LabPreTest.Shared.Messages
         public const string HttpUnexpectedMessage = "Unexpected error";
         
         public const string RecordCreatedMessage = "The record was created successfully.";
+        public const string RecordChangedMessage = "The changes were saved successfully.";
+        public const string RecordDeletedMessage = "The record was deleted successfully.";
+        
+        public const string EditButtonMessage = "Edit";
+        public const string DetailButtonMessage = "Details";
+        public const string DeleteButtonMessage = "Delete";
+        public const string NextPageButtonMessage = "Next";
+        public const string PreviousPageButtonMessage = "Previous";
     }
 }

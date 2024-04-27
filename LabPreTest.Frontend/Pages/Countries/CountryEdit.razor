@@ -1,6 +1,6 @@
 ﻿@page "/countries/edit/{Id:int}"
 
-<h3>Editar País</h3>
+<h3>Edit Country</h3>
 
 @if(country is null)
 {
@@ -8,5 +8,5 @@
 }
 else
 {
-    <FormWithName @ref="countryForm" Label="País:" Model="country" OnValidSubmit="EditAsync" ReturnAction="Return" />
+    <FormWithName @ref="countryForm" Label="Country:" Model="country" OnValidSubmit="EditAsync" ReturnAction="Return" />
 }

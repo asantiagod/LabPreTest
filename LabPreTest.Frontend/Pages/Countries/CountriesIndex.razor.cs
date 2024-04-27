@@ -1,8 +1,11 @@
-﻿using LabPreTest.Frontend.Repositories;
+﻿using CurrieTechnologies.Razor.SweetAlert2;
+using LabPreTest.Frontend.Repositories;
 using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.Entities;
+using LabPreTest.Shared.Messages;
+using LabPreTest.Shared.PagesRoutes;
 using Microsoft.AspNetCore.Components;
-using System.Runtime.CompilerServices;
+using System.Net;
 
 namespace LabPreTest.Frontend.Pages.Countries
 {
@@ -12,8 +15,7 @@ namespace LabPreTest.Frontend.Pages.Countries
         private int totalPages;
 
         [Inject] private IRepository Repository { get; set; } = null!;
-
-        //TODO: sweet alert
+        [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
 
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
@@ -51,8 +53,8 @@ namespace LabPreTest.Frontend.Pages.Countries
             var responseHttp = await Repository.GetAsync<int>(url);
             if (responseHttp.Error)
             {
-                // TODO: sweet alert
                 var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
             totalPages = responseHttp.Response;
@@ -67,13 +69,54 @@ namespace LabPreTest.Frontend.Pages.Countries
             var responseHttp = await Repository.GetAsync<List<Country>>(url);
             if (responseHttp.Error)
             {
-                //TODO sweet alert
                 var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return false;
             }
 
             Countries = responseHttp.Response;
             return true;
+        }
+
+        private async Task DeleteAsycn(Country country)
+        {
+            var result = await SweetAlertService.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmation",
+                Text = $"Are you sure you want to delete the country: {country.Name}?",
+                Icon = SweetAlertIcon.Question,
+                ShowCancelButton = true,
+            });
+            var confirm = string.IsNullOrEmpty(result.Value);
+            if (confirm)
+            {
+                return;
+            }
+
+            var responseHttp = await Repository.DeleteAsync<Country>(ApiRoutes.CountriesRoute + $"/{country.Id}");
+            if (responseHttp.Error)
+            {
+                if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+                {
+                    NavigationManager.NavigateTo(PagesRoutes.Countries);
+                }
+                else
+                {
+                    var mensajeError = await responseHttp.GetErrorMessageAsync();
+                    await SweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+                }
+                return;
+            }
+
+            await LoadAsync();
+            var toast = SweetAlertService.Mixin(new SweetAlertOptions
+            {
+                Toast = true,
+                Position = SweetAlertPosition.BottomEnd,
+                ShowConfirmButton = true,
+                Timer = 3000
+            });
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordDeletedMessage);
         }
     }
 }

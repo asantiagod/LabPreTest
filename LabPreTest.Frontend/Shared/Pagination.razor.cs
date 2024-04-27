@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using LabPreTest.Shared.Messages;
+using Microsoft.AspNetCore.Components;
 
 namespace LabPreTest.Frontend.Shared
 {
@@ -17,7 +18,7 @@ namespace LabPreTest.Frontend.Shared
 
             links.Add(new PageModel
             {
-                Text = "Anterior",
+                Text = FrontendMessages.PreviousPageButtonMessage,
                 Page = CurrentPage - 1,
                 Enable = CurrentPage != 1
             });
@@ -57,7 +58,7 @@ namespace LabPreTest.Frontend.Shared
 
             links.Add(new PageModel
             {
-                Text = "Siguiente",
+                Text = FrontendMessages.NextPageButtonMessage,
                 Page = CurrentPage != TotalPages ? CurrentPage + 1 : CurrentPage,
                 Enable = CurrentPage != TotalPages
             });

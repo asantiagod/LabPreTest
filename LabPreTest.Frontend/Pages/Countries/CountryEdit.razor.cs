@@ -3,6 +3,8 @@ using LabPreTest.Frontend.Repositories;
 using LabPreTest.Frontend.Shared;
 using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.Entities;
+using LabPreTest.Shared.Messages;
+using LabPreTest.Shared.PagesRoutes;
 using Microsoft.AspNetCore.Components;
 using System.Net;
 
@@ -21,12 +23,12 @@ namespace LabPreTest.Frontend.Pages.Countries
 
         protected override async Task OnParametersSetAsync()
         {
-            var responseHttp = await Repository.GetAsync<Country>($"/api/countries/{Id}");
+            var responseHttp = await Repository.GetAsync<Country>(ApiRoutes.CountriesRoute + $"/{Id}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo("/countries");
+                    NavigationManager.NavigateTo(PagesRoutes.Countries);
                 }
                 else
                 {
@@ -58,13 +60,13 @@ namespace LabPreTest.Frontend.Pages.Countries
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Cambios guardados con éxito.");
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordChangedMessage);
         }
 
         private void Return()
         {
             countryForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo("/countries");
+            NavigationManager.NavigateTo(PagesRoutes.Countries);
         }
     }
 }
