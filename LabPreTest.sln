@@ -8,9 +8,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabPreTest.Shared", "LabPreTest.Shared\LabPreTest.Shared.csproj", "{1CB1274B-401A-4E79-B5D2-F998FBF808DB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabPreTest.Frontend", "LabPreTest.Frontend\LabPreTest.Frontend.csproj", "{EF9F3352-858B-4D6F-ADB6-5034BA34E0B3}"
-	ProjectSection(ProjectDependencies) = postProject
-		{1CB1274B-401A-4E79-B5D2-F998FBF808DB} = {1CB1274B-401A-4E79-B5D2-F998FBF808DB}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabPreTest.Test", "LabPreTest.Test\LabPreTest.Test.csproj", "{931A772A-DD2E-4ED2-8D08-C2ABC8B3CB7E}"
 EndProject

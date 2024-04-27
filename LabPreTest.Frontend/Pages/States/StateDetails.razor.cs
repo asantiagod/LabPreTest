@@ -1,24 +1,25 @@
-﻿using System.Net;
-using CurrieTechnologies.Razor.SweetAlert2;
+﻿using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Components;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Shared.Entities;
-using Microsoft.AspNetCore.Components;
+using System.Net;
 
-namespace LabPreTest.Frontend.Pages.Medician
+namespace LabPreTest.Frontend.Pages.States
 {
-    public partial class MediciansIndex
+    public partial class StateDetails
     {
+        private State? state;
+        private List<City>? cities;
         private int currentPage = 1;
         private int totalPages;
 
-        [Inject] private IRepository Repository { get; set; } = null!;
-        [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
+        [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
+        [Inject] private IRepository Repository { get; set; } = null!;
 
+        [Parameter] public int StateId { get; set; }
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
-
-        public List<Medic>? Medicians { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -38,38 +39,23 @@ namespace LabPreTest.Frontend.Pages.Medician
 
         private async Task LoadAsync(int page = 1)
         {
-            var ok = await LoadListAsync(page);
+            var ok = await LoadStateAsync();
             if (ok)
             {
-                await LoadPagesAsync();
+                ok = await LoadCitiesAsync(page);
+                if (ok)
+                {
+                    await LoadPagesAsync();
+                }
             }
-        }
-
-        private async Task<bool> LoadListAsync(int page)
-        {
-            var url = $"api/Medics/?page={page}";
-            if (!string.IsNullOrEmpty(Filter))
-            {
-                url += $"&filter={Filter}";
-            }
-
-            var responseHttp = await Repository.GetAsync<List<Medic>>(url);
-            if (responseHttp.Error)
-            {
-                var message = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-                return false;
-            }
-            Medicians = responseHttp.Response;
-            return true;
         }
 
         private async Task LoadPagesAsync()
         {
-            var url = $"api/Medics/totalPages";
+            var url = $"api/cities/totalPages?id={StateId}";
             if (!string.IsNullOrEmpty(Filter))
             {
-                url += $"?filter={Filter}";
+                url += $"&filter={Filter}";
             }
 
             var responseHttp = await Repository.GetAsync<int>(url);
@@ -77,18 +63,35 @@ namespace LabPreTest.Frontend.Pages.Medician
             {
                 var message = await responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-
                 return;
             }
+            totalPages = responseHttp.Response;
+        }
 
-                totalPages = responseHttp.Response;
+        private async Task<bool> LoadCitiesAsync(int page)
+        {
+            var url = $"api/cities?id={StateId}&page={page}";
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"&filter={Filter}";
+            }
+
+            var responseHttp = await Repository.GetAsync<List<City>>(url);
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return false;
+            }
+            cities = responseHttp.Response;
+            return true;
         }
 
         private async Task CleanFilterAsync()
         {
             Filter = string.Empty;
             await ApplyFilterAsync();
-        }
+         }
 
         private async Task ApplyFilterAsync()
         {
@@ -97,34 +100,52 @@ namespace LabPreTest.Frontend.Pages.Medician
             await SelectedPageAsync(page);
         }
 
-        private async Task DeleteAsync(Medic medician)
+        private async Task<bool> LoadStateAsync()
+        {
+            var responseHttp = await Repository.GetAsync<State>($"api/states/{StateId}");
+            if (responseHttp.Error)
+            {
+                if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+                {
+                    NavigationManager.NavigateTo("/countries");
+                    return false;
+                }
+
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return false;
+            }
+            state = responseHttp.Response;
+            return true;
+        }
+
+        private async Task DeleteAsync(City city)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmación",
-                Text = $"¿Estas seguro de querer borrar el medico: {medician.Name}?",
+                Text = $"¿Realmente deseas eliminar la ciudad? {city.Name}",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
+                CancelButtonText = "No",
+                ConfirmButtonText = "Si"
             });
+
             var confirm = string.IsNullOrEmpty(result.Value);
             if (confirm)
             {
                 return;
             }
 
-            var responseHttp = await Repository.DeleteAsync<Medic>($"api/Medics/{ medician.Id}");
+            var responseHttp = await Repository.DeleteAsync<City>($"/api/cities/{city.Id}");
             if (responseHttp.Error)
             {
-                if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+                if (responseHttp.HttpResponseMessage.StatusCode != HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo("/medicians");
+                    var message = await responseHttp.GetErrorMessageAsync();
+                    await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                    return;
                 }
-                else
-                {
-                    var mensajeError = await responseHttp.GetErrorMessageAsync();
-                    await SweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
-                }
-                return;
             }
 
             await LoadAsync();

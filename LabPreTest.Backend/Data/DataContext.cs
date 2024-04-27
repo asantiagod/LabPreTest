@@ -15,7 +15,7 @@ namespace LabPreTest.Backend.Data
 
         public DbSet<City> Cities { get; set; }
         public DbSet<State> States { get; set; }
-        public DbSet<Medician> Medicians { get; set; }
+        public DbSet<Medic> Medicians { get; set; }
          
         public DbSet<Patient> Patients {  get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,9 +27,9 @@ namespace LabPreTest.Backend.Data
             modelBuilder.Entity<Patient>().HasIndex(x => x.Email).IsUnique();
             modelBuilder.Entity<Patient>().HasIndex(x => x.DocumentId).IsUnique();
             modelBuilder.Entity<Patient>().HasIndex(x => x.UserName).IsUnique();
-            modelBuilder.Entity<Medician>().HasIndex(x => x.Email).IsUnique();
-            modelBuilder.Entity<Medician>().HasIndex(x => x.DocumentId).IsUnique();
-            modelBuilder.Entity<Medician>().HasIndex(x => x.UserName).IsUnique();
+            modelBuilder.Entity<Medic>().HasIndex(x => x.Email).IsUnique();
+            modelBuilder.Entity<Medic>().HasIndex(x => x.DocumentId).IsUnique();
+            modelBuilder.Entity<Medic>().HasIndex(x => x.UserName).IsUnique();
             DisableCascadingDelete(modelBuilder);
         }
         private void DisableCascadingDelete(ModelBuilder modelBuilder)

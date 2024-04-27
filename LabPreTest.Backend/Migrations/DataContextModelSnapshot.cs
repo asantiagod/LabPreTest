@@ -67,7 +67,7 @@ namespace LabPreTest.Backend.Migrations
                     b.ToTable("Countries");
                 });
 
-            modelBuilder.Entity("LabPreTest.Shared.Entities.Medician", b =>
+            modelBuilder.Entity("LabPreTest.Shared.Entities.Medic", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -133,10 +133,9 @@ namespace LabPreTest.Backend.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("BirthDay")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Cellphone")
+                    b.Property<int?>("Cellphone")
                         .HasMaxLength(100)
                         .HasColumnType("int");
 
@@ -155,7 +154,6 @@ namespace LabPreTest.Backend.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -169,7 +167,8 @@ namespace LabPreTest.Backend.Migrations
                         .HasFilter("[Email] IS NOT NULL");
 
                     b.HasIndex("UserName")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("Patients");
                 });

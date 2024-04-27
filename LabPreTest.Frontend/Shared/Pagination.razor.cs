@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace Orders.Frontend.Shared
+namespace LabPreTest.Frontend.Shared
 {
     public partial class Pagination
     {

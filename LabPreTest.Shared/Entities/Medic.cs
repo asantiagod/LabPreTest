@@ -1,8 +1,9 @@
 ﻿using LabPreTest.Shared.Messages;
+using LabPreTest.Shared.Interfaces;
 using System.ComponentModel.DataAnnotations;
 namespace LabPreTest.Shared.Entities
 {
-    public class Medician
+    public class Medic : IUserEntity
     {
         public int Id { get; set; }
 
@@ -20,7 +21,7 @@ namespace LabPreTest.Shared.Entities
         public string? BirthDay { get; set; }
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         [DataType(DataType.PhoneNumber)]
-        public int? Cellphone { get; set; }
+        public string? Cellphone { get; set; }
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         public string? Address { get; set; }
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
@@ -28,6 +29,6 @@ namespace LabPreTest.Shared.Entities
         public string? Email { get; set; }
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         public string? UserName { get; set; }
-
+ 
     }
 }
