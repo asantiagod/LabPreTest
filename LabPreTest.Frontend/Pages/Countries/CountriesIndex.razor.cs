@@ -38,11 +38,7 @@ namespace LabPreTest.Frontend.Pages.Countries
 
         private async Task SelectedRedordsNumberAsync(string recordsNumber)
         {
-            if (recordsNumber.ToLower().Contains("full"))
-                RecordNumberQueryString = "full";
-            else
-                RecordNumberQueryString = $"RecordsNumber={recordsNumber}";
-            Console.WriteLine($"QueryString: {RecordNumberQueryString}");
+            RecordNumberQueryString = $"RecordsNumber={recordsNumber}";
             await LoadAsync();
         }
 
@@ -58,6 +54,12 @@ namespace LabPreTest.Frontend.Pages.Countries
 
         private async Task LoadTotalPagesAsync()
         {
+            if (RecordNumberQueryString.ToLower().Contains("full"))
+            {
+                totalPages = 1;
+                return;
+            }
+            
             var url = ApiRoutes.CountriesRoute + "/" + ApiRoutes.TotalPages;
             url += $"?{RecordNumberQueryString}";
             if (!string.IsNullOrWhiteSpace(Filter))
@@ -75,8 +77,12 @@ namespace LabPreTest.Frontend.Pages.Countries
 
         private async Task<bool> LoadListAsync(int page)
         {
-            var url = ApiRoutes.CountriesRoute + $"?page={page}";
-            url += $"&{RecordNumberQueryString}";
+            var url = ApiRoutes.CountriesRoute;
+            if (RecordNumberQueryString.ToLower().Contains("full"))
+                url += $"/{ApiRoutes.Full}";
+            else
+                url += $"?page={page}&{RecordNumberQueryString}";
+
             if (!string.IsNullOrWhiteSpace(Filter))
                 url += $"&filter={Filter}";
 
@@ -94,7 +100,6 @@ namespace LabPreTest.Frontend.Pages.Countries
 
         private async Task FilterCallback(string filter)
         {
-            Console.WriteLine($"CountriesIndex.FilterCallback(): Filter = {filter}");
             Filter = filter;
             await ApplyFilterAsync();
             StateHasChanged();
