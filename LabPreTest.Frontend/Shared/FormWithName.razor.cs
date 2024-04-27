@@ -1,4 +1,5 @@
-﻿using LabPreTest.Shared.Interfaces;
+﻿using CurrieTechnologies.Razor.SweetAlert2;
+using LabPreTest.Shared.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Routing;
@@ -11,11 +12,10 @@ namespace LabPreTest.Frontend.Shared
 
         [EditorRequired, Parameter] public TModel Model { get; set; } = default!;
         [EditorRequired, Parameter] public string Label { get; set; } = null!;
-        [EditorRequired, Parameter] public EventCallback OnValidSubmit {  get; set; }
-        [EditorRequired, Parameter] public EventCallback ReturnAction {  get; set; }
-
-        //TODO: sweet alert 
-        public bool FormPostedSuccessfully {  get; set; }
+        [EditorRequired, Parameter] public EventCallback OnValidSubmit { get; set; }
+        [EditorRequired, Parameter] public EventCallback ReturnAction { get; set; }
+        [Inject] public SweetAlertService SweetAlertService { get; set; } = null!;
+        public bool FormPostedSuccessfully { get; set; }
 
         protected override void OnInitialized()
         {
@@ -24,9 +24,26 @@ namespace LabPreTest.Frontend.Shared
 
         private async Task OnBeforeInternalNavigation(LocationChangingContext context)
         {
-            // TODO: sweet alert
-            await Task.CompletedTask;
-            throw new NotImplementedException();
+            var formWasEdited = editContext.IsModified();
+            if (!formWasEdited || FormPostedSuccessfully)
+            {
+                return;
+            }
+
+            var result = await SweetAlertService.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = "¿Deseas abandonar la página y perder los cambios?",
+                Icon = SweetAlertIcon.Question,
+                ShowCancelButton = true,
+            });
+            var confirm = !string.IsNullOrEmpty(result.Value);
+            if (confirm)
+            {
+                return;
+            }
+
+            context.PreventNavigation();
         }
     }
 }
