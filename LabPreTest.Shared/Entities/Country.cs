@@ -1,4 +1,4 @@
-﻿using LabPreTest.Shared.Interfaces;
+using LabPreTest.Shared.Interfaces;
 using LabPreTest.Shared.Messages;
 using System.ComponentModel.DataAnnotations;
 

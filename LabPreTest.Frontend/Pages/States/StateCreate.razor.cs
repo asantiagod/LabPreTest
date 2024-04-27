@@ -1,32 +1,31 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Components;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Frontend.Shared;
-using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.Entities;
-using LabPreTest.Shared.Messages;
-using LabPreTest.Shared.PagesRoutes;
-using Microsoft.AspNetCore.Components;
 
-namespace LabPreTest.Frontend.Pages.Countries
+namespace LabPreTest.Frontend.Pages.States
 {
-    public partial class CountryCreate
+    public partial class StateCreate
     {
-        private Country country = new();
-        private FormWithName<Country>? countryForm;
+        private State state = new();
+        private FormWithName<State>? stateForm;
+
+        [Parameter] public int CountryId { get; set; }
         [Inject] private IRepository Repository { get; set; } = null!;
-        [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
+        [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
 
         private async Task CreateAsync()
         {
-            var responseHttp = await Repository.PostAsync(ApiRoutes.CountriesRoute, country);
+            state.CountryId = CountryId;
+            var responseHttp = await Repository.PostAsync("/api/states", state);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
-
             Return();
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
@@ -35,13 +34,13 @@ namespace LabPreTest.Frontend.Pages.Countries
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordCreatedMessage);
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro creado con éxito.");
         }
 
         private void Return()
         {
-            countryForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo(PagesRoutes.Countries);
+            stateForm!.FormPostedSuccessfully = true;
+            NavigationManager.NavigateTo($"/countries/details/{CountryId}");
         }
     }
 }

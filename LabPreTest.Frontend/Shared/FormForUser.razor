@@ -1,0 +1,48 @@
+﻿@typeparam TModel where TModel : IUserEntity
+
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
+
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label>@Label</label>
+        <div>
+            <label for="Documento">Ingrese el documento:</label>
+            <InputText class="form-control" @bind-Value="@Model.DocumentId" />
+            <ValidationMessage For="@(() => Model.DocumentId)" />
+        </div>
+        <div>
+            <label for="Nombre">Ingrese el nombre:</label>
+            <InputText class="form-control" @bind-Value="@Model.Name" />
+            <ValidationMessage For="@(() => Model.Name)" />
+        </div>
+        <div>
+            <label for="FNacimiento">Ingrese la fecha de nacimiento:</label>
+            <InputText class="form-control" type="Date" @bind-Value="@Model.BirthDay" />
+            <ValidationMessage For="@(() => Model.BirthDay)" />
+        </div>
+        <div>
+            <label for="Celular">Ingrese el numero de celular</label>
+            <InputText class="form-control"  @bind-Value="@Model.Cellphone" />
+            <ValidationMessage For="@(() => Model.Cellphone)" />
+        </div>
+        <div>
+            <label for="Direccion">Ingrese la direccion de residencia</label>
+            <InputText class="form-control" @bind-Value="@Model.Address" />
+            <ValidationMessage For="@(() => Model.Address)" />
+        </div>
+        <div>
+            <label for="Email">Ingrese el correo electronico</label>
+            <InputText class="form-control" @bind-Value="@Model.Email" />
+            <ValidationMessage For="@(() => Model.Email)" />
+        </div>
+        <div>
+            <label for="Email">Ingrese el nombre de usuario</label>
+            <InputText class="form-control" @bind-Value="@Model.UserName" />
+            <ValidationMessage For="@(() => Model.UserName)" />
+        </div>
+
+    </div>
+    <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+    <button class="btn btn-success" @onclick="ReturnAction">Regresar</button>
+</EditForm>

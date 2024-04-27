@@ -1,19 +1,16 @@
-using CurrieTechnologies.Razor.SweetAlert2;
+﻿using CurrieTechnologies.Razor.SweetAlert2;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Frontend.Shared;
-using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.Entities;
-using LabPreTest.Shared.Messages;
-using LabPreTest.Shared.PagesRoutes;
 using Microsoft.AspNetCore.Components;
 using System.Net;
 
-namespace LabPreTest.Frontend.Pages.Countries
+namespace LabPreTest.Frontend.Pages.Medician
 {
-    public partial class CountryEdit
+    public partial class MedicEdit
     {
-        private Country? country;
-        private FormWithName<Country>? countryForm;
+        private Medic? medic;
+        private FormForUser<Medic>? medicForm;
 
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
@@ -23,12 +20,12 @@ namespace LabPreTest.Frontend.Pages.Countries
 
         protected override async Task OnParametersSetAsync()
         {
-            var responseHttp = await Repository.GetAsync<Country>(ApiRoutes.CountriesRoute + $"/{Id}");
+            var responseHttp = await Repository.GetAsync<Medic>($"/api/Medics/{Id}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo(PagesRoutes.Countries);
+                    NavigationManager.NavigateTo("/medicians");
                 }
                 else
                 {
@@ -38,13 +35,13 @@ namespace LabPreTest.Frontend.Pages.Countries
             }
             else
             {
-                country = responseHttp.Response;
+                medic = responseHttp.Response;
             }
         }
 
         private async Task EditAsync()
         {
-            var responseHttp = await Repository.PutAsync(ApiRoutes.CountriesRoute, country);
+            var responseHttp = await Repository.PutAsync("/api/Medics", medic);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -60,13 +57,13 @@ namespace LabPreTest.Frontend.Pages.Countries
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordChangedMessage);
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Cambios guardados con éxito.");
         }
 
         private void Return()
         {
-            countryForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo(PagesRoutes.Countries);
+            medicForm!.FormPostedSuccessfully = true;
+            NavigationManager.NavigateTo("/medicians");
         }
     }
 }

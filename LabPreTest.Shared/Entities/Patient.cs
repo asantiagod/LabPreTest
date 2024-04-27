@@ -1,4 +1,5 @@
 ﻿using LabPreTest.Shared.Messages;
+using LabPreTest.Shared.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LabPreTest.Shared.Entities
 {
-    public class Patient
+    public class Patient : IEntityWithName
     {
         public int Id { get; set; }
 
@@ -27,7 +28,7 @@ namespace LabPreTest.Shared.Entities
         public string? BirthDay { get; set; }
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         [DataType(DataType.PhoneNumber)]
-        public int? Cellphone { get; set; }
+        public string? Cellphone { get; set; }
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         public string? Address { get; set; }
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]

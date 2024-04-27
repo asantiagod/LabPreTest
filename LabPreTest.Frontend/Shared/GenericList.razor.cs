@@ -8,5 +8,6 @@ namespace LabPreTest.Frontend.Shared
         [Parameter] public RenderFragment? NoRecords { get; set; }
         [EditorRequired, Parameter] public RenderFragment Body { get; set; } = null!;
         [EditorRequired, Parameter] public List<Titem> MyList { get; set; } = null!;
+
     }
 }

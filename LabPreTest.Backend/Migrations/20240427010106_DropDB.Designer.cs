@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabPreTest.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240419042609_medicianMigration")]
-    partial class medicianMigration
+    [Migration("20240427010106_DropDB")]
+    partial class DropDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -136,10 +136,9 @@ namespace LabPreTest.Backend.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("BirthDay")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Cellphone")
+                    b.Property<int?>("Cellphone")
                         .HasMaxLength(100)
                         .HasColumnType("int");
 
@@ -158,7 +157,6 @@ namespace LabPreTest.Backend.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -172,7 +170,8 @@ namespace LabPreTest.Backend.Migrations
                         .HasFilter("[Email] IS NOT NULL");
 
                     b.HasIndex("UserName")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("Patients");
                 });
