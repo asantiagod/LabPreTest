@@ -2,6 +2,7 @@
 using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.Entities;
 using Microsoft.AspNetCore.Components;
+using System.Runtime.CompilerServices;
 
 namespace LabPreTest.Frontend.Pages.Countries
 {
@@ -15,8 +16,8 @@ namespace LabPreTest.Frontend.Pages.Countries
         //TODO: sweet alert
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
 
-        [Parameter, SupplyParameterFromQuery] public string Page {  get; set; } = string.Empty;
-        [Parameter, SupplyParameterFromQuery] public string Filter {  get; set; } = string.Empty;
+        [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
+        [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
 
         public List<Country>? Countries { get; set; }
 
@@ -25,13 +26,36 @@ namespace LabPreTest.Frontend.Pages.Countries
             await LoadAsync();
         }
 
+        private async Task SelectedPageAsync(int page)
+        {
+            currentPage = page;
+            await LoadAsync(page);
+        }
+
         private async Task LoadAsync(int page = 1)
         {
-            if(!String.IsNullOrWhiteSpace(Page)) 
+            if (!String.IsNullOrWhiteSpace(Page))
                 page = Convert.ToInt32(Page);
 
             bool ok = await LoadListAsync(page);
-            //if(ok)
+            if (ok)
+                await LoadTotalPagesAsync();
+        }
+
+        private async Task LoadTotalPagesAsync()
+        {
+            var url = ApiRoutes.CountriesRoute + "/" + ApiRoutes.TotalPages;
+            if (!string.IsNullOrWhiteSpace(Filter))
+                url += $"?filter={Filter}";
+
+            var responseHttp = await Repository.GetAsync<int>(url);
+            if (responseHttp.Error)
+            {
+                // TODO: sweet alert
+                var message = await responseHttp.GetErrorMessageAsync();
+                return;
+            }
+            totalPages = responseHttp.Response;
         }
 
         private async Task<bool> LoadListAsync(int page)
@@ -41,7 +65,7 @@ namespace LabPreTest.Frontend.Pages.Countries
                 url += $"&filter={Filter}";
 
             var responseHttp = await Repository.GetAsync<List<Country>>(url);
-            if(responseHttp.Error)
+            if (responseHttp.Error)
             {
                 //TODO sweet alert
                 var message = await responseHttp.GetErrorMessageAsync();

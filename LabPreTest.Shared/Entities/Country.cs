@@ -1,9 +1,10 @@
-﻿using LabPreTest.Shared.Messages;
+﻿using LabPreTest.Shared.Interfaces;
+using LabPreTest.Shared.Messages;
 using System.ComponentModel.DataAnnotations;
 
 namespace LabPreTest.Shared.Entities
 {
-    public class Country
+    public class Country: IEntityWithName
     {
         public int Id { get; set; }
 
