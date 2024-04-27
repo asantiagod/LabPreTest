@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using LabPreTest.Shared.Messages;
+using System.Net;
 
 namespace LabPreTest.Frontend.Repositories
 {
@@ -25,7 +26,7 @@ namespace LabPreTest.Frontend.Repositories
             var statusCode = HttpResponseMessage.StatusCode;
             if (statusCode == HttpStatusCode.NotFound)
             {
-                return "Recurso no encontrado.";
+                return FrontendMessages.HttpNotFoundMessage;
             }
             if (statusCode == HttpStatusCode.BadRequest)
             {
@@ -33,14 +34,14 @@ namespace LabPreTest.Frontend.Repositories
             }
             if (statusCode == HttpStatusCode.Unauthorized)
             {
-                return "Tienes que estar logueado para ejecutar esta operación.";
+                return FrontendMessages.HttpUnauthorizedMessage;
             }
             if (statusCode == HttpStatusCode.Forbidden)
             {
-                return "No tienes permisos para hacer esta operación.";
+                return FrontendMessages.HttpForbiddenMessage;
             }
 
-            return "Ha ocurrido un error inesperado.";
+            return FrontendMessages.HttpUnexpectedMessage;
         }
     }
 }

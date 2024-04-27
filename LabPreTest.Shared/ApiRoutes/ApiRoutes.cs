@@ -2,10 +2,10 @@
 {
     public static class ApiRoutes
     {
-        public const string CountriesRoute = "api/Countries";
-        public const string CitiesRoute = "api/Cities";
-        public const string MedicianRoute = "api/Medicians";
-        public const string StatesRoute = "api/States";
+        public const string CountriesRoute = "api/countries";
+        public const string CitiesRoute = "api/cities";
+        public const string MedicianRoute = "api/medicians";
+        public const string StatesRoute = "api/states";
 
         public const string Full = "full";
         public const string TotalPages = "totalPages";

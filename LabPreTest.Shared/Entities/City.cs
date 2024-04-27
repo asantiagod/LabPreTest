@@ -1,10 +1,11 @@
 ﻿
+using LabPreTest.Shared.Interfaces;
 using LabPreTest.Shared.Messages;
 using System.ComponentModel.DataAnnotations;
 
 namespace LabPreTest.Shared.Entities
 {
-    public class City
+    public class City: IEntityWithName
     {
         public int Id { get; set; }
         [Display(Name = EntityMessages.CityDisplayName)]
