@@ -12,5 +12,7 @@ namespace LabPreTest.Shared.Messages
         public const string HttpUnauthorizedMessage = "You have to be logged in to execute this operation.";
         public const string HttpForbiddenMessage = "You do not have permissions to perform this operation.";
         public const string HttpUnexpectedMessage = "Unexpected error";
+        
+        public const string RecordCreatedMessage = "The record was created successfully.";
     }
 }
