@@ -1,6 +1,6 @@
 ﻿@page "/states/edit/{StateId:int}"
 
-<h3>Editar Estado/Departamento</h3>
+<h3>Edit State/Department</h3>
 
 @if (state is null)
 {
@@ -8,5 +8,5 @@
 }
 else
 {
-    <FormWithName @ref="stateForm" Label="Estado/Departamento:" Model="state" OnValidSubmit="SaveAsync" ReturnAction="Return" />
+    <FormWithName @ref="stateForm" Label="State/Department:" Model="state" OnValidSubmit="SaveAsync" ReturnAction="Return" />
 }
