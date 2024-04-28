@@ -5,20 +5,34 @@
 namespace LabPreTest.Backend.Migrations
 {
     /// <inheritdoc />
-    public partial class someentities : Migration
+    public partial class tubes_conditions_sections : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "Section",
+                name: "Recipient",
+                table: "Tests",
                 type: "nvarchar(100)",
                 maxLength: 100,
                 nullable: false,
+                defaultValue: "",
                 oldClrType: typeof(string),
-                oldType: "nvarchar(20)",
-                oldMaxLength: 20);
+                oldType: "nvarchar(100)",
+                oldMaxLength: 100,
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Conditions",
+                table: "Tests",
+                type: "nvarchar(1000)",
+                maxLength: 1000,
+                nullable: false,
+                defaultValue: "",
+                oldClrType: typeof(string),
+                oldType: "nvarchar(100)",
+                oldMaxLength: 100,
+                oldNullable: true);
 
             migrationBuilder.CreateTable(
                 name: "PreanalyticConditions",
@@ -32,6 +46,19 @@ namespace LabPreTest.Backend.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PreanalyticConditions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Section",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Section", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -54,6 +81,12 @@ namespace LabPreTest.Backend.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Section_Name",
+                table: "Section",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TestTubes_Name",
                 table: "TestTubes",
                 column: "Name",
@@ -67,17 +100,30 @@ namespace LabPreTest.Backend.Migrations
                 name: "PreanalyticConditions");
 
             migrationBuilder.DropTable(
+                name: "Section");
+
+            migrationBuilder.DropTable(
                 name: "TestTubes");
 
             migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "Section",
-                type: "nvarchar(20)",
-                maxLength: 20,
-                nullable: false,
+                name: "Recipient",
+                table: "Tests",
+                type: "nvarchar(100)",
+                maxLength: 100,
+                nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(100)",
                 oldMaxLength: 100);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Conditions",
+                table: "Tests",
+                type: "nvarchar(100)",
+                maxLength: 100,
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(1000)",
+                oldMaxLength: 1000);
         }
     }
 }

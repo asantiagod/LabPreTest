@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabPreTest.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240428031311_add-section")]
-    partial class addsection
+    [Migration("20240428143643_tubes_conditions_sections")]
+    partial class tubes_conditions_sections
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -175,6 +175,32 @@ namespace LabPreTest.Backend.Migrations
                     b.ToTable("Patients");
                 });
 
+            modelBuilder.Entity("LabPreTest.Shared.Entities.PreanalyticCondition", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("PreanalyticConditions");
+                });
+
             modelBuilder.Entity("LabPreTest.Shared.Entities.Section", b =>
                 {
                     b.Property<int>("Id")
@@ -185,8 +211,8 @@ namespace LabPreTest.Backend.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -256,6 +282,27 @@ namespace LabPreTest.Backend.Migrations
                         .IsUnique();
 
                     b.ToTable("Tests");
+                });
+
+            modelBuilder.Entity("LabPreTest.Shared.Entities.TestTube", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("TestTubes");
                 });
 
             modelBuilder.Entity("LabPreTest.Shared.Entities.City", b =>
