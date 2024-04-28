@@ -1,7 +1,10 @@
 ﻿using System.Net;
 using CurrieTechnologies.Razor.SweetAlert2;
 using LabPreTest.Frontend.Repositories;
+using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.Entities;
+using LabPreTest.Shared.Messages;
+using LabPreTest.Shared.PagesRoutes;
 using Microsoft.AspNetCore.Components;
 
 namespace LabPreTest.Frontend.Pages.Medician
@@ -17,41 +20,71 @@ namespace LabPreTest.Frontend.Pages.Medician
 
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
+        [Parameter, SupplyParameterFromQuery] public string RecordNumberQueryString { get; set; } = string.Empty;
 
         public List<Medic>? Medicians { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
+            await SelectedRedordsNumberAsync("10");
             await LoadAsync();
         }
 
         private async Task SelectedPageAsync(int page)
         {
-            if (!string.IsNullOrWhiteSpace(Page))
-            {
-                page = Convert.ToInt32(Page);
-            }
-
             currentPage = page;
             await LoadAsync(page);
         }
 
+        private async Task SelectedRedordsNumberAsync(string recordsNumber)
+        {
+            RecordNumberQueryString = $"RecordsNumber={recordsNumber}";
+            await LoadAsync();
+        }
+
         private async Task LoadAsync(int page = 1)
         {
-            var ok = await LoadListAsync(page);
+            if (!String.IsNullOrWhiteSpace(Page))
+                page = Convert.ToInt32(Page);
+
+            bool ok = await LoadListAsync(page);
             if (ok)
+                await LoadTotalPagesAsync();
+        }
+
+        private async Task LoadTotalPagesAsync()
+        {
+            if (RecordNumberQueryString.ToLower().Contains("full"))
             {
-                await LoadPagesAsync();
+                totalPages = 1;
+                return;
             }
+
+            var url = ApiRoutes.MedicianRoute + "/" + ApiRoutes.TotalPages;
+            url += $"?{RecordNumberQueryString}";
+            if (!string.IsNullOrWhiteSpace(Filter))
+                url += $"&filter={Filter}";
+
+            var responseHttp = await Repository.GetAsync<int>(url);
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return;
+            }
+            totalPages = responseHttp.Response;
         }
 
         private async Task<bool> LoadListAsync(int page)
         {
-            var url = $"api/Medics/?page={page}";
-            if (!string.IsNullOrEmpty(Filter))
-            {
+            var url = ApiRoutes.MedicianRoute;
+            if (RecordNumberQueryString.ToLower().Contains("full"))
+                url += $"/{ApiRoutes.Full}";
+            else
+                url += $"?page={page}&{RecordNumberQueryString}";
+
+            if (!string.IsNullOrWhiteSpace(Filter))
                 url += $"&filter={Filter}";
-            }
 
             var responseHttp = await Repository.GetAsync<List<Medic>>(url);
             if (responseHttp.Error)
@@ -60,40 +93,13 @@ namespace LabPreTest.Frontend.Pages.Medician
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return false;
             }
+
             Medicians = responseHttp.Response;
             return true;
         }
 
-        private async Task LoadPagesAsync()
-        {
-            var url = $"api/Medics/totalPages";
-            if (!string.IsNullOrEmpty(Filter))
-            {
-                url += $"?filter={Filter}";
-            }
-
-            var responseHttp = await Repository.GetAsync<int>(url);
-            if (responseHttp.Error)
-            {
-                var message = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-
-                return;
-            }
-
-                totalPages = responseHttp.Response;
-        }
-
-        private async Task CleanFilterAsync()
-        {
-            Filter = string.Empty;
-            await ApplyFilterAsync();
-
-        }
-
         private async Task FilterCallback(string filter)
         {
-            Console.WriteLine($"CountriesIndex.FilterCallback(): Filter = {filter}");
             Filter = filter;
             await ApplyFilterAsync();
             StateHasChanged();
@@ -102,16 +108,15 @@ namespace LabPreTest.Frontend.Pages.Medician
         private async Task ApplyFilterAsync()
         {
             int page = 1;
-            await LoadAsync(page);
             await SelectedPageAsync(page);
         }
 
-        private async Task DeleteAsync(Medic medician)
+        private async Task DeleteAsync(Medic medic)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
-                Title = "Confirmación",
-                Text = $"¿Estas seguro de querer borrar el medico: {medician.Name}?",
+                Title = "Confirmation",
+                Text = $"Are you sure you want to delete the country: {medic.Name}?",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
             });
@@ -121,12 +126,12 @@ namespace LabPreTest.Frontend.Pages.Medician
                 return;
             }
 
-            var responseHttp = await Repository.DeleteAsync<Medic>($"api/Medics/{ medician.Id}");
+            var responseHttp = await Repository.DeleteAsync<Medic>(ApiRoutes.MedicianRoute + $"/{medic.Id}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo("/medicians");
+                    NavigationManager.NavigateTo(PagesRoutes.Countries);
                 }
                 else
                 {
@@ -144,9 +149,7 @@ namespace LabPreTest.Frontend.Pages.Medician
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con éxito.");
-
-
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordDeletedMessage);
         }
     }
 }

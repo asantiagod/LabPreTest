@@ -2,6 +2,7 @@
 using LabPreTest.Shared.Entities;
 using LabPreTest.Backend.UnitOfWork.Interfaces;
 using LabPreTest.Shared.DTO;
+using LabPreTest.Backend.UnitOfWork.Implementations;
 
 namespace LabPreTest.Backend.Controllers
 {
@@ -26,6 +27,28 @@ namespace LabPreTest.Backend.Controllers
                 return Ok(response.Result);
             }
             return BadRequest();
+        }
+
+        [HttpGet("full")]
+        public override async Task<IActionResult> GetAsync()
+        {
+            var response = await _patientUnitOfWork.GetAsync();
+            if (response.WasSuccess)
+            {
+                return Ok(response.Result);
+            }
+            return BadRequest();
+        }
+
+        [HttpGet("{id}")]
+        public override async Task<IActionResult> GetAsync(int id)
+        {
+            var response = await _patientUnitOfWork.GetAsync(id);
+            if (response.WasSuccess)
+            {
+                return Ok(response.Result);
+            }
+            return NotFound(response.Message);
         }
 
         [HttpGet("totalPages")]
