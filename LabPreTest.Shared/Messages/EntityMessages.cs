@@ -6,6 +6,8 @@
         public const string CountryDisplayName = "Country";
         public const string CityDisplayName = "City";
         public const string MedicianDisplayName = "Medic";
+        public const string OrderPatientIdDisplayName = "Patient";
+        public const string OrderMedicIdDisplayName = "Medic";
         public const string PatientDisplayName = "Patient";
         public const string PreanalyticConditionDisplayName = "Preanalytic Condition";
         public const string PreanalyticConditionDisplayDescription = "Description";
