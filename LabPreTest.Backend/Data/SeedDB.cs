@@ -1,8 +1,5 @@
 ﻿using LabPreTest.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.EntityFrameworkCore.Metadata;
-using System.Security.AccessControl;
 
 namespace LabPreTest.Backend.Data
 {
@@ -22,6 +19,80 @@ namespace LabPreTest.Backend.Data
             await CheckMediciansAsync();
             await CheckPatientsAsync();
             await CheckTestAsync();
+            await CheckSectionAsync();
+            await CheckTestTubeAsync();
+            await CheckPreanalyticConditionAsync();
+            //await CheckOrderAsync();
+        }
+
+        private async Task CheckOrderAsync()
+        {
+            if (!_context.Orders.Any())
+            {
+                var patients = await _context.Patients.Order().ToListAsync();
+                var medicians = await _context.Medicians.Order().ToListAsync();
+                var tests = await _context.Tests.Order().ToListAsync();
+
+                for (int i = 0; i < 13; i++)
+                {
+                    var testIds = new List<int>();
+                    for (int j = 1; j <= i; j++)
+                        testIds.Add(tests[j].TestID);
+
+                    _context.Orders.Add(new Order
+                    {
+                        patientId = patients[i].Id,
+                        medicId = medicians[i].Id,
+                        TestIds = testIds
+                    });
+                }
+            }
+        }
+
+        private async Task CheckPreanalyticConditionAsync()
+        {
+            if (!_context.PreanalyticConditions.Any())
+            {
+                for (int i = 0; i <= 13; i++)
+                {
+                    _context.PreanalyticConditions.Add(new PreanalyticCondition
+                    {
+                        Name = $"ConditionSeed{i}",
+                        Description = $"Some description {i}"
+                    });
+                }
+            }
+            await _context.SaveChangesAsync();
+        }
+
+        private async Task CheckTestTubeAsync()
+        {
+            if (!_context.TestTubes.Any())
+            {
+                for (int i = 0; i <= 13; i++)
+                {
+                    _context.TestTubes.Add(new TestTube
+                    {
+                        Name = $"TestTubeSeed{i}",
+                    });
+                }
+            }
+            await _context.SaveChangesAsync();
+        }
+
+        private async Task CheckSectionAsync()
+        {
+            if (!_context.Section.Any())
+            {
+                for (int i = 0; i <= 13; i++)
+                {
+                    _context.Section.Add(new Section
+                    {
+                        Name = $"SectionSeed{i}",
+                    });
+                }
+            }
+            await _context.SaveChangesAsync();
         }
 
         private async Task CheckTestAsync()
@@ -38,136 +109,29 @@ namespace LabPreTest.Backend.Data
                         Conditions = $"GenericCondiciotns{i}",
                         Section = $"GenericSection{i}",
                     });
-
                 }
             }
             await _context.SaveChangesAsync();
         }
+
         private async Task CheckMediciansAsync()
         {
             Random rnd = new Random(1000000000);
             if (!_context.Medicians.Any())
             {
-                _context.Medicians.Add(new Medic
+                for (int i = 0; i <= 13; i++)
                 {
-                    Address = "Testing Address",
-                    BirthDay = "02/02/1997",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser1",
-                    DocumentId = $"{rnd.Next()}"
-                });
-                _context.Medicians.Add(new Medic
-                {
-                    Address = "Testing Address2",
-                    BirthDay = "02/02/1998",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest2",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser2",
-                    DocumentId = $"{rnd.Next()}"
-                });
-                _context.Medicians.Add(new Medic
-                {
-                    Address = "Testing Address3",
-                    BirthDay = "02/02/1998",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest3",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser3",
-                    DocumentId = $"{rnd.Next()}"
-                });
-                _context.Medicians.Add(new Medic
-                {
-                    Address = "Testing Address4",
-                    BirthDay = "02/02/1998",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest4",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser4",
-                    DocumentId = $"{rnd.Next()}"
-                });
-                _context.Medicians.Add(new Medic
-                {
-                    Address = "Testing Address5",
-                    BirthDay = "02/02/1998",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest5",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser5",
-                    DocumentId = $"{rnd.Next()}"
-                });
-                _context.Medicians.Add(new Medic
-                {
-                    Address = "Testing Address6",
-                    BirthDay = "02/02/1998",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest6",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser6",
-                    DocumentId = $"{rnd.Next()}"
-                });
-                _context.Medicians.Add(new Medic
-                {
-                    Address = "Testing Address7",
-                    BirthDay = "02/02/1998",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest7",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser7",
-                    DocumentId = $"{rnd.Next()}"
-                });
-                _context.Medicians.Add(new Medic
-                {
-                    Address = "Testing Address8",
-                    BirthDay = "02/02/1998",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest8",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser8",
-                    DocumentId = $"{rnd.Next()}"
-                });
-                _context.Medicians.Add(new Medic
-                {
-                    Address = "Testing Address9",
-                    BirthDay = "02/02/1998",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest9",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser0",
-                    DocumentId = $"{rnd.Next()}"
-                });
-                _context.Medicians.Add(new Medic
-                {
-                    Address = "Testing Address10",
-                    BirthDay = "02/02/1998",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest10",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser10",
-                    DocumentId = $"{rnd.Next()}"
-                });
-                _context.Medicians.Add(new Medic
-                {
-                    Address = "Testing Address11",
-                    BirthDay = "02/02/1998",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest11",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser11",
-                    DocumentId = $"{rnd.Next()}"
-                });
-                _context.Medicians.Add(new Medic
-                {
-                    Address = "Testing Address12",
-                    BirthDay = "02/02/1998",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest12",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser12",
-                    DocumentId = $"{rnd.Next()}"
-                });
+                    _context.Medicians.Add(new Medic
+                    {
+                        Address = $"Testing Address {i}",
+                        BirthDay = "02/02/1997",
+                        Cellphone = rnd.Next().ToString(),
+                        Name = $"NameTest{i}",
+                        Email = $"{rnd.Next()}@gmail.com",
+                        UserName = $"FirstUser{i}",
+                        DocumentId = $"{rnd.Next()}"
+                    });
+                }
             }
             await _context.SaveChangesAsync();
         }
@@ -177,136 +141,19 @@ namespace LabPreTest.Backend.Data
             Random rnd = new Random(1000000000);
             if (!_context.Patients.Any())
             {
-                _context.Patients.Add(new Patient
+                for (int i = 0; i <= 13; i++)
                 {
-                    Address = "Testing Address",
-                    BirthDay = "02/02/1997",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser1",
-                    DocumentId = $"{rnd.Next()}"
-                });
-                _context.Patients.Add(new Patient
-                {
-                    Address = "Testing Address2",
-                    BirthDay = "02/02/1998",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest2",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser2",
-                    DocumentId = $"{rnd.Next()}"
-                });
-                _context.Patients.Add(new Patient
-                {
-                    Address = "Testing Address3",
-                    BirthDay = "02/02/1998",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest3",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser3",
-                    DocumentId = $"{rnd.Next()}"
-                });
-                _context.Patients.Add(new Patient
-                {
-                    Address = "Testing Address4",
-                    BirthDay = "02/02/1998",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest4",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser4",
-                    DocumentId = $"{rnd.Next()}"
-                });
-                _context.Patients.Add(new Patient
-                {
-                    Address = "Testing Address5",
-                    BirthDay = "02/02/1998",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest5",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser5",
-                    DocumentId = $"{rnd.Next()}"
-                });
-                _context.Patients.Add(new Patient
-                {
-                    Address = "Testing Address6",
-                    BirthDay = "02/02/1998",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest6",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser6",
-                    DocumentId = $"{rnd.Next()}"
-                });
-                _context.Patients.Add(new Patient
-                {
-                    Address = "Testing Address7",
-                    BirthDay = "02/02/1998",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest7",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser7",
-                    DocumentId = $"{rnd.Next()}"
-                });
-                _context.Patients.Add(new Patient
-                {
-                    Address = "Testing Address8",
-                    BirthDay = "02/02/1998",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest8",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser8",
-                    DocumentId = $"{rnd.Next()}"
-                });
-                _context.Patients.Add(new Patient
-                {
-                    Address = "Testing Address9",
-                    BirthDay = "02/02/1998",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest9",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser9",
-                    DocumentId = $"{rnd.Next()}"
-                });
-                _context.Patients.Add(new Patient
-                {
-                    Address = "Testing Address10",
-                    BirthDay = "02/02/1998",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest10",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser10",
-                    DocumentId = $"{rnd.Next()}"
-                });
-                _context.Patients.Add(new Patient
-                {
-                    Address = "Testing Address11",
-                    BirthDay = "02/02/1998",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest11",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser11",
-                    DocumentId = $"{rnd.Next()}"
-                });
-                _context.Patients.Add(new Patient
-                {
-                    Address = "Testing Address12",
-                    BirthDay = "02/02/1998",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest12",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser12",
-                    DocumentId = $"{rnd.Next()}"
-                });
-                _context.Patients.Add(new Patient
-                {
-                    Address = "Testing Address13",
-                    BirthDay = "02/02/1998",
-                    Cellphone = rnd.Next().ToString(),
-                    Name = "NameTest13",
-                    Email = $"{rnd.Next()}@gmail.com",
-                    UserName = "FirstUser13",
-                    DocumentId = $"{rnd.Next()}"
-                });
+                    _context.Patients.Add(new Patient
+                    {
+                        Address = $"Testing Address {i}",
+                        BirthDay = $"02/02/{1990 + i}", // between 1990 and 2003
+                        Cellphone = rnd.Next().ToString(),
+                        Name = "NameTest",
+                        Email = $"{rnd.Next()}@yopmail.com",
+                        UserName = $"User{i}",
+                        DocumentId = $"{rnd.Next()}"
+                    });
+                }
             }
             await _context.SaveChangesAsync();
         }
@@ -378,8 +225,8 @@ namespace LabPreTest.Backend.Data
                 {
                     Name = "Venezuela",
                     States =
-            [
-                new State()
+                    [
+                        new State()
                         {
                             Name = "Maracaibo",
                             Cities = [
