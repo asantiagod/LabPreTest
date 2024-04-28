@@ -6,6 +6,7 @@
         public const string CitiesRoute = "api/cities";
         public const string MedicianRoute = "api/Medics";
         public const string StatesRoute = "api/states";
+        public const string SectionRoute = "api/Section";
         public const string TestRoute = "api/Test";
         public const string PatientsRoute = "api/Patients";
 

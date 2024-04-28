@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LabPreTest.Backend.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class SectionController : GenericController<Section>
     {
         private readonly ISectionUnitOfWork _sectionUnitOfWork;
