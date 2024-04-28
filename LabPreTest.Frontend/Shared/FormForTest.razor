@@ -1,0 +1,38 @@
+﻿@typeparam TModel where TModel : ITestEntity
+
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
+
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label>@Label</label>
+        <div>
+            <label for="Documento">Ingrese el Codigo de examen:</label>
+            <InputNumber class="form-control" @bind-Value="@Model.TestID" />
+            <ValidationMessage For="@(() => Model.TestID)" />
+        </div>
+        <div>
+            <label for="Nombre">Ingrese el nombre del examen:</label>
+            <InputText class="form-control" @bind-Value="@Model.Name" />
+            <ValidationMessage For="@(() => Model.Name)" />
+        </div>
+        <div>
+            <label for="FNacimiento">Ingrese la seccion del examen:</label>
+            <InputText class="form-control" @bind-Value="@Model.Section" />
+            <ValidationMessage For="@(() => Model.Section)" />
+        </div>
+        <div>
+            <label for="Celular">Ingrese el Tipo de recipiente</label>
+            <InputText class="form-control" @bind-Value="@Model.Recipient" />
+            <ValidationMessage For="@(() => Model.Recipient)" />
+        </div>
+        <div>
+            <label for="Direccion">Ingrese las condiciones para tomar el examen</label>
+            <InputTextArea class="form-control" @bind-Value="@Model.Conditions" />
+            <ValidationMessage For="@(() => Model.Conditions)" />
+        </div>
+
+    </div>
+    <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+    <button class="btn btn-success" @onclick="ReturnAction">Regresar</button>
+</EditForm>

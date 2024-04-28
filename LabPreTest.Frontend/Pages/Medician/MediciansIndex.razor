@@ -1,0 +1,49 @@
+﻿@page "/medicians"
+
+<h3>Medicos</h3>
+
+<div class="mb-3">
+    <a class="btn btn-primary" href="/medicians/create">Nuevo medico</a>
+</div>
+
+<GenericList MyList="Medicians">
+    <Body>
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    SelectedPage="SelectedPageAsync" 
+                    SelectedRedordsNumber="SelectedRedordsNumberAsync" />
+        <Filter PlaceHolder="Buscar medico..." Callback=@FilterCallback />
+
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Documento</th>
+                    <th>Celular</th>
+                    <th>Direccion</th>
+                    <th>Email</th>
+                    <th>Fecha de nacimiento</th>
+                    <th style="width:180px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var medician in Medicians!)
+                {
+                    <tr>
+                        <td>@medician.Name</td>
+                        <td>@medician.DocumentId</td>
+                        <td>@medician.Cellphone</td>
+                        <td>@medician.Address</td>
+                        <td>@medician.Email</td>
+                        <td>@medician.BirthDay</td>
+                        <td>
+                            <a href="/medicians/edit/@medician.Id" class="btn btn-warning">Editar</a>
+                            <button @onclick=@(() => DeleteAsync(medician)) class="btn btn-danger">Borrar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Body>
+</GenericList>

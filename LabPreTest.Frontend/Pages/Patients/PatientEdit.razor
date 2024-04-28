@@ -1,0 +1,12 @@
+﻿@page "/patients/edit/{Id:int}"
+
+<h3>Editar Paciente</h3>
+
+@if (patient is null)
+{
+    <Loading />
+}
+else
+{
+    <FormForUser @ref="patientForm" Label="Paciente:" Model="patient" OnValidSubmit="EditAsync" ReturnAction="Return" />
+}

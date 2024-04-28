@@ -1,0 +1,12 @@
+﻿@page "/tests/edit/{Id:int}"
+
+<h3>Editar Examen</h3>
+
+@if (test is null)
+{
+    <Loading />
+}
+else
+{
+    <FormForTest @ref="testForm" Label="Examen:" Model="test" OnValidSubmit="EditAsync" ReturnAction="Return" />
+}

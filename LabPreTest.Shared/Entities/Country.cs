@@ -1,14 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
+using LabPreTest.Shared.Interfaces;
+using LabPreTest.Shared.Messages;
+using System.ComponentModel.DataAnnotations;
 
 namespace LabPreTest.Shared.Entities
 {
-    public class Country
+    public class Country: IEntityWithName
     {
         public int Id { get; set; }
 
-        [Display(Name = "Country")]
-        [MaxLength(100, ErrorMessage = "The field {0} can't be more than {1} characters.")]
-        [Required(ErrorMessage = "The field {0} is required.")]
+        [Display(Name = EntityMessages.CountryDisplayName)]
+        [MaxLength(100,ErrorMessage= EntityMessages.MaxLengthErrorMessage)]
+        [Required(ErrorMessage= EntityMessages.RequiredErrorMessage)]
         public string Name { get; set; } = null!;
+        
+        public ICollection<State>? States { get; set; }
+
+        [Display(Name = EntityMessages.StatesCitiesDisplayMessage)]
+        public int StatesNumber => States == null || States.Count == 0 ? 0 : States.Count;
+
     }
 }
