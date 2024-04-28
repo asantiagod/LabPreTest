@@ -9,6 +9,7 @@
         public const string SectionRoute = "api/Section";
         public const string TestRoute = "api/Test";
         public const string PatientsRoute = "api/Patients";
+        public const string OrdersRoute = "api/Orders";
 
         public const string Full = "full";
         public const string TotalPages = "totalPages";

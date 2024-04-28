@@ -39,6 +39,7 @@ namespace LabPreTest.Backend.Data
             modelBuilder.Entity<Test>().HasIndex(x => x.TestID).IsUnique();
             modelBuilder.Entity<TestTube>().HasIndex(x => x.Name).IsUnique();
             modelBuilder.Entity<Section>().HasIndex(x => x.Name).IsUnique();
+            modelBuilder.Entity<Order>().HasIndex(x => x.Id).IsUnique(); ;
             DisableCascadingDelete(modelBuilder);
         }
         private void DisableCascadingDelete(ModelBuilder modelBuilder)

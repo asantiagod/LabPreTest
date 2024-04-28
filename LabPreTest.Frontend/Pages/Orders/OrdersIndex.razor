@@ -1,0 +1,43 @@
+﻿@page "/orders"
+
+<h3> Ordenes </h3>
+
+<div class="mb-3">
+    <a class="btn btn-primary" href="/orders/create">Nueva Orden</a>
+</div>
+
+<GenericList MyList="orders">
+    <Body>
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    SelectedPage="SelectedPageAsync"
+                    SelectedRedordsNumber="SelectedRedordsNumberAsync" />
+        <Filter PlaceHolder="Buscar medico..." Callback=@FilterCallback />
+
+
+        <table class="table table-striped">
+            <thead>
+            <th>Id</th>
+            <th>Nombre del paciente</th>
+            <th>Nombre del medico</th>
+            <th>examenes</th>
+            <th style="width:180px"></th>
+            </thead>
+            <tbody>
+                @foreach (var order in orders!)
+                {
+                    <tr>
+                        <td>@order.Id</td>
+                        <td>@order.patientName</td>
+                        <td>@order.medicName</td>
+                        <td>@order.TestIds.First()</td>
+                        <td>
+                            <a href="/orders/edit/@order.Id" class="btn btn-warning">Editar</a>
+                            <button @onclick=@(() => DeleteAsync(order)) class="btn btn-danger">Borrar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Body>
+</GenericList>
