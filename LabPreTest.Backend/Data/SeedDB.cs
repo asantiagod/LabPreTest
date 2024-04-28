@@ -1,14 +1,15 @@
 ﻿using LabPreTest.Shared.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.Metadata;
 using System.Security.AccessControl;
 
 namespace LabPreTest.Backend.Data
 {
-
     public class SeedDB
     {
-
         private readonly DataContext _context;
+
         public SeedDB(DataContext context)
         {
             _context = context;
@@ -20,6 +21,27 @@ namespace LabPreTest.Backend.Data
             await CheckCountriesAsync();
             await CheckMediciansAsync();
             await CheckPatientsAsync();
+            await CheckTestAsync();
+        }
+
+        private async Task CheckTestAsync()
+        {
+            if (!_context.Tests.Any())
+            {
+                for (int i = 0; i <= 13; i++)
+                {
+                    _context.Tests.Add(new Test
+                    {
+                        TestID = i,
+                        Name = $"TestSeed{i}",
+                        Recipient = $"GenericRecipient{i}",
+                        Conditions = $"GenericCondiciotns{i}",
+                        Section = $"GenericSection{i}",
+                    });
+
+                }
+            }
+            await _context.SaveChangesAsync();
         }
         private async Task CheckMediciansAsync()
         {
@@ -106,22 +128,62 @@ namespace LabPreTest.Backend.Data
                     UserName = "FirstUser8",
                     DocumentId = $"{rnd.Next()}"
                 });
-
+                _context.Medicians.Add(new Medic
+                {
+                    Address = "Testing Address9",
+                    BirthDay = "02/02/1998",
+                    Cellphone = rnd.Next().ToString(),
+                    Name = "NameTest9",
+                    Email = $"{rnd.Next()}@gmail.com",
+                    UserName = "FirstUser0",
+                    DocumentId = $"{rnd.Next()}"
+                });
+                _context.Medicians.Add(new Medic
+                {
+                    Address = "Testing Address10",
+                    BirthDay = "02/02/1998",
+                    Cellphone = rnd.Next().ToString(),
+                    Name = "NameTest10",
+                    Email = $"{rnd.Next()}@gmail.com",
+                    UserName = "FirstUser10",
+                    DocumentId = $"{rnd.Next()}"
+                });
+                _context.Medicians.Add(new Medic
+                {
+                    Address = "Testing Address11",
+                    BirthDay = "02/02/1998",
+                    Cellphone = rnd.Next().ToString(),
+                    Name = "NameTest11",
+                    Email = $"{rnd.Next()}@gmail.com",
+                    UserName = "FirstUser11",
+                    DocumentId = $"{rnd.Next()}"
+                });
+                _context.Medicians.Add(new Medic
+                {
+                    Address = "Testing Address12",
+                    BirthDay = "02/02/1998",
+                    Cellphone = rnd.Next().ToString(),
+                    Name = "NameTest12",
+                    Email = $"{rnd.Next()}@gmail.com",
+                    UserName = "FirstUser12",
+                    DocumentId = $"{rnd.Next()}"
+                });
             }
             await _context.SaveChangesAsync();
         }
+
         private async Task CheckPatientsAsync()
         {
             Random rnd = new Random(1000000000);
             if (!_context.Patients.Any())
             {
-                _context.Patients.Add(new Patient 
+                _context.Patients.Add(new Patient
                 {
                     Address = "Testing Address",
                     BirthDay = "02/02/1997",
                     Cellphone = rnd.Next().ToString(),
                     Name = "NameTest",
-                    Email = $"{rnd.Next().ToString()}@gmail.com",
+                    Email = $"{rnd.Next()}@gmail.com",
                     UserName = "FirstUser1",
                     DocumentId = $"{rnd.Next()}"
                 });
@@ -131,9 +193,9 @@ namespace LabPreTest.Backend.Data
                     BirthDay = "02/02/1998",
                     Cellphone = rnd.Next().ToString(),
                     Name = "NameTest2",
-                    Email = $"{rnd.Next().ToString()}@gmail.com",
+                    Email = $"{rnd.Next()}@gmail.com",
                     UserName = "FirstUser2",
-                    DocumentId = $"{rnd.Next().ToString()}"
+                    DocumentId = $"{rnd.Next()}"
                 });
                 _context.Patients.Add(new Patient
                 {
@@ -141,9 +203,9 @@ namespace LabPreTest.Backend.Data
                     BirthDay = "02/02/1998",
                     Cellphone = rnd.Next().ToString(),
                     Name = "NameTest3",
-                    Email = $"{rnd.Next().ToString()}@gmail.com",
+                    Email = $"{rnd.Next()}@gmail.com",
                     UserName = "FirstUser3",
-                    DocumentId = $"{rnd.Next().ToString()}"
+                    DocumentId = $"{rnd.Next()}"
                 });
                 _context.Patients.Add(new Patient
                 {
@@ -151,9 +213,9 @@ namespace LabPreTest.Backend.Data
                     BirthDay = "02/02/1998",
                     Cellphone = rnd.Next().ToString(),
                     Name = "NameTest4",
-                    Email = $"{rnd.Next().ToString()}@gmail.com",
+                    Email = $"{rnd.Next()}@gmail.com",
                     UserName = "FirstUser4",
-                    DocumentId = $"{rnd.Next().ToString()}"
+                    DocumentId = $"{rnd.Next()}"
                 });
                 _context.Patients.Add(new Patient
                 {
@@ -161,9 +223,9 @@ namespace LabPreTest.Backend.Data
                     BirthDay = "02/02/1998",
                     Cellphone = rnd.Next().ToString(),
                     Name = "NameTest5",
-                    Email = $"{rnd.Next().ToString()}@gmail.com",
+                    Email = $"{rnd.Next()}@gmail.com",
                     UserName = "FirstUser5",
-                    DocumentId = $"{rnd.Next().ToString()}"
+                    DocumentId = $"{rnd.Next()}"
                 });
                 _context.Patients.Add(new Patient
                 {
@@ -171,9 +233,9 @@ namespace LabPreTest.Backend.Data
                     BirthDay = "02/02/1998",
                     Cellphone = rnd.Next().ToString(),
                     Name = "NameTest6",
-                    Email = $"{rnd.Next().ToString()}@gmail.com",
+                    Email = $"{rnd.Next()}@gmail.com",
                     UserName = "FirstUser6",
-                    DocumentId = $"{rnd.Next().ToString()}"
+                    DocumentId = $"{rnd.Next()}"
                 });
                 _context.Patients.Add(new Patient
                 {
@@ -181,9 +243,9 @@ namespace LabPreTest.Backend.Data
                     BirthDay = "02/02/1998",
                     Cellphone = rnd.Next().ToString(),
                     Name = "NameTest7",
-                    Email = $"{rnd.Next().ToString()}@gmail.com",
+                    Email = $"{rnd.Next()}@gmail.com",
                     UserName = "FirstUser7",
-                    DocumentId = $"{rnd.Next().ToString()}"
+                    DocumentId = $"{rnd.Next()}"
                 });
                 _context.Patients.Add(new Patient
                 {
@@ -191,14 +253,64 @@ namespace LabPreTest.Backend.Data
                     BirthDay = "02/02/1998",
                     Cellphone = rnd.Next().ToString(),
                     Name = "NameTest8",
-                    Email = $"{rnd.Next().ToString()}@gmail.com",
+                    Email = $"{rnd.Next()}@gmail.com",
                     UserName = "FirstUser8",
-                    DocumentId = $"{rnd.Next().ToString()}"
+                    DocumentId = $"{rnd.Next()}"
                 });
-
+                _context.Patients.Add(new Patient
+                {
+                    Address = "Testing Address9",
+                    BirthDay = "02/02/1998",
+                    Cellphone = rnd.Next().ToString(),
+                    Name = "NameTest9",
+                    Email = $"{rnd.Next()}@gmail.com",
+                    UserName = "FirstUser9",
+                    DocumentId = $"{rnd.Next()}"
+                });
+                _context.Patients.Add(new Patient
+                {
+                    Address = "Testing Address10",
+                    BirthDay = "02/02/1998",
+                    Cellphone = rnd.Next().ToString(),
+                    Name = "NameTest10",
+                    Email = $"{rnd.Next()}@gmail.com",
+                    UserName = "FirstUser10",
+                    DocumentId = $"{rnd.Next()}"
+                });
+                _context.Patients.Add(new Patient
+                {
+                    Address = "Testing Address11",
+                    BirthDay = "02/02/1998",
+                    Cellphone = rnd.Next().ToString(),
+                    Name = "NameTest11",
+                    Email = $"{rnd.Next()}@gmail.com",
+                    UserName = "FirstUser11",
+                    DocumentId = $"{rnd.Next()}"
+                });
+                _context.Patients.Add(new Patient
+                {
+                    Address = "Testing Address12",
+                    BirthDay = "02/02/1998",
+                    Cellphone = rnd.Next().ToString(),
+                    Name = "NameTest12",
+                    Email = $"{rnd.Next()}@gmail.com",
+                    UserName = "FirstUser12",
+                    DocumentId = $"{rnd.Next()}"
+                });
+                _context.Patients.Add(new Patient
+                {
+                    Address = "Testing Address13",
+                    BirthDay = "02/02/1998",
+                    Cellphone = rnd.Next().ToString(),
+                    Name = "NameTest13",
+                    Email = $"{rnd.Next()}@gmail.com",
+                    UserName = "FirstUser13",
+                    DocumentId = $"{rnd.Next()}"
+                });
             }
-            await _context.SaveChangesAsync();   
+            await _context.SaveChangesAsync();
         }
+
         private async Task CheckCountriesAsync()
         {
             if (!_context.Countries.Any())
@@ -552,9 +664,6 @@ namespace LabPreTest.Backend.Data
                         },
                     ]
                 });
-
-
-
             }
             await _context.SaveChangesAsync();
         }

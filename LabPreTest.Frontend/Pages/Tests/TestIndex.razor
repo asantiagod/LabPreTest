@@ -1,0 +1,43 @@
+﻿@page "/tests"
+
+<h3>Examenes</h3>
+
+<div class="mb-3">
+    <a class="btn btn-primary" href="/tests/create">Nuevo Examen</a>
+</div>
+
+<GenericList MyList="Tests">
+    <Body>
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    SelectedPage="SelectedPageAsync" />
+        <Filter PlaceHolder="Buscar Examenes..." Callback=@FilterCallback />s
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id del examen</th>
+                    <th>Nombre del examen</th>
+                    <th>Recipiente</th>
+                    <th>Seccion</th>
+                    <th style="width:180px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var test in Tests!)
+                {
+                    <tr>
+                        <td>@test.TestID</td>
+                        <td>@test.Name</td>
+                        <td>@test.Recipient</td>
+                        <td>@test.Section</td>
+
+                        <td>
+                            <a href="/tests/edit/@test.Id" class="btn btn-warning">Editar</a>
+                            <button @onclick=@(() => DeleteAsync(test)) class="btn btn-danger">Borrar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Body>
+</GenericList>

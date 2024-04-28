@@ -18,6 +18,7 @@ namespace LabPreTest.Backend.Data
         public DbSet<Medic> Medicians { get; set; }
          
         public DbSet<Patient> Patients {  get; set; }
+        public DbSet<Test> Tests { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -30,6 +31,7 @@ namespace LabPreTest.Backend.Data
             modelBuilder.Entity<Medic>().HasIndex(x => x.Email).IsUnique();
             modelBuilder.Entity<Medic>().HasIndex(x => x.DocumentId).IsUnique();
             modelBuilder.Entity<Medic>().HasIndex(x => x.UserName).IsUnique();
+            modelBuilder.Entity<Test>().HasIndex(x => x.TestID).IsUnique();
             DisableCascadingDelete(modelBuilder);
         }
         private void DisableCascadingDelete(ModelBuilder modelBuilder)

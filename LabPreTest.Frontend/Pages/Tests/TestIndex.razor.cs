@@ -4,9 +4,9 @@ using LabPreTest.Frontend.Repositories;
 using LabPreTest.Shared.Entities;
 using Microsoft.AspNetCore.Components;
 
-namespace LabPreTest.Frontend.Pages.Medician
+namespace LabPreTest.Frontend.Pages.Tests
 {
-    public partial class MediciansIndex
+    public partial class TestIndex
     {
         private int currentPage = 1;
         private int totalPages;
@@ -14,17 +14,15 @@ namespace LabPreTest.Frontend.Pages.Medician
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
-
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
-        [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
+        [Parameter, SupplyParameterFromQuery]
+        public string Filter { get; set; } = string.Empty;
 
-        public List<Medic>? Medicians { get; set; }
-
+        public List<Test>? Tests { get; set; }
         protected override async Task OnInitializedAsync()
         {
             await LoadAsync();
         }
-
         private async Task SelectedPageAsync(int page)
         {
             if (!string.IsNullOrWhiteSpace(Page))
@@ -44,29 +42,27 @@ namespace LabPreTest.Frontend.Pages.Medician
                 await LoadPagesAsync();
             }
         }
-
         private async Task<bool> LoadListAsync(int page)
         {
-            var url = $"api/Medics/?page={page}";
+            var url = $"api/Test/?page={page}";
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
             }
 
-            var responseHttp = await Repository.GetAsync<List<Medic>>(url);
+            var responseHttp = await Repository.GetAsync<List<Test>>(url);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return false;
             }
-            Medicians = responseHttp.Response;
+            Tests = responseHttp.Response;
             return true;
         }
-
         private async Task LoadPagesAsync()
         {
-            var url = $"api/Medics/totalPages";
+            var url = $"api/Test/totalPages";
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"?filter={Filter}";
@@ -81,19 +77,17 @@ namespace LabPreTest.Frontend.Pages.Medician
                 return;
             }
 
-                totalPages = responseHttp.Response;
+            totalPages = responseHttp.Response;
         }
-
         private async Task CleanFilterAsync()
         {
             Filter = string.Empty;
             await ApplyFilterAsync();
-
         }
 
         private async Task FilterCallback(string filter)
         {
-            Console.WriteLine($"CountriesIndex.FilterCallback(): Filter = {filter}");
+            Console.WriteLine($"TestIndex.FilterCallback(): Filter = {filter}");
             Filter = filter;
             await ApplyFilterAsync();
             StateHasChanged();
@@ -105,13 +99,12 @@ namespace LabPreTest.Frontend.Pages.Medician
             await LoadAsync(page);
             await SelectedPageAsync(page);
         }
-
-        private async Task DeleteAsync(Medic medician)
+        private async Task DeleteAsync(Test test)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmación",
-                Text = $"¿Estas seguro de querer borrar el medico: {medician.Name}?",
+                Text = $"¿Estas seguro de querer borrar el medico: {test.Name}?",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
             });
@@ -121,12 +114,12 @@ namespace LabPreTest.Frontend.Pages.Medician
                 return;
             }
 
-            var responseHttp = await Repository.DeleteAsync<Medic>($"api/Medics/{ medician.Id}");
+            var responseHttp = await Repository.DeleteAsync<Medic>($"api/Test/{test.Id}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo("/medicians");
+                    NavigationManager.NavigateTo("/tests");
                 }
                 else
                 {
@@ -145,8 +138,6 @@ namespace LabPreTest.Frontend.Pages.Medician
                 Timer = 3000
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con éxito.");
-
-
         }
     }
 }
