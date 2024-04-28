@@ -20,7 +20,7 @@ namespace LabPreTest.Backend.Repository.Implementations
         public async Task<IEnumerable<State>> GetComboAsync(int countryId)
         {
             return await _context.States
-                .Where(s => s.CountryId == countryId)
+                .Where(s => s.CountryId == countryId)   
                 .OrderBy(s => s.Name)
                 .ToListAsync();
         }
@@ -40,6 +40,7 @@ namespace LabPreTest.Backend.Repository.Implementations
         {
             var state = await _context.States
                 .Include(x => x.Cities)
+                .Where(x => x.CountryId == id)  
                 .FirstOrDefaultAsync(s => s.Id == id);
             if (state == null)
             {
@@ -77,7 +78,9 @@ namespace LabPreTest.Backend.Repository.Implementations
 
         public override async Task<ActionResponse<int>> GetTotalPagesAsync(PagingDTO paging)
         {
-            var queryable = _context.States.AsQueryable();
+            var queryable = _context.States
+                .Where(x => x.Country!.Id == paging.Id)
+                .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(paging.Filter))
                 queryable = queryable.Where(x => x.Name.ToLower().Contains(paging.Filter.ToLower()));

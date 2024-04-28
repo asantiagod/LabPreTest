@@ -1,12 +1,12 @@
 ﻿@page "/countries/details/{CountryId:int}"
 
-@if (country is null)
+@if (country.States is null)
 {
     <Loading />
 }
 else
 {
-    <h3>@country.Name</h3>
+    <h3>@country.Id</h3>
     <div class="mb-2">
         <a class="btn btn-primary" href="/states/create/@country.Id">New State/Department</a>
         <a class="btn btn-success" href="/countries">Return</a>
@@ -15,6 +15,12 @@ else
     <h4>States/Departaments</h4>
     <GenericList MyList="states!">  
         <Body>
+            
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    SelectedPage="SelectedPageAsync" />
+
+            <Filter PlaceHolder="Find State..." Callback=@FilterCallback />
 
 
             <table class="table table-striped">

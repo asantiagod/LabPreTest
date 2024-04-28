@@ -156,6 +156,7 @@ namespace LabPreTest.Frontend.Pages.Countries
             await LoadAsync();
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
+                
                 Toast = true,
                 Position = SweetAlertPosition.BottomEnd,
                 ShowConfirmButton = true,
