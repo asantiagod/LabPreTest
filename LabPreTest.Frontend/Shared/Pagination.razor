@@ -1,4 +1,14 @@
-﻿<nav>
+﻿<div class="mb-2 form-floating">
+    <select class="form-select" id="floatingInput" @bind="RecordsNumber" @bind:after="SelectCallback"> 
+        <option value="10" selected="true">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="full">FULL</option>
+    </select> 
+    <label for="floatingInput">Records per page</label>
+</div>
+
+<nav>
     <ul class="pagination">
         @foreach (var link in links)
         {

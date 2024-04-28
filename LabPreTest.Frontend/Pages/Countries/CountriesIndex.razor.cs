@@ -20,11 +20,13 @@ namespace LabPreTest.Frontend.Pages.Countries
 
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
+        [Parameter, SupplyParameterFromQuery] public string RecordNumberQueryString { get; set; } = string.Empty;
 
         public List<Country>? Countries { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
+            await SelectedRedordsNumberAsync("10");
             await LoadAsync();
         }
 
@@ -32,6 +34,12 @@ namespace LabPreTest.Frontend.Pages.Countries
         {
             currentPage = page;
             await LoadAsync(page);
+        }
+
+        private async Task SelectedRedordsNumberAsync(string recordsNumber)
+        {
+            RecordNumberQueryString = $"RecordsNumber={recordsNumber}";
+            await LoadAsync();
         }
 
         private async Task LoadAsync(int page = 1)
@@ -46,9 +54,16 @@ namespace LabPreTest.Frontend.Pages.Countries
 
         private async Task LoadTotalPagesAsync()
         {
+            if (RecordNumberQueryString.ToLower().Contains("full"))
+            {
+                totalPages = 1;
+                return;
+            }
+            
             var url = ApiRoutes.CountriesRoute + "/" + ApiRoutes.TotalPages;
+            url += $"?{RecordNumberQueryString}";
             if (!string.IsNullOrWhiteSpace(Filter))
-                url += $"?filter={Filter}";
+                url += $"&filter={Filter}";
 
             var responseHttp = await Repository.GetAsync<int>(url);
             if (responseHttp.Error)
@@ -62,7 +77,12 @@ namespace LabPreTest.Frontend.Pages.Countries
 
         private async Task<bool> LoadListAsync(int page)
         {
-            var url = ApiRoutes.CountriesRoute + $"?page={page}";
+            var url = ApiRoutes.CountriesRoute;
+            if (RecordNumberQueryString.ToLower().Contains("full"))
+                url += $"/{ApiRoutes.Full}";
+            else
+                url += $"?page={page}&{RecordNumberQueryString}";
+
             if (!string.IsNullOrWhiteSpace(Filter))
                 url += $"&filter={Filter}";
 
@@ -80,7 +100,6 @@ namespace LabPreTest.Frontend.Pages.Countries
 
         private async Task FilterCallback(string filter)
         {
-            Console.WriteLine($"CountriesIndex.FilterCallback(): Filter = {filter}");
             Filter = filter;
             await ApplyFilterAsync();
             StateHasChanged();
