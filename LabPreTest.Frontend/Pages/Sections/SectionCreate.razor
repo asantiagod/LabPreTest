@@ -1,0 +1,12 @@
+﻿@page "/sections/create"
+
+<h3>Create Section</h3>
+
+@if (section is null)
+{
+    <Loading />
+}
+else
+{
+    <FormForSection @ref="sectionForm" Label="Section:" Model="section" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+}

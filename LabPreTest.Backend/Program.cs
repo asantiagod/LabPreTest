@@ -43,6 +43,9 @@ builder.Services.AddScoped<IPatientUnitOfWork, PatientUnitOfWork>();
 builder.Services.AddScoped<IMedicianRepository, MedicianRepository>();
 builder.Services.AddScoped<IMedicianUnitOfWork, MediciansUnitOfWork>();
 
+builder.Services.AddScoped<ISectionRepository, SectionRepository>();
+builder.Services.AddScoped<ISectionUnitOfWork, SectionUnitOfWork>();
+
 var app = builder.Build();
 
 SeedData(app);
