@@ -43,6 +43,10 @@ builder.Services.AddScoped<IPatientUnitOfWork, PatientUnitOfWork>();
 builder.Services.AddScoped<IMedicianRepository, MedicianRepository>();
 builder.Services.AddScoped<IMedicianUnitOfWork, MediciansUnitOfWork>();
 
+
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderUnitOfWork, OrderUnitOfWork>();
+
 var app = builder.Build();
 
 SeedData(app);

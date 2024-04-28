@@ -22,32 +22,28 @@ namespace LabPreTest.Backend.Data
             await CheckSectionAsync();
             await CheckTestTubeAsync();
             await CheckPreanalyticConditionAsync();
-            //await CheckOrderAsync();
+            await CheckOrdersAsync();
         }
 
-        private async Task CheckOrderAsync()
+
+        private async Task CheckOrdersAsync()
         {
             if (!_context.Orders.Any())
             {
-                var patients = await _context.Patients.Order().ToListAsync();
-                var medicians = await _context.Medicians.Order().ToListAsync();
-                var tests = await _context.Tests.Order().ToListAsync();
-
-                for (int i = 0; i < 13; i++)
+                for (int i = 0; i <= 13; i++)
                 {
-                    var testIds = new List<int>();
-                    for (int j = 1; j <= i; j++)
-                        testIds.Add(tests[j].TestID);
-
                     _context.Orders.Add(new Order
                     {
-                        patientId = patients[i].Id,
-                        medicId = medicians[i].Id,
-                        TestIds = testIds
-                    });
+                        patientName = $"PatientName{i}",
+                        medicName = $"MedicName {i}",
+                        createdAt = DateTime.Now,
+                        TestIds = [1,2,3,4,5,7] 
+                    }); 
                 }
             }
+            await _context.SaveChangesAsync();
         }
+
 
         private async Task CheckPreanalyticConditionAsync()
         {

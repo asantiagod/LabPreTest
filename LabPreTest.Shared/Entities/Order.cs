@@ -1,9 +1,10 @@
-﻿using LabPreTest.Shared.Messages;
+﻿using LabPreTest.Shared.Interfaces;
+using LabPreTest.Shared.Messages;
 using System.ComponentModel.DataAnnotations;
 
 namespace LabPreTest.Shared.Entities
 {
-    public class Order
+    public class Order : IOrderEntity
     {
         public int Id { get; set; }
 
@@ -11,11 +12,17 @@ namespace LabPreTest.Shared.Entities
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
         public int patientId { get; set; }
 
+        [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
+        public string patientName { get; set; } 
+
         [Display(Name = EntityMessages.OrderMedicIdDisplayName)]
-        public int medicId { get; set; }
 
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
-        public ICollection<int> TestIds { get; set; } = null!;
+        public string medicName { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime createdAt { get; set; }
+        [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
+        public List<int> TestIds { get; set; } = null!;
 
         public int TestNumber => TestIds == null || TestIds.Count == 0 ? 0 : TestIds.Count();
     }

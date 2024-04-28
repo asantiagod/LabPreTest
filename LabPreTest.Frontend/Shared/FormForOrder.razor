@@ -1,0 +1,33 @@
+﻿@typeparam TModel where TModel : IOrderEntity
+
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
+
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label>@Label</label>
+        <div>
+            <label for="patientId">Ingrese la identificacion del paciente:</label>
+            <InputNumber class="form-control" @bind-Value="@Model.patientId" />
+            <ValidationMessage For="@(() => Model.patientId)" />
+        </div>
+        <div>
+            <label for="patientName">Ingrese el nombre del paciente:</label>
+            <InputText class="form-control" @bind-Value="@Model.patientName" />
+            <ValidationMessage For="@(() => Model.patientName)" />
+        </div>
+        <div>
+            <label for="medicName">Ingrese el nombre del medico:</label>
+            <InputText class="form-control" @bind-Value="@Model.medicName" />
+            <ValidationMessage For="@(() => Model.medicName)" />
+        </div>
+        <div>
+            <label for="Examen">Ingrese el Codigo de examen a ingresar</label>
+            <InputNumber class="form-control" @bind-Value="@Model.TestIds" />
+            <ValidationMessage For="@(() => Model.TestIds)" />
+        </div>
+
+    </div>
+    <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+    <button class="btn btn-success" @onclick="ReturnAction">Regresar</button>
+</EditForm>
