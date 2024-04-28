@@ -29,6 +29,13 @@ namespace LabPreTest.Backend.Repository.Implementations
                 Result = cities
             };
         }
+        public async Task<IEnumerable<City>> GetComboAsync(int stateId)
+        {
+            return await _context.Cities
+                .Where(s => s.StateId == stateId)
+                .OrderBy(s => s.Name)
+                .ToListAsync();
+        }
 
         public override async Task<ActionResponse<City>> GetAsync(int id)
         {

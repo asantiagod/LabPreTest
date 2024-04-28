@@ -28,7 +28,7 @@
                 @foreach (var country in Countries!)
                 {
                     <tr>
-                        <td>@country.Name</td>
+                        <td><a href="/countries/details/@country.Id"> @country.Name</a></td>
                         <td>@country.StatesNumber</td>
                         <td>
                             <a href="/countries/edit/@country.Id" class="btn btn-sm btn-warning">Edit</a>

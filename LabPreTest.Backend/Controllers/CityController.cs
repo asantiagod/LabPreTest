@@ -1,4 +1,5 @@
-﻿using LabPreTest.Backend.UnitOfWork.Interfaces;
+﻿using LabPreTest.Backend.UnitOfWork.Implementations;
+using LabPreTest.Backend.UnitOfWork.Interfaces;
 using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.DTO;
 using LabPreTest.Shared.Entities;
@@ -15,6 +16,12 @@ namespace LabPreTest.Backend.Controllers
         public CitiesController(IGenericUnitOfWork<City> unitOfWork, ICitiesUnitOfWork citiesUnitOfWork) : base(unitOfWork)
         {
             _citiesUnitOfWork = citiesUnitOfWork;
+        }
+
+        [HttpGet("combo/{countryId:int}")]
+        public async Task<IActionResult> GetComboAsync(int countryId)
+        {
+            return Ok(await _citiesUnitOfWork.GetComboAsync(countryId));
         }
 
         [HttpGet(ApiRoutes.Full)]

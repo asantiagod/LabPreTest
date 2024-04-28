@@ -70,7 +70,7 @@ namespace LabPreTest.Frontend.Pages.States
 
         private async Task<bool> LoadCitiesAsync(int page)
         {
-            var url = $"api/cities?id={StateId}&page={page}";
+            var url = $"api/cities/combo/{StateId}";
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";

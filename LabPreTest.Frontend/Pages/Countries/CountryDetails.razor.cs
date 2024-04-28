@@ -70,7 +70,7 @@ namespace LabPreTest.Frontend.Pages.Countries
 
         private async Task<bool> LoadStatesAsync(int page)
         {
-            var url = $"api/states?id={CountryId}&page={page}";
+            var url = $"api/states/combo/{CountryId}";
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
@@ -92,7 +92,12 @@ namespace LabPreTest.Frontend.Pages.Countries
             Filter = string.Empty;
             await ApplyFilterAsync();
         }
-
+        private async Task FilterCallback(string filter)
+        {
+            Filter = filter;
+            await ApplyFilterAsync();
+            StateHasChanged();
+        }
         private async Task ApplyFilterAsync()
         {
             int page = 1;
