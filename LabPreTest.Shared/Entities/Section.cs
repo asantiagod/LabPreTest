@@ -4,7 +4,7 @@ using LabPreTest.Shared.Messages;
 
 namespace LabPreTest.Shared.Entities
 {
-    public class Section : IEntityWithName
+    public class Section : IEntityWithId, IEntityWithName
     {
         public int Id { get; set; }
         

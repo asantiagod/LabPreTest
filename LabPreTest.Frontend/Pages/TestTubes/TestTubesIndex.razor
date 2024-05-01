@@ -1,0 +1,41 @@
+﻿@page "/test_tubes"
+
+<h3>Tubos de Ensayo</h3>
+
+<div class="mb-3">
+    <a class="btn btn-primary" href="/test_tubes/create">Nuevo Tubo</a>
+</div>
+
+<GenericList MyList="TestTubes">
+    <Body>
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    SelectedPage="SelectedPageAsync"
+                    SelectedRedordsNumber="SelectedRedordsNumberAsync" />
+
+        <Filter PlaceHolder="Buscar Examenes..." Callback=@FilterCallback />
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id del tubo de ensayo</th>
+                    <th>Nombre del tubo de ensayo</th>
+                    <th style="width:180px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var test in TestTubes!)
+                {
+                    <tr>
+                        <td>@test.Name</td>
+
+                        <td>
+                            <a href="/test_tubes/edit/@test.Id" class="btn btn-warning">Editar</a>
+                            <button @onclick=@(() => DeleteAsync(test)) class="btn btn-danger">Borrar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Body>
+</GenericList>

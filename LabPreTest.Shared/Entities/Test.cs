@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LabPreTest.Shared.Entities
 {
-    public class Test : ITestEntity
+    public class Test : IEntityWithId, ITestEntity
     {
         public int Id { get; set; }
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]

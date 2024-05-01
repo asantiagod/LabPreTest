@@ -8,6 +8,7 @@
         public const string StatesRoute = "api/states";
         public const string SectionRoute = "api/Section";
         public const string TestRoute = "api/Test";
+        public const string TestTubeRoute = "api/TestTube";
         public const string PatientsRoute = "api/Patients";
         public const string OrdersRoute = "api/Orders";
 

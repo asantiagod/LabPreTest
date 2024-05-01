@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LabPreTest.Shared.Entities
 {
-    public class Country: IEntityWithName
+    public class Country: IEntityWithId, IEntityWithName
     {
         public int Id { get; set; }
 

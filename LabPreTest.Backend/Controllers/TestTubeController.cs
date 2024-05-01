@@ -1,6 +1,5 @@
 ﻿using LabPreTest.Backend.UnitOfWork.Implementations;
 using LabPreTest.Backend.UnitOfWork.Interfaces;
-using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.DTO;
 using LabPreTest.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -9,19 +8,20 @@ namespace LabPreTest.Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TestController : GenericController<Test>
+    public class TestTubeController : GenericController<TestTube>
     {
-        private readonly ITestUnitOfWork _testsUnitOfWork;
+        private readonly ITestTubeUnitOfWork _testTubesUnitOfWork;
 
-        public TestController(IGenericUnitOfWork<Test> unitOfWork, ITestUnitOfWork testUnitOfWork) : base(unitOfWork)
+        public TestTubeController(IGenericUnitOfWork<TestTube> unitOfWork,
+                                  ITestTubeUnitOfWork testTubeUnitOfWork) : base(unitOfWork)
         {
-            _testsUnitOfWork = testUnitOfWork;
+            _testTubesUnitOfWork = testTubeUnitOfWork;
         }
 
         [HttpGet]
         public override async Task<IActionResult> GetAsync([FromQuery] PagingDTO pagination)
         {
-            var response = await _testsUnitOfWork.GetAsync(pagination);
+            var response = await _testTubesUnitOfWork.GetAsync(pagination);
             if (response.WasSuccess)
             {
                 return Ok(response.Result);
@@ -32,7 +32,7 @@ namespace LabPreTest.Backend.Controllers
         [HttpGet("full")]
         public override async Task<IActionResult> GetAsync()
         {
-            var response = await _testsUnitOfWork.GetAsync();
+            var response = await _testTubesUnitOfWork.GetAsync();
             if (response.WasSuccess)
             {
                 return Ok(response.Result);
@@ -43,7 +43,7 @@ namespace LabPreTest.Backend.Controllers
         [HttpGet("{id}")]
         public override async Task<IActionResult> GetAsync(int id)
         {
-            var response = await _testsUnitOfWork.GetAsync(id);
+            var response = await _testTubesUnitOfWork.GetAsync(id);
             if (response.WasSuccess)
             {
                 return Ok(response.Result);
@@ -54,7 +54,7 @@ namespace LabPreTest.Backend.Controllers
         [HttpGet("totalPages")]
         public override async Task<IActionResult> GetPagesAsync([FromQuery] PagingDTO pagination)
         {
-            var action = await _testsUnitOfWork.GetTotalPagesAsync(pagination);
+            var action = await _testTubesUnitOfWork.GetTotalPagesAsync(pagination);
             if (action.WasSuccess)
             {
                 return Ok(action.Result);

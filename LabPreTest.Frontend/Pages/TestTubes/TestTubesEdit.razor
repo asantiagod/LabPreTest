@@ -1,0 +1,12 @@
+﻿@page "/test_tubes/edit/{Id:int}"
+
+<h3>Editar Tubo de Ensayo</h3>
+
+@if (testTube is null)
+{
+    <Loading />
+}
+else
+{
+    <FormForTestTube @ref="testTubeForm" Label="Tubo de Ensayo:" Model="testTube" OnValidSubmit="EditAsync" ReturnAction="Return" />
+}

@@ -33,6 +33,8 @@ builder.Services.AddScoped<IStatesUnitOfWork, StatesUnitOfWork>();
 builder.Services.AddScoped<ITestRepository, TestRepository>();
 builder.Services.AddScoped<ITestUnitOfWork, TestUnitOfWork>();
 
+builder.Services.AddScoped<ITestTubeRepository, TestTubeRepository>();
+builder.Services.AddScoped<ITestTubeUnitOfWork, TestTubeUnitOfWork>();
 
 builder.Services.AddScoped<ICitiesRepository, CitiesRepository>();
 builder.Services.AddScoped<ICitiesUnitOfWork, CitiesUnitOfWork>();
