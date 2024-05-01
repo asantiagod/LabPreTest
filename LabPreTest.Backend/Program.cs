@@ -43,14 +43,11 @@ builder.Services.AddScoped<IPatientUnitOfWork, PatientUnitOfWork>();
 builder.Services.AddScoped<IMedicianRepository, MedicianRepository>();
 builder.Services.AddScoped<IMedicianUnitOfWork, MediciansUnitOfWork>();
 
-<<<<<<< HEAD
 builder.Services.AddScoped<ISectionRepository, SectionRepository>();
 builder.Services.AddScoped<ISectionUnitOfWork, SectionUnitOfWork>();
-=======
 
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderUnitOfWork, OrderUnitOfWork>();
->>>>>>> create-orders-preconditions
 
 var app = builder.Build();
 
