@@ -1,10 +1,11 @@
 ﻿using LabPreTest.Shared.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace LabPreTest.Backend.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<User>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
@@ -23,6 +24,7 @@ namespace LabPreTest.Backend.Data
         public DbSet<Test> Tests { get; set; }
         public DbSet<TestTube> TestTubes { get; set; }
         public DbSet<Section> Section { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
