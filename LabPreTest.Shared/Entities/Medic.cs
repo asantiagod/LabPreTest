@@ -3,7 +3,7 @@ using LabPreTest.Shared.Interfaces;
 using System.ComponentModel.DataAnnotations;
 namespace LabPreTest.Shared.Entities
 {
-    public class Medic : IUserEntity
+    public class Medic : IEntityWithId, IUserEntity
     {
         public int Id { get; set; }
 

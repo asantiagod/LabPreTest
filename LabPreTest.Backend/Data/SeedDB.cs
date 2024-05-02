@@ -1,15 +1,18 @@
-﻿using LabPreTest.Shared.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using LabPreTest.Backend.UnitOfWork.Interfaces;
+using LabPreTest.Shared.Entities;
+using LabPreTest.Shared.Enums;
 
 namespace LabPreTest.Backend.Data
 {
     public class SeedDB
     {
         private readonly DataContext _context;
+        private readonly IUsersUnitOfWork _usersUnitOfWork;
 
-        public SeedDB(DataContext context)
+        public SeedDB(DataContext context, IUsersUnitOfWork usersUnitOfWork)
         {
             _context = context;
+            _usersUnitOfWork = usersUnitOfWork;
         }
 
         public async Task SeedAsync()
@@ -23,8 +26,53 @@ namespace LabPreTest.Backend.Data
             await CheckTestTubeAsync();
             await CheckPreanalyticConditionAsync();
             await CheckOrdersAsync();
+
+            await CheckRolesAsync();
+            await CheckUserAsync("123456789",
+                                 "Default",
+                                 "User",
+                                 "default.user@yopmail.com",
+                                 "3140000123",
+                                 "any street in any city",
+                                 UserType.Admin);
         }
 
+        private async Task CheckRolesAsync()
+        {
+            await _usersUnitOfWork.CheckRoleAsync(UserType.Admin.ToString());
+            await _usersUnitOfWork.CheckRoleAsync(UserType.User.ToString());
+        }
+
+        private async Task<User> CheckUserAsync(string document,
+                                          string firstName,
+                                          string lastName,
+                                          string email,
+                                          string phone,
+                                          string address,
+                                          UserType userType)
+        {
+            var user = await _usersUnitOfWork.GetUserAsync(email);
+            if (user == null)
+            {
+                user = new User
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Email = email,
+                    UserName = email,
+                    PhoneNumber = phone,
+                    Address = address,
+                    Document = document,
+                    City = _context.Cities.FirstOrDefault(),
+                    UserType = userType,
+                };
+
+                await _usersUnitOfWork.AddUserAsync(user, "123456");
+                await _usersUnitOfWork.AddUserToRoleAsync(user, userType.ToString());
+            }
+
+            return user;
+        }
 
         private async Task CheckOrdersAsync()
         {
@@ -37,13 +85,12 @@ namespace LabPreTest.Backend.Data
                         patientName = $"PatientName{i}",
                         medicName = $"MedicName {i}",
                         createdAt = DateTime.Now,
-                        TestIds = [1,2,3,4,5,7] 
-                    }); 
+                        TestIds = [1, 2, 3, 4, 5, 7]
+                    });
                 }
             }
             await _context.SaveChangesAsync();
         }
-
 
         private async Task CheckPreanalyticConditionAsync()
         {

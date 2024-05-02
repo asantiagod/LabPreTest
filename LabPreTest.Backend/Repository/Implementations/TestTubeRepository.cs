@@ -6,59 +6,60 @@ using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Messages;
 using LabPreTest.Shared.Responses;
 using Microsoft.EntityFrameworkCore;
+using System.Net.NetworkInformation;
 
 namespace LabPreTest.Backend.Repository.Implementations
 {
-    public class TestRepository : GenericRepository<Test>, ITestRepository
+    public class TestTubeRepository : GenericRepository<TestTube>, ITestTubeRepository
     {
         private readonly DataContext _context;
 
-        public TestRepository(DataContext context) : base(context)
+        public TestTubeRepository(DataContext context) : base(context)
         {
             _context = context;
         }
 
-        public override async Task<ActionResponse<IEnumerable<Test>>> GetAsync()
+        public override async Task<ActionResponse<IEnumerable<TestTube>>> GetAsync()
         {
-            var test = await _context.Tests
-                .OrderBy(x => x.Name)
+            var testTubes = await _context.TestTubes
+                .OrderBy(t => t.Name)
                 .ToListAsync();
-            return new ActionResponse<IEnumerable<Test>>
+            return new ActionResponse<IEnumerable<TestTube>>
             {
                 WasSuccess = true,
-                Result = test
+                Result = testTubes
             };
         }
 
-        public override async Task<ActionResponse<Test>> GetAsync(int id)
+        public override async Task<ActionResponse<TestTube>> GetAsync(int id)
         {
-            var test = await _context.Tests
-                .FirstOrDefaultAsync();
-            if (test == null)
+            var testTube = await _context.TestTubes
+                        .FirstOrDefaultAsync();
+            if (testTube == null)
             {
-                return new ActionResponse<Test>
+                return new ActionResponse<TestTube>
                 {
                     WasSuccess = false,
-                    Message = MessageStrings.DbTestNotFoundMessage
+                    Message = MessageStrings.DbCountryNotFoundMessage
                 };
             }
 
-            return new ActionResponse<Test>
+            return new ActionResponse<TestTube>
             {
                 WasSuccess = true,
-                Result = test
+                Result = testTube
             };
         }
 
-        public override async Task<ActionResponse<IEnumerable<Test>>> GetAsync(PagingDTO paging)
+        public override async Task<ActionResponse<IEnumerable<TestTube>>> GetAsync(PagingDTO paging)
         {
-            var queryable = _context.Tests
-                .AsQueryable();
+            var queryable = _context.TestTubes
+                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(paging.Filter))
                 queryable = queryable.Where(x => x.Name.ToLower().Contains(paging.Filter.ToLower()));
 
-            return new ActionResponse<IEnumerable<Test>>
+            return new ActionResponse<IEnumerable<TestTube>>
             {
                 WasSuccess = true,
                 Result = await queryable
@@ -70,7 +71,7 @@ namespace LabPreTest.Backend.Repository.Implementations
 
         public override async Task<ActionResponse<int>> GetTotalPagesAsync(PagingDTO paging)
         {
-            var queryable = _context.Tests.AsQueryable();
+            var queryable = _context.TestTubes.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(paging.Filter))
                 queryable = queryable.Where(x => x.Name.ToLower().Contains(paging.Filter.ToLower()));

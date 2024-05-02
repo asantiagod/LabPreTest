@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LabPreTest.Shared.Entities
 {
-    public class Patient : IUserEntity
+    public class Patient : IEntityWithId, IUserEntity
     {
         public int Id { get; set; }
 

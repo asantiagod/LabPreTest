@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LabPreTest.Shared.Entities
 {
-    public class Order : IOrderEntity
+    public class Order : IEntityWithId, IOrderEntity
     {
         public int Id { get; set; }
 

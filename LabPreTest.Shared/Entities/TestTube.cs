@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LabPreTest.Shared.Entities
 {
-    public class TestTube : IEntityWithName
+    public class TestTube : IEntityWithId, IEntityWithName
     {
         public int Id { get; set; }
 
