@@ -1,12 +1,19 @@
 ﻿<Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+            <Authorizing>
+                <p>Autorizando...</p>
+            </Authorizing>
+        </AuthorizeRouteView>
+
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
     <NotFound>
-        <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <p role="alert"><h1><center>LabPreTest.App</center></h1></p>
-        </LayoutView>
+        <CascadingAuthenticationState>
+            <PageTitle>Not Found</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <p role="alert">There is nothing on this route</p>
+            </LayoutView> 
+        </CascadingAuthenticationState>
     </NotFound>
 </Router>

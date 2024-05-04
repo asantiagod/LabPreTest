@@ -1,12 +1,17 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Frontend.Shared;
+using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.Entities;
+using LabPreTest.Shared.Messages;
+using LabPreTest.Shared.PagesRoutes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System.Net;
 
 namespace LabPreTest.Frontend.Pages.Tests
 {
+    [Authorize(Roles = FrontendStrings.AdminString)]
     public partial class TestEdit
     {
         private Test? test;
@@ -20,12 +25,12 @@ namespace LabPreTest.Frontend.Pages.Tests
 
         protected override async Task OnParametersSetAsync()
         {
-            var responseHttp = await Repository.GetAsync<Test>($"/api/Test/{Id}");
+            var responseHttp = await Repository.GetAsync<Test>(ApiRoutes.TestRoute + $"/{Id}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo("/tests");
+                    NavigationManager.NavigateTo(PagesRoutes.Tests);
                 }
                 else
                 {
@@ -41,7 +46,7 @@ namespace LabPreTest.Frontend.Pages.Tests
 
         private async Task EditAsync()
         {
-            var responseHttp = await Repository.PutAsync("/api/Test", test);
+            var responseHttp = await Repository.PutAsync(ApiRoutes.TestRoute, test);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -57,13 +62,13 @@ namespace LabPreTest.Frontend.Pages.Tests
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Cambios guardados con éxito.");
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordChangedMessage);
         }
 
         private void Return()
         {
             testForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo("/tests");
+            NavigationManager.NavigateTo(PagesRoutes.Tests);
         }
     }
 }

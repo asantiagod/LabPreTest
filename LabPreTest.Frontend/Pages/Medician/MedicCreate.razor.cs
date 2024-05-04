@@ -2,10 +2,13 @@
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Frontend.Shared;
 using LabPreTest.Shared.Entities;
+using LabPreTest.Shared.Messages;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 
 namespace LabPreTest.Frontend.Pages.Medician
 {
+    [Authorize(Roles = FrontendStrings.AdminString)]
     public partial class MedicCreate
     {
         private Medic medic = new();
