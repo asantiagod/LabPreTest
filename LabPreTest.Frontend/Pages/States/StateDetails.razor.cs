@@ -3,9 +3,13 @@ using Microsoft.AspNetCore.Components;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Shared.Entities;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
+using LabPreTest.Shared.Messages;
+using LabPreTest.Shared.ApiRoutes;
 
 namespace LabPreTest.Frontend.Pages.States
 {
+    [Authorize(Roles = FrontendStrings.AdminString)]
     public partial class StateDetails
     {
         private State? state;
@@ -137,7 +141,7 @@ namespace LabPreTest.Frontend.Pages.States
                 return;
             }
 
-            var responseHttp = await Repository.DeleteAsync<City>($"/api/cities/{city.Id}");
+            var responseHttp = await Repository.DeleteAsync<City>(ApiRoutes.CitiesRoute + $"/{city.Id}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode != HttpStatusCode.NotFound)
@@ -156,7 +160,7 @@ namespace LabPreTest.Frontend.Pages.States
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con éxito.");
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordDeletedMessage);
         }
     }
 }

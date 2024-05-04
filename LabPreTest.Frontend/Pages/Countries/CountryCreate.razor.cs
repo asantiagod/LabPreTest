@@ -5,10 +5,12 @@ using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Messages;
 using LabPreTest.Shared.PagesRoutes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 
 namespace LabPreTest.Frontend.Pages.Countries
 {
+    [Authorize(Roles = FrontendStrings.AdminString)]
     public partial class CountryCreate
     {
         private Country country = new();

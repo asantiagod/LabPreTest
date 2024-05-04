@@ -44,12 +44,12 @@ namespace LabPreTest.Backend.Data
         }
 
         private async Task<User> CheckUserAsync(string document,
-                                          string firstName,
-                                          string lastName,
-                                          string email,
-                                          string phone,
-                                          string address,
-                                          UserType userType)
+                                                string firstName,
+                                                string lastName,
+                                                string email,
+                                                string phone,
+                                                string address,
+                                                UserType userType)
         {
             var user = await _usersUnitOfWork.GetUserAsync(email);
             if (user == null)

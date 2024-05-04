@@ -4,9 +4,14 @@ using Microsoft.AspNetCore.Components;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Frontend.Shared;
 using LabPreTest.Shared.Entities;
+using Microsoft.AspNetCore.Authorization;
+using LabPreTest.Shared.Messages;
+using LabPreTest.Shared.ApiRoutes;
+using LabPreTest.Shared.PagesRoutes;
 
 namespace LabPreTest.Frontend.Pages.States
 {
+    [Authorize(Roles = FrontendStrings.AdminString)]
     public partial class StateEdit
     {
         private State? state;
@@ -20,7 +25,7 @@ namespace LabPreTest.Frontend.Pages.States
 
         protected override async Task OnParametersSetAsync()
         {
-            var responseHttp = await Repository.GetAsync<State>($"/api/states/{StateId}");
+            var responseHttp = await Repository.GetAsync<State>(ApiRoutes.StatesRoute + $"/{StateId}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
@@ -36,7 +41,7 @@ namespace LabPreTest.Frontend.Pages.States
 
         private async Task SaveAsync()
         {
-            var responseHttp = await Repository.PutAsync($"/api/states", state);
+            var responseHttp = await Repository.PutAsync(ApiRoutes.StatesRoute, state);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -51,13 +56,13 @@ namespace LabPreTest.Frontend.Pages.States
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Cambios guardados con éxito.");
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordChangedMessage);
         }
 
         private void Return()
         {
             stateForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo($"/countries/details/{state!.CountryId}");
+            NavigationManager.NavigateTo(PagesRoutes.DetailsCountry + $"/{state!.CountryId}");
         }
     }
 }

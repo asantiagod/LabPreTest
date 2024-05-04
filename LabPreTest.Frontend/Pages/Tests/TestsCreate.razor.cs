@@ -1,10 +1,15 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Frontend.Shared;
+using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.Entities;
+using LabPreTest.Shared.Messages;
+using LabPreTest.Shared.PagesRoutes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 namespace LabPreTest.Frontend.Pages.Tests
 {
+    [Authorize(Roles = FrontendStrings.AdminString)]
     public partial class TestsCreate
     {
         private Test test = new();
@@ -16,7 +21,7 @@ namespace LabPreTest.Frontend.Pages.Tests
 
         private async Task CreateAsync()
         {
-            var responseHttp = await Repository.PostAsync("/api/Test", test);
+            var responseHttp = await Repository.PostAsync(ApiRoutes.TestRoute, test);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -32,13 +37,13 @@ namespace LabPreTest.Frontend.Pages.Tests
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro creado con éxito.");
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordCreatedMessage);
         }
 
         private void Return()
         {
             testForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo("/tests");
+            NavigationManager.NavigateTo(PagesRoutes.Tests);
         }
     }
 }
