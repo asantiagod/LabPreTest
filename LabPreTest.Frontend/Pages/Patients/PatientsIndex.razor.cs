@@ -5,10 +5,12 @@ using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Messages;
 using LabPreTest.Shared.PagesRoutes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 
 namespace LabPreTest.Frontend.Pages.Patients
 {
+    [Authorize(Roles = FrontendStrings.AdminString)]
     public partial class PatientsIndex
     {
         private int currentPage = 1;
@@ -116,7 +118,7 @@ namespace LabPreTest.Frontend.Pages.Patients
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmation",
-                Text = $"Are you sure you want to delete the country: {patient.Name}?",
+                Text = $"Are you sure you want to delete the patient: {patient.Name}?",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
             });

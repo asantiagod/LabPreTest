@@ -3,9 +3,12 @@ using Microsoft.AspNetCore.Components;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Frontend.Shared;
 using LabPreTest.Shared.Entities;
+using Microsoft.AspNetCore.Authorization;
+using LabPreTest.Shared.Messages;
 
 namespace LabPreTest.Frontend.Pages.Cities
 {
+    [Authorize(Roles = FrontendStrings.AdminString)]
     public partial class CityCreate
     {
         private City city = new();

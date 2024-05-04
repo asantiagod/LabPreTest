@@ -9,41 +9,51 @@
 
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
     <nav class="flex-column">
+
+        <!-- TODO: erase -->
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/countries">
-                <span class="bi bi-map-fill-nav-menu" aria-hidden="true"></span> Países
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Inicio
             </NavLink>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/medicians">
-                <span class="bi bi-file-earmark-medical-fill-nav-menu" aria-hidden="true"></span> Médicos
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/patients">
-                <span class="bi bi-bandaid-fill-nav-menu" aria-hidden="true"></span> Pacientes
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/tests">
-                <span class="bi bi-activity-nav-menu" aria-hidden="true"></span> Exámenes
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/test_tubes">
-                <span class="bi bi-activity-nav-menu" aria-hidden="true"></span> Tubos de Ensayo
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/orders">
-                <span class="bi bi-clipboard-heart-nav-menu" aria-hidden="true"></span> Órdenes
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/sections">
-                <span class="bi bi-map-fill-nav-menu" aria-hidden="true"></span> Secciones
-            </NavLink>
-        </div>
+
+        <AuthorizeView Roles="Admin">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/countries">
+                    <span class="bi bi-map-fill-nav-menu" aria-hidden="true"></span> Países
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/medicians">
+                    <span class="bi bi-file-earmark-medical-fill-nav-menu" aria-hidden="true"></span> Médicos
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/patients">
+                    <span class="bi bi-bandaid-fill-nav-menu" aria-hidden="true"></span> Pacientes
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/tests">
+                    <span class="bi bi-activity-nav-menu" aria-hidden="true"></span> Exámenes
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/test_tubes">
+                    <span class="bi bi-activity-nav-menu" aria-hidden="true"></span> Tubos de Ensayo
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/orders">
+                    <span class="bi bi-clipboard-heart-nav-menu" aria-hidden="true"></span> Órdenes
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/sections">
+                    <span class="bi bi-map-fill-nav-menu" aria-hidden="true"></span> Secciones
+                </NavLink>
+            </div>
+        </AuthorizeView>
     </nav>
 </div>
 

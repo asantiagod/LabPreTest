@@ -1,11 +1,16 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Frontend.Shared;
+using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.Entities;
+using LabPreTest.Shared.Messages;
+using LabPreTest.Shared.PagesRoutes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 
 namespace LabPreTest.Frontend.Pages.Sections
 {
+    [Authorize(Roles = FrontendStrings.AdminString)]
     public partial class SectionCreate
     {
         private Section section = new();
@@ -17,7 +22,7 @@ namespace LabPreTest.Frontend.Pages.Sections
 
         private async Task CreateAsync()
         {
-            var responseHttp = await Repository.PostAsync("/api/Section", section);
+            var responseHttp = await Repository.PostAsync(ApiRoutes.SectionRoute, section);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -33,13 +38,13 @@ namespace LabPreTest.Frontend.Pages.Sections
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro creado con éxito.");
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordCreatedMessage);
         }
 
         private void Return()
         {
             sectionForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo("/sections");
+            NavigationManager.NavigateTo(PagesRoutes.Sections);
         }
     }
 }

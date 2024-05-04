@@ -3,9 +3,12 @@ using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Shared.Entities;
+using Microsoft.AspNetCore.Authorization;
+using LabPreTest.Shared.Messages;
 
 namespace LabPreTest.Frontend.Pages.Countries
 {
+    [Authorize(Roles = FrontendStrings.AdminString)]
     public partial class CountryDetails
     {
         private Country? country;

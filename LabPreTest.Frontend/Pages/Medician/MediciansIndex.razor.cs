@@ -5,10 +5,12 @@ using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Messages;
 using LabPreTest.Shared.PagesRoutes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 
 namespace LabPreTest.Frontend.Pages.Medician
 {
+    [Authorize(Roles = FrontendStrings.AdminString)]
     public partial class MediciansIndex
     {
         private int currentPage = 1;
