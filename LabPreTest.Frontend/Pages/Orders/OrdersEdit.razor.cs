@@ -10,13 +10,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System.Net;
 
-namespace LabPreTest.Frontend.Pages.Sections
+namespace LabPreTest.Frontend.Pages.Orders
 {
     [Authorize(Roles = FrontendStrings.AdminString)]
-    public partial class SectionEdit
+    public partial class OrdersEdit
     {
-        private Section? section;
-        private FormForSection<Section>? sectionForm;
+        private Order? section;
+        private FormForOrder<Order>? sectionForm;
 
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
@@ -26,12 +26,12 @@ namespace LabPreTest.Frontend.Pages.Sections
 
         protected override async Task OnParametersSetAsync()
         {
-            var responseHttp = await Repository.GetAsync<Section>(ApiRoutes.SectionRoute + $"/{Id}");
+            var responseHttp = await Repository.GetAsync<Order>(ApiRoutes.OrdersRoute + $"/{Id}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo(PagesRoutes.Sections);
+                    NavigationManager.NavigateTo(PagesRoutes.Orders);
                 }
                 else
                 {
@@ -47,7 +47,7 @@ namespace LabPreTest.Frontend.Pages.Sections
 
         private async Task EditAsync()
         {
-            var responseHttp = await Repository.PutAsync(ApiRoutes.SectionRoute, section);
+            var responseHttp = await Repository.PutAsync(ApiRoutes.OrdersRoute, section);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -69,7 +69,7 @@ namespace LabPreTest.Frontend.Pages.Sections
         private void Return()
         {
             sectionForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo(PagesRoutes.Sections);
+            NavigationManager.NavigateTo(PagesRoutes.Orders);
         }
     }
 }

@@ -1,0 +1,12 @@
+﻿@page "/orders/create"
+
+<h3>Create Order</h3>
+
+@if (orders is null)
+{
+    <Loading />
+}
+else
+{
+    <FormForOrder @ref="ordersForm" Label="Section:" Model="orders" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+}
