@@ -3,6 +3,7 @@ using LabPreTest.Frontend.Repositories;
 using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Messages;
+using LabPreTest.Shared.PagesRoutes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System.Net;
@@ -132,7 +133,7 @@ namespace LabPreTest.Frontend.Pages.Sections
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo("/sections");
+                    NavigationManager.NavigateTo(PagesRoutes.Sections);
                 }
                 else
                 {
