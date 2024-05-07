@@ -1,0 +1,12 @@
+﻿@page "/orders/edit/{Id:int}"
+
+<h3>Editar sección</h3>
+
+@if (section is null)
+{
+    <Loading />
+}
+else
+{
+    <FormForOrder @ref="sectionForm" Label="Section:" Model="section" OnValidSubmit="EditAsync" ReturnAction="Return" />
+}

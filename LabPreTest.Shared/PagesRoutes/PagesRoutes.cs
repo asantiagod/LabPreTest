@@ -11,6 +11,7 @@
         public const string TestTubes = "/test_tubes";
         public const string CreateTestTubes = "/test_tubes/create";
         
+        public const string Orders = "/orders";
         public const string Patients = "/patients";
         public const string Sections = "/sections";
     }
