@@ -1,5 +1,12 @@
-﻿<h3>SectionEdit</h3>
+﻿@page "/sections/edit/{Id:int}"
 
-@code {
+<h3>Editar sección</h3>
 
+@if (section is null)
+{
+    <Loading />
+}
+else
+{
+    <FormForSection @ref="sectionForm" Label="Section:" Model="section" OnValidSubmit="EditAsync" ReturnAction="Return" />
 }

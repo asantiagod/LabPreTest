@@ -12,7 +12,7 @@
                     TotalPages="totalPages"
                     SelectedPage="SelectedPageAsync"
                     SelectedRedordsNumber="SelectedRedordsNumberAsync" />
-        <Filter PlaceHolder="Buscar Examenes..." Callback=@FilterCallback />s
+        <Filter PlaceHolder="Buscar Examenes..." Callback=@FilterCallback />
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -22,14 +22,14 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var test in Sections!)
+                @foreach (var s in Sections!)
                 {
                     <tr>
-                        <td>@test.Name</td>
+                        <td>@s.Name</td>
 
                         <td>
-                            <a href="/tests/edit/@test.Id" class="btn btn-warning">Editar</a>
-                            <button @onclick=@(() => DeleteAsync(test)) class="btn btn-danger">Borrar</button>
+                            <a href="/sections/edit/@s.Id" class="btn btn-warning">Editar</a>
+                            <button @onclick=@(() => DeleteAsync(s)) class="btn btn-danger">Borrar</button>
                         </td>
                     </tr>
                 }
