@@ -4,11 +4,14 @@ using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Backend.UnitOfWork.Interfaces;
 using LabPreTest.Shared.DTO;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LabPreTest.Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CountriesController : GenericController<Country>
     {
         private readonly ICountriesUnitOfWork _countriesUnitOfWork;
