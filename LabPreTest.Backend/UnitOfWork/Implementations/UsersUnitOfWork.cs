@@ -1,5 +1,6 @@
 ﻿using LabPreTest.Backend.Repository.Interfaces;
 using LabPreTest.Backend.UnitOfWork.Interfaces;
+using LabPreTest.Shared.DTO;
 using LabPreTest.Shared.Entities;
 using Microsoft.AspNetCore.Identity;
 
@@ -23,5 +24,9 @@ namespace LabPreTest.Backend.UnitOfWork.Implementations
         public async Task<User> GetUserAsync(string email) => await _usersRepository.GetUserAsync(email);
 
         public async Task<bool> IsUserInRoleAsync(User user, string roleName) => await _usersRepository.IsUserInRoleAsync(user, roleName);
+
+        public async Task<SignInResult> LoginAsync(LoginDTO model) => await _usersRepository.LoginAsync(model);
+
+        public async Task LogoutAsync() => await _usersRepository.LogoutAsync();
     }
 }

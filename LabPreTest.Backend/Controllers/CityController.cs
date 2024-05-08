@@ -3,12 +3,15 @@ using LabPreTest.Backend.UnitOfWork.Interfaces;
 using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.DTO;
 using LabPreTest.Shared.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LabPreTest.Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CitiesController : GenericController<City>
     {
         private readonly ICitiesUnitOfWork _citiesUnitOfWork;
