@@ -12,10 +12,12 @@
         public const string PatientsRoute = "api/Patients";
         public const string OrdersRoute = "api/Orders";
         public const string Accounts = "/api/accounts";
+        public const string AccountsCreateUser = Accounts + "/" + CreateUser;
+        public const string AccountsLogin = Accounts + "/" + Login;
 
         public const string Full = "full";
         public const string TotalPages = "totalPages";
         public const string CreateUser = "CreateUser";
-        public const string Loggin = "Loggin";
+        public const string Login = "Login";
     }
 }
