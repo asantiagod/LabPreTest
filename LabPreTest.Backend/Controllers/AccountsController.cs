@@ -37,7 +37,7 @@ namespace LabPreTest.Backend.Controllers
             return BadRequest(result.Errors.FirstOrDefault());
         }
 
-        [HttpPost(ApiRoutes.Loggin)]
+        [HttpPost(ApiRoutes.Login)]
         public async Task<IActionResult> LoginAsync([FromBody] LoginDTO model)
         {
             var result = await _usersUnitOfWork.LoginAsync(model);
