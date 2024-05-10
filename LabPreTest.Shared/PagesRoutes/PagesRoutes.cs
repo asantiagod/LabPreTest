@@ -14,5 +14,6 @@
         public const string Orders = "/orders";
         public const string Patients = "/patients";
         public const string Sections = "/sections";
+        public const string Register = "/Register";
     }
 }

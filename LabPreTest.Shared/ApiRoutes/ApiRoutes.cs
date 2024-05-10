@@ -12,6 +12,7 @@
         public const string PatientsRoute = "api/Patients";
         public const string OrdersRoute = "api/Orders";
         public const string Accounts = "/api/accounts";
+        public const string AccountsCreateUser = Accounts + "/" + CreateUser;
 
         public const string Full = "full";
         public const string TotalPages = "totalPages";
