@@ -13,6 +13,6 @@ namespace LabPreTest.Backend.UnitOfWork.Interfaces
         Task<ActionResponse<IEnumerable<City>>> GetAsync(PagingDTO paging);
 
         Task<ActionResponse<int>> GetTotalPagesAsync(PagingDTO pagination);
-        Task<IEnumerable<City>> GetComboAsync(int countryId);
+        Task<IEnumerable<City>> GetComboAsync(int stateId);
     }
 }

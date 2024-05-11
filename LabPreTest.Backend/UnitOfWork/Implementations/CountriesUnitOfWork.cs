@@ -23,5 +23,6 @@ namespace LabPreTest.Backend.UnitOfWork.Implementations
         public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync(PagingDTO paging) => await _countriesRepository.GetAsync(paging);
 
         public override async Task<ActionResponse<int>> GetTotalPagesAsync(PagingDTO paging) => await _countriesRepository.GetTotalPagesAsync(paging);
+        public async Task<IEnumerable<Country>> GetComboAsync() => await _countriesRepository.GetComboAsync();
     }
 }
