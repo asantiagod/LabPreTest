@@ -15,8 +15,8 @@ namespace LabPreTest.Frontend.Pages.Orders
     [Authorize(Roles = FrontendStrings.AdminString)]
     public partial class OrdersEdit
     {
-        private Order? section;
-        private FormForOrder<Order>? sectionForm;
+        private Order? order;
+        private FormForOrder<Order>? orderForm;
 
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
@@ -41,13 +41,13 @@ namespace LabPreTest.Frontend.Pages.Orders
             }
             else
             {
-                section = responseHttp.Response;
+                order = responseHttp.Response;
             }
         }
 
         private async Task EditAsync()
         {
-            var responseHttp = await Repository.PutAsync(ApiRoutes.OrdersRoute, section);
+            var responseHttp = await Repository.PutAsync(ApiRoutes.OrdersRoute, order);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -68,7 +68,7 @@ namespace LabPreTest.Frontend.Pages.Orders
 
         private void Return()
         {
-            sectionForm!.FormPostedSuccessfully = true;
+            orderForm!.FormPostedSuccessfully = true;
             NavigationManager.NavigateTo(PagesRoutes.Orders);
         }
     }

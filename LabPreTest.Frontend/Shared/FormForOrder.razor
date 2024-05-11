@@ -22,11 +22,14 @@
             <ValidationMessage For="@(() => Model.medicName)" />
         </div>
         <div>
-            <label for="Examen">Ingrese el Codigo de examen a ingresar</label>
-            <InputNumber class="form-control" @bind-Value="@Model.TestIds" />
-            <ValidationMessage For="@(() => Model.TestIds)" />
+            @foreach (var test in Model.TestIds!)
+            {
+                <tr>
+                <td>Código del exámen: </td>
+                <td> @test </td>
+                </tr>
+            }
         </div>
-
     </div>
     <button class="btn btn-primary" type="submit">Guardar Cambios</button>
     <button class="btn btn-success" @onclick="ReturnAction">Regresar</button>

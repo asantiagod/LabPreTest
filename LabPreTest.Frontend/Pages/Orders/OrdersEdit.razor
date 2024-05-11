@@ -1,12 +1,13 @@
 ﻿@page "/orders/edit/{Id:int}"
 
-<h3>Editar sección</h3>
+<h3>Editar Orden</h3>
 
-@if (section is null)
+@if (order is null)
 {
     <Loading />
 }
 else
 {
-    <FormForOrder @ref="sectionForm" Label="Section:" Model="section" OnValidSubmit="EditAsync" ReturnAction="Return" />
+    <FormForOrder @ref="orderForm" Label="Orden:" Model="order" OnValidSubmit="EditAsync" ReturnAction="Return" />
 }
+<img src="~/icon-192.png" />
