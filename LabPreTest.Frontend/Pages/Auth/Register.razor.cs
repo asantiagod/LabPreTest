@@ -16,6 +16,7 @@ namespace LabPreTest.Frontend.Pages.Auth
         private List<State>? states;
         private List<City>? cities;
         private bool loading;
+        private string? imageUrl;
 
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
@@ -25,6 +26,12 @@ namespace LabPreTest.Frontend.Pages.Auth
         protected override async Task OnInitializedAsync()
         {
             await LoadCountriesAsync();
+        }
+
+        private void ImageSelected(string imageBase64)
+        {
+            userDTO.Photo = imageBase64;
+            imageUrl = null;
         }
 
         private async Task CountryChangedAsync(ChangeEventArgs e)
