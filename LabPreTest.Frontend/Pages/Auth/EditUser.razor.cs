@@ -31,6 +31,10 @@ namespace LabPreTest.Frontend.Pages.Auth
             await LoadCitiesAsync(user!.City!.State!.Id!);
 
         }
+        private void ShowModal()
+        {
+            Modal.Show<ChangePassword>();
+        }
 
         private async Task LoadUserAsync()
         {
