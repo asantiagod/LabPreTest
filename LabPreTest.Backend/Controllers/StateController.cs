@@ -39,7 +39,8 @@ namespace LabPreTest.Backend.Controllers
             return NotFound(action.Message);
         }
 
-        [HttpGet("combo/{countryId:int}")]
+        [AllowAnonymous]
+        [HttpGet(ApiRoutes.Combo + "/{countryId:int}")]
         public async Task<IActionResult> GetComboAsync(int countryId)
         {
             return Ok(await _statesUnitOfWork.GetComboAsync(countryId));
