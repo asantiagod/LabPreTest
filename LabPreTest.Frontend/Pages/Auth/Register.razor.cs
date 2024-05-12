@@ -3,6 +3,7 @@ using LabPreTest.Frontend.Repositories;
 using LabPreTest.Frontend.Services;
 using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.DTO;
+using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Enums;
 using Microsoft.AspNetCore.Components;
 
@@ -11,6 +12,10 @@ namespace LabPreTest.Frontend.Pages.Auth
     public partial class Register
     {
         private UserDTO userDTO = new();
+        private List<Country>? countries;
+        private List<State>? ctates;
+        private List<City>? cities;
+
 
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;

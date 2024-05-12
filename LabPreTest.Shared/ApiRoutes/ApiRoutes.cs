@@ -18,6 +18,7 @@
         public const string Full = "full";
         public const string TotalPages = "totalPages";
         public const string CreateUser = "CreateUser";
+        public const string ChangePassword = "ChangePassword";
         public const string Login = "Login";
     }
 }

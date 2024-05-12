@@ -8,6 +8,12 @@ namespace LabPreTest.Backend.Repository.Interfaces
     {
         Task<User> GetUserAsync(string email);
 
+        Task<User> GetUserAsync(Guid userId);
+
+        Task<IdentityResult> ChangePasswordAsync(User user, string currenPassword, string newPassword);
+
+        Task<IdentityResult> UpdateUserAsync(User user);
+
         Task<IdentityResult> AddUserAsync(User user, string password);
 
         Task CheckRoleAsync(string roleName);

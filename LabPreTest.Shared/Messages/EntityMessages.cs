@@ -14,7 +14,8 @@
         public const string StateDisplayName = "State";
         public const string SectionDisplayName = "Section";
         public const string TestTubeDisplayName = "Test Tube";
-        
+        public const string CurrentPassword = "Contraseña actual";
+        public const string NewPassword = "Nueva contraseña";
         public const string UserDisplayName = "User";
         public const string UserDocumentDisplayName = "Document";
         public const string UserFirstNameDisplayName = "First name";

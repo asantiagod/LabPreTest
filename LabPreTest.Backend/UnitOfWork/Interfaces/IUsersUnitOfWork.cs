@@ -19,5 +19,11 @@ namespace LabPreTest.Backend.UnitOfWork.Interfaces
         Task<SignInResult> LoginAsync(LoginDTO model);
 
         Task LogoutAsync();
+
+        Task<User> GetUserAsync(Guid userId);
+
+        Task<IdentityResult> ChangePasswordAsync(User user, string currenPassword, string newPassword);
+
+        Task<IdentityResult> UpdateUserAsync(User user);
     }
 }
