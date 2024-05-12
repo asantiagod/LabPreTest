@@ -14,5 +14,6 @@ namespace LabPreTest.Backend.UnitOfWork.Interfaces
 
         Task<ActionResponse<int>> GetTotalPagesAsync(PagingDTO pagination);
 
+        Task<IEnumerable<Country>> GetComboAsync();
     }
 }

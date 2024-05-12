@@ -21,10 +21,11 @@ namespace LabPreTest.Backend.Controllers
             _citiesUnitOfWork = citiesUnitOfWork;
         }
 
-        [HttpGet("combo/{countryId:int}")]
-        public async Task<IActionResult> GetComboAsync(int countryId)
+        [AllowAnonymous]
+        [HttpGet(ApiRoutes.Combo + "/{stateId:int}")]
+        public async Task<IActionResult> GetComboAsync(int stateId)
         {
-            return Ok(await _citiesUnitOfWork.GetComboAsync(countryId));
+            return Ok(await _citiesUnitOfWork.GetComboAsync(stateId));
         }
 
         [HttpGet(ApiRoutes.Full)]

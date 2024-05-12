@@ -58,5 +58,12 @@ namespace LabPreTest.Backend.Controllers
                 return Ok(action.Result);
             return BadRequest();
         }
+
+        [AllowAnonymous]
+        [HttpGet(ApiRoutes.Combo)]
+        public async Task<IActionResult> GetComboAsync()
+        {
+            return Ok( await _countriesUnitOfWork.GetComboAsync());
+        }
     }
 }

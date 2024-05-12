@@ -1,4 +1,5 @@
 using LabPreTest.Backend.Data;
+using LabPreTest.Backend.Helpers;
 using LabPreTest.Backend.Repository.Implementations;
 using LabPreTest.Backend.Repository.Interfaces;
 using LabPreTest.Backend.UnitOfWork.Implementations;
@@ -56,6 +57,7 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=LocalConnection"));
 builder.Services.AddTransient<SeedDB>();
+builder.Services.AddScoped<IFileStorage,FileStorage>();
 
 // Inject enity repositories
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
