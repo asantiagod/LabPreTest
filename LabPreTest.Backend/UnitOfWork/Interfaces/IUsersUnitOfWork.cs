@@ -6,6 +6,12 @@ namespace LabPreTest.Backend.UnitOfWork.Interfaces
 {
     public interface IUsersUnitOfWork
     {
+        Task<string> GeneratePasswordResetTokenAsync(User user);
+        Task<IdentityResult> ResetPasswordAsync(User user, string token, string password);
+        Task<IdentityResult> ConfirmEmailAsync(User user, string token);
+
+        Task<string> GenerateEmailConfirmationTokenAsync(User user);
+
         Task<User> GetUserAsync(string email);
 
         Task<IdentityResult> AddUserAsync(User user, string password);
@@ -19,5 +25,11 @@ namespace LabPreTest.Backend.UnitOfWork.Interfaces
         Task<SignInResult> LoginAsync(LoginDTO model);
 
         Task LogoutAsync();
+
+        Task<User> GetUserAsync(Guid userId);
+
+        Task<IdentityResult> ChangePasswordAsync(User user, string currenPassword, string newPassword);
+
+        Task<IdentityResult> UpdateUserAsync(User user);
     }
 }
