@@ -6,6 +6,15 @@ namespace LabPreTest.Backend.Repository.Interfaces
 {
     public interface IUsersRepository
     {
+
+        Task<string> GeneratePasswordResetTokenAsync(User user);
+
+        Task<IdentityResult> ResetPasswordAsync(User user, string token, string password);
+
+        Task<IdentityResult> ConfirmEmailAsync(User user, string token);
+
+        Task<string> GenerateEmailConfirmationTokenAsync(User user);
+
         Task<User> GetUserAsync(string email);
 
         Task<User> GetUserAsync(Guid userId);

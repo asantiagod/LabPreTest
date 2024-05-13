@@ -15,6 +15,11 @@ namespace LabPreTest.Backend.UnitOfWork.Implementations
             _usersRepository = usersRepository;
         }
 
+        public async Task<IdentityResult> ConfirmEmailAsync(User user, string token) => await _usersRepository.ConfirmEmailAsync(user, token);
+       
+
+        public async Task<string> GenerateEmailConfirmationTokenAsync(User user) =>  await _usersRepository.GenerateEmailConfirmationTokenAsync(user);
+       
         public async Task<IdentityResult> AddUserAsync(User user, string password) => await _usersRepository.AddUserAsync(user, password);
 
         public async Task AddUserToRoleAsync(User user, string roleName) => await _usersRepository.AddUserToRoleAsync(user, roleName);
@@ -36,5 +41,8 @@ namespace LabPreTest.Backend.UnitOfWork.Implementations
 
         public async Task<IdentityResult> UpdateUserAsync(User user) => await _usersRepository.UpdateUserAsync(user);
 
+        public async Task<string> GeneratePasswordResetTokenAsync(User user) => await _usersRepository.GeneratePasswordResetTokenAsync(user);
+
+        public async Task<IdentityResult> ResetPasswordAsync(User user, string token, string password) => await _usersRepository.ResetPasswordAsync(user, token, password); 
     }
 }

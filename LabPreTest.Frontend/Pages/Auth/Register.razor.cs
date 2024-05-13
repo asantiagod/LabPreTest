@@ -84,7 +84,7 @@ namespace LabPreTest.Frontend.Pages.Auth
         {
             userDTO.UserName = userDTO.Email;
             userDTO.UserType = UserType.User;
-            var responseHttp = await Repository.PostAsync<UserDTO, TokenDTO>(ApiRoutes.AccountsCreateUser, userDTO);
+            var responseHttp = await Repository.PostAsync<UserDTO>(ApiRoutes.AccountsCreateUser, userDTO);
 
             if (responseHttp.Error)
             {
@@ -94,7 +94,7 @@ namespace LabPreTest.Frontend.Pages.Auth
             }
 
 
-            await LoginService.LoginAsync(responseHttp.Response!.Token);
+            await SweetAlertService.FireAsync("Confirmación", "Su cuenta ha sido creada con éxito. Se te ha enviado un correo electrónico con las instrucciones para activar tu usuario.", SweetAlertIcon.Info);
             NavigationManager.NavigateTo("/");
         }
     }

@@ -1,4 +1,5 @@
 using LabPreTest.Backend.Data;
+using LabPreTest.Backend.Helpers;
 using LabPreTest.Backend.Repository.Implementations;
 using LabPreTest.Backend.Repository.Interfaces;
 using LabPreTest.Backend.UnitOfWork.Implementations;
@@ -57,6 +58,8 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=LocalConnection"));
 builder.Services.AddTransient<SeedDB>();
 
+builder.Services.AddScoped<IMailHelper,MailHelper>();
+
 // Inject enity repositories
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
@@ -94,12 +97,17 @@ builder.Services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
 // TODO: increase security for production code
 builder.Services.AddIdentity<User, IdentityRole>(x =>
 {
+    x.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
+    x.SignIn.RequireConfirmedEmail = true;
     x.User.RequireUniqueEmail = true;
     x.Password.RequireDigit = false;
     x.Password.RequiredUniqueChars = 0;
     x.Password.RequireLowercase = false;
     x.Password.RequireUppercase = false;
     x.Password.RequireNonAlphanumeric = false;
+    x.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    x.Lockout.MaxFailedAccessAttempts = 3;
+    x.Lockout.AllowedForNewUsers = true;
 }
 )
     .AddEntityFrameworkStores<DataContext>()
