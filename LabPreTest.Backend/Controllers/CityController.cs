@@ -11,7 +11,7 @@ namespace LabPreTest.Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
     public class CitiesController : GenericController<City>
     {
         private readonly ICitiesUnitOfWork _citiesUnitOfWork;

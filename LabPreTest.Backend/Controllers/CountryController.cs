@@ -11,7 +11,6 @@ namespace LabPreTest.Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CountriesController : GenericController<Country>
     {
         private readonly ICountriesUnitOfWork _countriesUnitOfWork;
