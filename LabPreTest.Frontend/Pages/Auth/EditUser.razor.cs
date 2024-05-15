@@ -18,6 +18,7 @@ namespace LabPreTest.Frontend.Pages.Auth
         private List<Country>? countries;
         private List<State>? states;
         private List<City>? cities;
+        private string? imageUrl;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
@@ -35,6 +36,12 @@ namespace LabPreTest.Frontend.Pages.Auth
         private void ShowModal()
         {
             Modal.Show<ChangePassword>();
+        }
+
+        private void ImageSelected(string imageBase64)
+        {
+            user.Photo = imageBase64;
+            imageUrl = null;
         }
 
         private async Task LoadUserAsync()

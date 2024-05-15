@@ -36,7 +36,6 @@ namespace LabPreTest.Backend.Controllers
             _fileStorage = fileStorage;
             _container = "users";
             _mailHelper = mailHelper;
-
         }
 
         [HttpPut]
@@ -55,6 +54,16 @@ namespace LabPreTest.Backend.Controllers
                 currentUser.LastName = user.LastName;
                 currentUser.Address = user.Address;
                 currentUser.CityId = user.CityId;
+                
+                if (!string.IsNullOrEmpty(user.Photo))
+                {
+                    var photoUser = Convert.FromBase64String(user.Photo);
+                    if (string.IsNullOrEmpty(currentUser.Photo))
+                        currentUser.Photo = await _fileStorage.SaveFileAsync(photoUser, ".jpg", _container);
+                    else
+                        currentUser.Photo = await _fileStorage.EditFileAsync(photoUser, ".jpg", _container, currentUser.Photo);
+                }
+
                 var result = await _usersUnitOfWork.UpdateUserAsync(currentUser);
                 if (result.Succeeded)
                 {
@@ -62,11 +71,12 @@ namespace LabPreTest.Backend.Controllers
                 }
                 return BadRequest(result.Errors.FirstOrDefault());
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
+
         [HttpGet("ConfirmEmail")]
         public async Task<IActionResult> ConfirmEmailAsync(string userId, string token)
         {
@@ -86,7 +96,7 @@ namespace LabPreTest.Backend.Controllers
             return NoContent();
         }
 
-        [HttpPost("ResedToken")]
+        [HttpPost("ResetToken")]
         public async Task<IActionResult> ResedTokenAsync([FromBody] EmailDTO model)
         {
             var user = await _usersUnitOfWork.GetUserAsync(model.Email);
@@ -103,12 +113,14 @@ namespace LabPreTest.Backend.Controllers
 
             return BadRequest(response.Message);
         }
+
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetAsync()
         {
-            return Ok(await _usersUnitOfWork.GetUserAsync(User.Identity!.Name!)); 
+            return Ok(await _usersUnitOfWork.GetUserAsync(User.Identity!.Name!));
         }
+
         [HttpPost("RecoverPassword")]
         public async Task<IActionResult> RecoverPasswordAsync([FromBody] EmailDTO model)
         {
@@ -180,7 +192,7 @@ namespace LabPreTest.Backend.Controllers
         {
             User user = model;
 
-            if(!string.IsNullOrEmpty(model.Photo))
+            if (!string.IsNullOrEmpty(model.Photo))
             {
                 var photoUser = Convert.FromBase64String(model.Photo);
                 model.Photo = await _fileStorage.SaveFileAsync(photoUser, ".jpg", _container);
@@ -219,7 +231,7 @@ namespace LabPreTest.Backend.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> ChangePasswordAsync(ChangePasswordDTO model)
         {
-            if(!ModelState.IsValid) 
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
@@ -228,14 +240,13 @@ namespace LabPreTest.Backend.Controllers
             {
                 return NotFound();
             }
-            var result = await _usersUnitOfWork.ChangePasswordAsync(user,model.CurrentPassword,model.NewPassword);
+            var result = await _usersUnitOfWork.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
             if (!result.Succeeded)
             {
-                return BadRequest(result.Errors.FirstOrDefault()!.Description); 
+                return BadRequest(result.Errors.FirstOrDefault()!.Description);
             }
             return NoContent();
         }
-
 
         private async Task<ActionResponse<string>> SendConfirmationEmailAsync(User user)
         {
@@ -252,7 +263,6 @@ namespace LabPreTest.Backend.Controllers
                 $"<p>Para habilitar el usuario, por favor hacer clic 'Confirmar Email':</p>" +
                 $"<b><a href ={tokenLink}>Confirmar Email</a></b>");
         }
-
 
         private TokenDTO BuildToken(User user)
         {
