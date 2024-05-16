@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace LabPreTest.Frontend.Pages.Orders
 {
-    [Authorize(Roles = FrontendStrings.AdminString)]
+    [Authorize(Roles = FrontendStrings.UserString)]
     public partial class OrdersCreate
     {
         private Order orders = new();

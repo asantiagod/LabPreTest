@@ -11,7 +11,7 @@ using System.Net;
 
 namespace LabPreTest.Frontend.Pages.Patients
 {
-    [Authorize(Roles = FrontendStrings.AdminString)]
+    [Authorize(Roles = FrontendStrings.UserString)]
     public partial class PatientEdit
     {
         private Patient? patient;

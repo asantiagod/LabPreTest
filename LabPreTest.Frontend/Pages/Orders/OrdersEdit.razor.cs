@@ -12,7 +12,7 @@ using System.Net;
 
 namespace LabPreTest.Frontend.Pages.Orders
 {
-    [Authorize(Roles = FrontendStrings.AdminString)]
+    [Authorize(Roles = FrontendStrings.UserString)]
     public partial class OrdersEdit
     {
         private Order? order;

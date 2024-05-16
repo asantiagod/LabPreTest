@@ -9,7 +9,7 @@ using System.Net;
 
 namespace LabPreTest.Frontend.Pages.Medician
 {
-    [Authorize(Roles = FrontendStrings.AdminString)]
+    [Authorize(Roles = FrontendStrings.UserString)]
     public partial class MedicEdit
     {
         private Medic? medic;
