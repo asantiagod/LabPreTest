@@ -33,7 +33,7 @@ namespace LabPreTest.Backend.Repository.Implementations
         public override async Task<ActionResponse<Order>> GetAsync(int id)
         {
             var order = await _context.Orders
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             if (order == null)
             {

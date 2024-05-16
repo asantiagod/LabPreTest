@@ -34,7 +34,7 @@ namespace LabPreTest.Backend.Repository.Implementations
         public override async Task<ActionResponse<TestTube>> GetAsync(int id)
         {
             var testTube = await _context.TestTubes
-                        .FirstOrDefaultAsync();
+                        .FirstOrDefaultAsync(c => c.Id == id);
             if (testTube == null)
             {
                 return new ActionResponse<TestTube>

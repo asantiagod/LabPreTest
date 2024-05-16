@@ -35,7 +35,7 @@ namespace LabPreTest.Backend.Repository.Implementations
             var country = await _context.Countries
                 .Include(c => c.States!)
                 .ThenInclude(s => s.Cities!)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             if (country == null)
             {

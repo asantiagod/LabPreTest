@@ -11,7 +11,6 @@ namespace LabPreTest.Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CountriesController : GenericController<Country>
     {
         private readonly ICountriesUnitOfWork _countriesUnitOfWork;
@@ -30,7 +29,7 @@ namespace LabPreTest.Backend.Controllers
             return BadRequest();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{Id}")]
         public override async Task<IActionResult> GetAsync(int id)
         {
             var response = await _countriesUnitOfWork.GetAsync(id);

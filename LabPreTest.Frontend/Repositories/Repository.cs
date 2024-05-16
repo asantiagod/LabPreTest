@@ -28,6 +28,11 @@ namespace LabPreTest.Frontend.Repositories
 
             return new HttpResponseWrapper<T>(default, true, responseHttp);
         }
+        public async Task<HttpResponseWrapper<object>> GetAsync(string url)
+        {
+            var responseHTTP = await _httpClient.GetAsync(url);
+            return new HttpResponseWrapper<object>(null, !responseHTTP.IsSuccessStatusCode, responseHTTP);
+        }
 
         public async Task<HttpResponseWrapper<object>> PostAsync<T>(string url, T model)
         {

@@ -33,7 +33,7 @@ namespace LabPreTest.Backend.Repository.Implementations
         public override async Task<ActionResponse<Medic>> GetAsync(int id)
         {
             var medician = await _context.Medicians
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             if (medician == null)
             {

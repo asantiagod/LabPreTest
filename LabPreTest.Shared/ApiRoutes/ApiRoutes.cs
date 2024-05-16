@@ -7,6 +7,7 @@
         public const string CreateUser = "CreateUser";
         public const string Login = "Login";
         public const string Combo = "Combo";
+        public const string ChangePassword = "ChangePassword";
 
         public const string CountriesRoute = "api/countries";
         public const string CountriesComboRoute = CountriesRoute + $"/{Combo}";
