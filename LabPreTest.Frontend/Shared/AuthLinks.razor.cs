@@ -2,13 +2,15 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using LabPreTest.Frontend.Pages.Auth;
+using Blazored.Modal;
 
 namespace LabPreTest.Frontend.Shared
 {
     public partial class AuthLinks
     {
+        private NavigationManager NavigationManager { get; set; } = null!;
         public string? photoUser;
-        [CascadingParameter] private IModalService modal { get; set; } = default!;
+        [CascadingParameter] private IModalService Modal { get; set; } = default!;
 
         [CascadingParameter]
         private Task<AuthenticationState> AuthenticationStateTask { get; set; } = null!;
@@ -25,7 +27,7 @@ namespace LabPreTest.Frontend.Shared
 
         void ShowModal()
         {
-            modal.Show<Login>();
+            Modal.Show<Login>();
         }
 
     }

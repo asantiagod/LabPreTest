@@ -105,6 +105,7 @@ namespace LabPreTest.Frontend.Pages.Auth
                 return;
             }
 
+            await SweetAlertService.FireAsync("Confirmación", "Se te ha enviado un correo electrónico con las instrucciones para validar la cuenta.", SweetAlertIcon.Info);
             await LoginService.LoginAsync(responseHttp.Response!.Token);
             NavigationManager.NavigateTo("/");
         }

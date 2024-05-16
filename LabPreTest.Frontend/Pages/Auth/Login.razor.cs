@@ -18,13 +18,15 @@ namespace LabPreTest.Frontend.Pages.Auth
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private ILoginService LoginService { get; set; } = null!;
-        [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+        [CascadingParameter] private BlazoredModalInstance BlazoredModal { get; set; } = default!;
+        [CascadingParameter] private IModalService modal { get; set; } = null!;
 
         private async Task CloseModalAsync()
         {
             wasClose = true;
             await BlazoredModal.CloseAsync(ModalResult.Ok());
         }
+
         private async Task LoginAsync()
         {
             var responseHttp = await Repository.PostAsync<LoginDTO, TokenDTO>(ApiRoutes.AccountsLogin, loginDTO);
@@ -42,6 +44,11 @@ namespace LabPreTest.Frontend.Pages.Auth
 
             await LoginService.LoginAsync(responseHttp.Response!.Token);
             NavigationManager.NavigateTo("/");
+        }
+
+        private void ShowModal()
+        {
+            modal.Show<RecoverPassword>();
         }
     }
 }
