@@ -46,7 +46,7 @@ namespace LabPreTest.Frontend.Pages.Auth
 
         private async Task LoadUserAsync()
         {
-            var responseHttp = await Repository.GetAsync<User>($"/api/accounts");
+            var responseHttp = await Repository.GetAsync<User>(ApiRoutes.Accounts);
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
@@ -80,7 +80,7 @@ namespace LabPreTest.Frontend.Pages.Auth
 
         private async Task LoadCountriesAsync()
         {
-            var responseHttp = await Repository.GetAsync<List<Country>>("/api/countries/combo");
+            var responseHttp = await Repository.GetAsync<List<Country>>(ApiRoutes.CountriesComboRoute);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -92,7 +92,7 @@ namespace LabPreTest.Frontend.Pages.Auth
 
         private async Task LoadStatesAsync(int countryId)
         {
-            var responseHttp = await Repository.GetAsync<List<State>>($"/api/states/combo/{countryId}");
+            var responseHttp = await Repository.GetAsync<List<State>>(ApiRoutes.StatesComboRoute + $"/{countryId}");
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -104,7 +104,7 @@ namespace LabPreTest.Frontend.Pages.Auth
 
         private async Task LoadCitiesAsync(int stateId)
         {
-            var responseHttp = await Repository.GetAsync<List<City>>($"/api/cities/combo/{stateId}");
+            var responseHttp = await Repository.GetAsync<List<City>>(ApiRoutes.CitiesComboRoute + $"/{stateId}");
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -117,7 +117,7 @@ namespace LabPreTest.Frontend.Pages.Auth
 
         private async Task SaveUserAsync()
         {
-            var responseHttp = await Repository.PutAsync<User, TokenDTO>("/api/accounts", user!);
+            var responseHttp = await Repository.PutAsync<User, TokenDTO>(ApiRoutes.Accounts, user!);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
