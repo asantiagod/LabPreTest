@@ -95,7 +95,8 @@ namespace LabPreTest.Frontend.Pages.Auth
             userDTO.UserName = userDTO.Email;
             userDTO.UserType = UserType.User;
             loading = true;
-            var responseHttp = await Repository.PostAsync<UserDTO, TokenDTO>(ApiRoutes.AccountsCreateUser, userDTO);
+            //var responseHttp = await Repository.PostAsync<UserDTO, TokenDTO>(ApiRoutes.AccountsCreateUser, userDTO);
+            var responseHttp = await Repository.PostAsync(ApiRoutes.AccountsCreateUser, userDTO);
             loading = false;
 
             if (responseHttp.Error)
@@ -106,7 +107,7 @@ namespace LabPreTest.Frontend.Pages.Auth
             }
 
             await SweetAlertService.FireAsync("Confirmación", "Se te ha enviado un correo electrónico con las instrucciones para validar la cuenta.", SweetAlertIcon.Info);
-            await LoginService.LoginAsync(responseHttp.Response!.Token);
+            //await LoginService.LoginAsync(responseHttp.Response!.Token);
             NavigationManager.NavigateTo("/");
         }
     }

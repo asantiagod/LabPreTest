@@ -138,8 +138,8 @@ namespace LabPreTest.Backend.Controllers
             }, HttpContext.Request.Scheme, _configuration["Url Frontend"]);
 
             var response = _mailHelper.SendMail(user.FullName, user.Email!,
-                $"Orders - Recuperación de contraseña",
-                $"<h1>Orders - Recuperación de contraseña</h1>" +
+                $"LabPreTest - Recuperación de contraseña",
+                $"<h1>LabPreTest - Recuperación de contraseña</h1>" +
                 $"<p>Para recuperar su contraseña, por favor hacer clic 'Recuperar Contraseña':</p>" +
                 $"<b><a href ={tokenLink}>Recuperar Contraseña</a></b>");
 
