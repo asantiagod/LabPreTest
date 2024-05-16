@@ -24,5 +24,6 @@
         public const string Accounts = "/api/accounts";
         public const string AccountsCreateUser = Accounts + $"/{CreateUser}";
         public const string AccountsLogin = Accounts + $"/{Login}";
+    
     }
 }

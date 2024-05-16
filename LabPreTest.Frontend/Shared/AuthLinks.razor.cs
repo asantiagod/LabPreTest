@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Modal.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.JSInterop.Implementation;
+using LabPreTest.Frontend.Pages.Auth;
 
 namespace LabPreTest.Frontend.Shared
 {
     public partial class AuthLinks
     {
         public string? photoUser;
+        [CascadingParameter] private IModalService modal { get; set; } = default!;
 
         [CascadingParameter]
         private Task<AuthenticationState> AuthenticationStateTask { get; set; } = null!;
@@ -20,5 +22,11 @@ namespace LabPreTest.Frontend.Shared
             if(photoClaim != null)
                 photoUser = photoClaim.Value;
         }
+
+        void ShowModal()
+        {
+            modal.Show<Login>();
+        }
+
     }
 }
