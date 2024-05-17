@@ -3,7 +3,7 @@
 <h3>Examenes</h3>
 
 <div class="mb-3">
-    <a class="btn btn-primary" href="/tests/create">Nuevo Examen</a>
+    <a class="btn btn-primary" @onclick=@(()=>ShowCreateModal())>Nuevo Examen</a>
 </div>
 
 <GenericList MyList="Tests">
@@ -33,7 +33,7 @@
                         <td>@test.Section</td>
 
                         <td>
-                            <a href="/tests/edit/@test.Id" class="btn btn-warning">Editar</a>
+                            <a class="btn btn-warning" @onclick=@(()=>ShowEditModal(test.Id))>Editar</a>
                             <button @onclick=@(() => DeleteAsync(test)) class="btn btn-danger">Borrar</button>
                         </td>
                     </tr>

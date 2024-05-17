@@ -3,7 +3,7 @@
 <h3>Pacientes</h3>
 
 <div class="mb-3">
-    <a class="btn btn-primary" href="/patients/create">Nuevo paciente</a>
+    <a class="btn btn-primary" @onclick=@(()=>ShowCreateModal())>Nuevo paciente</a>
 </div>
 
 <GenericList MyList="Patients">
@@ -37,7 +37,7 @@
                         <td>@patient.Email</td>
                         <td>@patient.BirthDay</td>
                         <td>
-                            <a href="/patients/edit/@patient.Id" class="btn btn-warning">Editar</a>
+                            <a @onclick=@(()=>ShowEditModal(patient.Id)) class="btn btn-warning">Editar</a>
                             <button @onclick=@(() => DeleteAsync(patient)) class="btn btn-danger">Borrar</button>
                         </td>
                     </tr>

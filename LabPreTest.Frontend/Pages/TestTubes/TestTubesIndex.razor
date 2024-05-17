@@ -3,7 +3,7 @@
 <h3>Tubos de Ensayo</h3>
 
 <div class="mb-3">
-    <a class="btn btn-primary" href="/test_tubes/create">Nuevo Tubo</a>
+    <a class="btn btn-primary" @onclick=@(()=>ShowCreateModal())>Nuevo Tubo</a>
 </div>
 
 <GenericList MyList="TestTubes">
@@ -30,7 +30,7 @@
                         <td>@test.Name</td>
 
                         <td>
-                            <a href="/test_tubes/edit/@test.Id" class="btn btn-warning">Editar</a>
+                            <a @onclick=@(()=>ShowEditModal(test.Id)) class="btn btn-warning">Editar</a>
                             <button @onclick=@(() => DeleteAsync(test)) class="btn btn-danger">Borrar</button>
                         </td>
                     </tr>

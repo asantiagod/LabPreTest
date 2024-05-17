@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Shared.ApiRoutes;
@@ -7,6 +8,7 @@ using LabPreTest.Shared.Messages;
 using LabPreTest.Shared.PagesRoutes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using System.Net;
 
 namespace LabPreTest.Frontend.Pages.Medician
 {
@@ -23,6 +25,7 @@ namespace LabPreTest.Frontend.Pages.Medician
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string RecordNumberQueryString { get; set; } = string.Empty;
+        [CascadingParameter] private IModalService ModalService { get; set; } = null!;
 
         public List<Medic>? Medicians { get; set; }
 
@@ -152,6 +155,18 @@ namespace LabPreTest.Frontend.Pages.Medician
                 Timer = 3000
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordDeletedMessage);
+        }
+
+        private void ShowEditModal(int medicId)
+        {
+            var parameter = new ModalParameters()
+                .Add(nameof(MedicEdit.Id), medicId);
+            ModalService.Show<MedicEdit>(parameter);
+        }
+
+        private void ShowCreateModal()
+        {
+            ModalService.Show<MedicCreate>();
         }
     }
 }

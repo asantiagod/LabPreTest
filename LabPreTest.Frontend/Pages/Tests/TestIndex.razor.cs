@@ -1,4 +1,6 @@
 ﻿using System.Net;
+using Blazored.Modal;
+using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Shared.ApiRoutes;
@@ -23,6 +25,7 @@ namespace LabPreTest.Frontend.Pages.Tests
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string RecordNumberQueryString { get; set; } = string.Empty;
+        [CascadingParameter] private IModalService ModalService { get; set; } = null!;
 
         public List<Test>? Tests { get; set; }
 
@@ -152,6 +155,18 @@ namespace LabPreTest.Frontend.Pages.Tests
                 Timer = 3000
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordDeletedMessage);
+        }
+
+        private void ShowEditModal(int testId)
+        {
+            var parameter = new ModalParameters()
+                .Add(nameof(TestEdit.Id), testId);
+            ModalService.Show<TestEdit>(parameter);
+        }
+        
+        private void ShowCreateModal()
+        {
+            ModalService.Show<TestsCreate>();
         }
     }
 }

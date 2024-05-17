@@ -1,3 +1,5 @@
+using Blazored.Modal;
+using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Shared.ApiRoutes;
@@ -23,6 +25,7 @@ namespace LabPreTest.Frontend.Pages.Countries
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string RecordNumberQueryString { get; set; } = string.Empty;
+        [CascadingParameter] private IModalService ModalService { get; set; } = null!;
 
         public List<Country>? Countries { get; set; }
 
@@ -61,7 +64,7 @@ namespace LabPreTest.Frontend.Pages.Countries
                 totalPages = 1;
                 return;
             }
-            
+
             var url = ApiRoutes.CountriesRoute + "/" + ApiRoutes.TotalPages;
             url += $"?{RecordNumberQueryString}";
             if (!string.IsNullOrWhiteSpace(Filter))
@@ -152,6 +155,18 @@ namespace LabPreTest.Frontend.Pages.Countries
                 Timer = 3000
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordDeletedMessage);
+        }
+
+        private void ShowEditModal(int countryId)
+        {
+            var parameters = new ModalParameters()
+                .Add(nameof(CountryEdit.Id), countryId);
+            ModalService.Show<CountryEdit>(parameters);
+        }
+
+        private void ShowCreateModal()
+        {
+            ModalService.Show<CountryCreate>();
         }
     }
 }
