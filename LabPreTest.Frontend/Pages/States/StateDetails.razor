@@ -8,7 +8,7 @@ else
 {
     <h3>@state.Name</h3>
     <div class="mb-2">
-        <a class="btn btn-primary" href="/cities/create/@StateId">New City</a>
+        <a class="btn btn-primary" @onclick=@(()=>ShowCreateModal(state.Id))>New City</a>
         <a class="btn btn-success" href="/countries/details/@state.CountryId">Return</a>
     </div>
 
@@ -31,7 +31,7 @@ else
                                 @city.Name
                             </td>
                             <td>
-                                <a class="btn btn-warning btn-sm" href="/cities/edit/@city.Id">Edit</a>
+                                <a class="btn btn-warning btn-sm" @onclick=@(()=>ShowEditModal(city.Id))>Edit</a>
                                 <button class="btn btn-danger btn-sm" @onclick=@(() => DeleteAsync(city))>Delete</button>
                             </td>
                         </tr>

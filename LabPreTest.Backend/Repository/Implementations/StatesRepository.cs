@@ -36,12 +36,11 @@ namespace LabPreTest.Backend.Repository.Implementations
             };
         }
 
-        public override async Task<ActionResponse<State>> GetAsync(int id)
+        public override async Task<ActionResponse<State>> GetAsync(int stateId)
         {
             var state = await _context.States
                 .Include(x => x.Cities)
-                .Where(x => x.CountryId == id)  
-                .FirstOrDefaultAsync(s => s.Id == id);
+                .FirstOrDefaultAsync(s => s.Id == stateId);
             if (state == null)
             {
                 return new ActionResponse<State>

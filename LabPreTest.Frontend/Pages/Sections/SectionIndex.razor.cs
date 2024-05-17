@@ -1,4 +1,7 @@
-﻿using CurrieTechnologies.Razor.SweetAlert2;
+﻿using Blazored.Modal.Services;
+using Blazored.Modal;
+using CurrieTechnologies.Razor.SweetAlert2;
+using LabPreTest.Frontend.Pages.Cities;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.Entities;
@@ -23,6 +26,7 @@ namespace LabPreTest.Frontend.Pages.Sections
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string RecordNumberQueryString { get; set; } = string.Empty;
+        [CascadingParameter] private IModalService ModalService { get; set; } = null!;
 
         public List<Section>? Sections { get; set; }
 
@@ -152,6 +156,18 @@ namespace LabPreTest.Frontend.Pages.Sections
                 Timer = 3000
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordDeletedMessage);
+        }
+
+        private void ShowEditModal(int sectionId)
+        {
+            var parameter = new ModalParameters()
+                .Add(nameof(SectionEdit.Id), sectionId);
+            ModalService.Show<SectionEdit>(parameter);
+        }
+
+        private void ShowCreateModal()
+        {
+            ModalService.Show<SectionCreate>();
         }
     }
 }

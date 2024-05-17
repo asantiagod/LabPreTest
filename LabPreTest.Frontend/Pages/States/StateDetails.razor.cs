@@ -1,11 +1,14 @@
-﻿using CurrieTechnologies.Razor.SweetAlert2;
-using Microsoft.AspNetCore.Components;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
+using CurrieTechnologies.Razor.SweetAlert2;
+using LabPreTest.Frontend.Pages.Cities;
 using LabPreTest.Frontend.Repositories;
-using LabPreTest.Shared.Entities;
-using System.Net;
-using Microsoft.AspNetCore.Authorization;
-using LabPreTest.Shared.Messages;
 using LabPreTest.Shared.ApiRoutes;
+using LabPreTest.Shared.Entities;
+using LabPreTest.Shared.Messages;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
+using System.Net;
 
 namespace LabPreTest.Frontend.Pages.States
 {
@@ -24,6 +27,7 @@ namespace LabPreTest.Frontend.Pages.States
         [Parameter] public int StateId { get; set; }
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
+        [CascadingParameter] private IModalService ModalService { get; set; } = null!;
 
         protected override async Task OnInitializedAsync()
         {
@@ -95,7 +99,7 @@ namespace LabPreTest.Frontend.Pages.States
         {
             Filter = string.Empty;
             await ApplyFilterAsync();
-         }
+        }
 
         private async Task ApplyFilterAsync()
         {
@@ -161,6 +165,20 @@ namespace LabPreTest.Frontend.Pages.States
                 Timer = 3000
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordDeletedMessage);
+        }
+
+        private void ShowEditModal(int cityId)
+        {
+            var parameter = new ModalParameters()
+                .Add(nameof(CityEdit.CityId), cityId);
+            ModalService.Show<CityEdit>(parameter);
+        }
+
+        private void ShowCreateModal(int stateId)
+        {
+            var parameter = new ModalParameters()
+                .Add(nameof(CityCreate.StateId), stateId);
+            ModalService.Show<CityCreate>(parameter);
         }
     }
 }

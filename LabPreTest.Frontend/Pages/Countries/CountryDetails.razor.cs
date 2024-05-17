@@ -5,6 +5,9 @@ using LabPreTest.Frontend.Repositories;
 using LabPreTest.Shared.Entities;
 using Microsoft.AspNetCore.Authorization;
 using LabPreTest.Shared.Messages;
+using Blazored.Modal.Services;
+using Blazored.Modal;
+using LabPreTest.Frontend.Pages.States;
 
 namespace LabPreTest.Frontend.Pages.Countries
 {
@@ -23,6 +26,7 @@ namespace LabPreTest.Frontend.Pages.Countries
         [Parameter] public int CountryId { get; set; }
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
+        [CascadingParameter] private IModalService ModalService { get; set; } = null!;
 
         protected override async Task OnInitializedAsync()
         {
@@ -95,12 +99,14 @@ namespace LabPreTest.Frontend.Pages.Countries
             Filter = string.Empty;
             await ApplyFilterAsync();
         }
+
         private async Task FilterCallback(string filter)
         {
             Filter = filter;
             await ApplyFilterAsync();
             StateHasChanged();
         }
+
         private async Task ApplyFilterAsync()
         {
             int page = 1;
@@ -159,13 +165,26 @@ namespace LabPreTest.Frontend.Pages.Countries
             await LoadAsync();
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
-                
                 Toast = true,
                 Position = SweetAlertPosition.BottomEnd,
                 ShowConfirmButton = true,
                 Timer = 3000
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con éxito.");
+        }
+
+        private void ShowEditModal(int stateId)
+        {
+            var parameter = new ModalParameters()
+                .Add(nameof(StateEdit.StateId), stateId);
+            ModalService.Show<StateEdit>(parameter);
+        }
+
+        private void ShowCreateModal(int countryId)
+        {
+            var parameter = new ModalParameters()
+                .Add(nameof(StateCreate.CountryId), countryId);
+            ModalService.Show<StateCreate>(parameter);
         }
     }
 }

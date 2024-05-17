@@ -3,7 +3,7 @@
 <h3>Sections</h3>
 
 <div class="mb-3">
-    <a class="btn btn-primary" href="/sections/create">Nuevo sección</a>
+    <a class="btn btn-primary" @onclick=@(()=>ShowCreateModal())>Nuevo sección</a>
 </div>
 
 <GenericList MyList="Sections">
@@ -28,7 +28,7 @@
                         <td>@s.Name</td>
 
                         <td>
-                            <a href="/sections/edit/@s.Id" class="btn btn-warning">Editar</a>
+                            <a @onclick=@(()=>ShowEditModal(s.Id)) class="btn btn-warning">Editar</a>
                             <button @onclick=@(() => DeleteAsync(s)) class="btn btn-danger">Borrar</button>
                         </td>
                     </tr>
