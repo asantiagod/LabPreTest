@@ -216,6 +216,16 @@ namespace LabPreTest.Backend.Data
                         {
                             Name = "Antioquia",
                             Cities = [
+                                new() { Name = "Abejorral" },
+                                new() { Name = "Abriaquí" },
+                                new() { Name = "Alejandría" },
+                                new() { Name = "Amagá" },
+                                new() { Name = "Amalfi" },
+                                new() { Name = "Andes" },
+                                new() { Name = "Barbosa" },
+                                new() { Name = "Betania" },
+                                new() { Name = "Betulia" },
+                                new() { Name = "Briceño" },
                                 new() { Name = "Medellín" },
                                 new() { Name = "Itagüí" },
                                 new() { Name = "Envigado" },
@@ -233,6 +243,39 @@ namespace LabPreTest.Backend.Data
                                 new() { Name = "Santa fe" },
                                 new() { Name = "Useme" },
                                 new() { Name = "Bosa" },
+                            ]
+                        },
+                        new State()
+                        {
+                            Name = "Caldas",
+                            Cities = [
+                                new(){Name = "Aguadas"},
+                                new(){Name = "Anserma"},
+                                new(){Name = "Aranzazu"},
+                                new(){Name = "Belalcázar"},
+                                new(){Name = "Chinchiná"},
+                                new(){Name = "Filadelfia"},
+                                new(){Name = "La Dorada"},
+                                new(){Name = "La Merced"},
+                                new(){Name = "Manizales"},
+                                new(){Name = "Manzanares"},
+                            ]
+                        },
+                        new State()
+                        {
+                            Name = "Caquetá",
+                            Cities = [
+                                new() { Name = "Albania"},
+                                new() { Name = "Belén de los Andaquíes"},
+                                new() { Name = "Cartagena de Chairá"},
+                                new() { Name = "Curillo"},
+                                new() { Name = "El Doncello"},
+                                new() { Name = "El Paujil"},
+                                new() { Name = "Florencia"},
+                                new() { Name = "La Montañita"},
+                                new() { Name = "Milán"},
+                                new() { Name = "Puerto Rico"},
+                                new() { Name = "San José del Fragua"},
                             ]
                         },
                     ]
@@ -320,6 +363,25 @@ namespace LabPreTest.Backend.Data
                                 new() { Name = "Ciudad Argentina 8" },
                                 new() { Name = "Ciudad Argentina 9" },
                                 new() { Name = "Ciudad Argentina 10" },
+                            ]
+                        },
+                        new State()
+                        {
+                            Name = "Chaco",
+                            Cities = [
+                                new() { Name = "Aviá Terai"},
+                                new() { Name = "Barranqueras"},
+                                new() { Name = "Basail"},
+                                new() { Name = "Colonia Benítez"},
+                                new() { Name = "Concepción del Bermejo"},
+                                new() { Name = "Corzuela"},
+                                new() { Name = "Departamento del Maipú"},
+                                new() { Name = "Departamento de Libertad"},
+                                new() { Name = "Fontana"},
+                                new() { Name = "Gancedo"},
+                                new() { Name = "Hermoso Campo"},
+                                new() { Name = "La Tigra"},
+                                new() { Name = "Lapachito"},
                             ]
                         },
                     ]

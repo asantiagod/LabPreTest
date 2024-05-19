@@ -22,6 +22,7 @@ namespace LabPreTest.Backend.Repository.Implementations
             return await _context.States
                 .Where(s => s.CountryId == countryId)   
                 .OrderBy(s => s.Name)
+                .Include(c => c.Cities!)
                 .ToListAsync();
         }
         public override async Task<ActionResponse<IEnumerable<State>>> GetAsync()

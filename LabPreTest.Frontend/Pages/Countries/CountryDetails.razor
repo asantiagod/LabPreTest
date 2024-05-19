@@ -1,6 +1,6 @@
 ﻿@page "/countries/details/{CountryId:int}"
 
-@if (country.States is null)
+@if (country == null || country.States == null)
 {
     <Loading />
 }
