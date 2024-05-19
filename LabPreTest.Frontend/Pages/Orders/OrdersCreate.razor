@@ -2,11 +2,15 @@
 
 <h3>Create Order</h3>
 
-@if (orders is null)
+@if (order is null)
 {
     <Loading />
 }
 else
 {
-    <FormForOrder @ref="ordersForm" Label="Orders:" Model="orders" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+    <FormForOrder @ref="ordersForm"
+                  Label=""
+                  Model="order"
+                  OnValidSubmit="CreateAsync"
+                  ReturnAction="Return" />
 }

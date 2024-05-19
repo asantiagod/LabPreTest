@@ -6,30 +6,63 @@
     <DataAnnotationsValidator />
     <div class="mb-3">
         <label>@Label</label>
-        <div>
-            <label for="patientId">Ingrese la identificacion del paciente:</label>
-            <InputNumber class="form-control" @bind-Value="@Model.patientId" />
-            <ValidationMessage For="@(() => Model.patientId)" />
+        
+        <div class="mb-3">
+            <label>Paciente:</label>
+            <div>
+                <select class="form-select" @onchange="PatientChanged">
+                    <option value="0">---Seleccione al paciente---</option>
+                    @if (Patients is not null)
+                    {
+                        foreach (var patient in Patients)
+                        {
+                            <option value="@patient.Id">@patient.Name</option>
+                        }
+                    }
+                </select>
+                <ValidationMessage For="@(() => Model.patientName)" />
+            </div>
         </div>
-        <div>
-            <label for="patientName">Ingrese el nombre del paciente:</label>
-            <InputText class="form-control" @bind-Value="@Model.patientName" />
-            <ValidationMessage For="@(() => Model.patientName)" />
+        
+        <div class="mb-3">
+            <label>Medico:</label>
+            <div>
+                <select class="form-select" @onchange="MedicChanged">
+                    <option value="0">---Seleccione al medico---</option>
+                    @if (Medics is not null)
+                    {
+                        foreach (var medic in Medics)
+                        {
+                            <option value="@medic.Id">@medic.Name</option>
+                        }
+                    }
+                </select>
+                <ValidationMessage For="@(() => Model.medicName)" />
+            </div>
         </div>
-        <div>
-            <label for="medicName">Ingrese el nombre del medico:</label>
-            <InputText class="form-control" @bind-Value="@Model.medicName" />
-            <ValidationMessage For="@(() => Model.medicName)" />
+        
+        <div class="mb-3">
+            <button class="btn btn-primary" @onclick=@(()=>ShowAddTestModal())>Agregar Examen</button>
         </div>
-        <div>
-            @foreach (var test in Model.TestIds!)
-            {
-                <tr>
-                <td>Código del exámen: </td>
-                <td> @test </td>
-                </tr>
-            }
+        <div class="mb-3">
+            <table class="table table-striped">
+                <thead>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                </thead>
+                <tbody>
+                    @foreach (var test in SelectedTests)
+                    {
+                        <tr>
+                            <td>@test.Id</td>
+                            <td>@test.Name</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <ValidationMessage For="@(() => Model.TestIds)" />
         </div>
+    
     </div>
     <button class="btn btn-primary" type="submit">Guardar Cambios</button>
     <button class="btn btn-success" @onclick="ReturnAction">Regresar</button>

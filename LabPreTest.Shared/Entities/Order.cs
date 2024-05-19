@@ -12,18 +12,20 @@ namespace LabPreTest.Shared.Entities
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
         public int patientId { get; set; }
 
+        [Display(Name = EntityMessages.PatientDisplayName)]
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
-        public string patientName { get; set; } 
+        public string patientName { get; set; } = null!;
 
         [Display(Name = EntityMessages.OrderMedicIdDisplayName)]
-
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
-        public string medicName { get; set; }
+        public string medicName { get; set; } = null!;
+
         [DataType(DataType.Date)]
         public DateTime createdAt { get; set; }
+
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
         public List<int> TestIds { get; set; } = null!;
 
-        public int TestNumber => TestIds == null || TestIds.Count == 0 ? 0 : TestIds.Count();
+        public int TestNumber => TestIds == null || TestIds.Count == 0 ? 0 : TestIds.Count;
     }
 }
