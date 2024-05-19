@@ -193,9 +193,9 @@ namespace LabPreTest.Backend.Data
                         Address = $"Testing Address {i}",
                         BirthDay = $"02/02/{1990 + i}", // between 1990 and 2003
                         Cellphone = rnd.Next().ToString(),
-                        Name = "NameTest",
+                        Name = $"PatientName {i}",
                         Email = $"{rnd.Next()}@yopmail.com",
-                        UserName = $"User{i}",
+                        UserName = $"PatientUserName{i}",
                         DocumentId = $"{rnd.Next()}"
                     });
                 }

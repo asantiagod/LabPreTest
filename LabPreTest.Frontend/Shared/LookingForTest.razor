@@ -1,0 +1,29 @@
+﻿@if (Tests == null)
+{
+    <Loading/>
+}
+else
+{
+    <div class="col-12">
+            <div class="card bg-light">
+                <div class="card-header justify-content-center">
+                    <span>
+                        <i/>Seleccionar exámen
+                        <a class="btn btn-sm btn-success float-end" @onclick=@(()=>CloseModalAsync())><i class="bi bi-arrow-left" /> Regresar</a>
+                        <button class="btn btn-sm btn-primary float-end mx-2" @onclick=@(()=>SaveChangesAsync())><i class="bi bi-floppy" /> Guardar Cambios</button>
+                    </span>
+                </div>
+
+            <div class="card-body">
+                <select class="form-select" @onchange="TestChanged">
+                    <option value="0">---Seleccione al paciente---</option>
+                    @foreach (var test in Tests)
+                    {
+                        <option value="@test.Id">@test.Name</option>
+                    }
+                </select>
+
+            </div>
+            </div>
+    </div>
+}
