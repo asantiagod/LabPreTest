@@ -1,5 +1,6 @@
 using CurrieTechnologies.Razor.SweetAlert2;
 using LabPreTest.Frontend.Repositories;
+using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.DTO;
 using Microsoft.AspNetCore.Components;
 
@@ -17,7 +18,7 @@ namespace LabPreTest.Frontend.Pages.Auth
         private async Task ResendConfirmationEmailTokenAsync()
         {
             loading = true;
-            var responseHttp = await Repository.PostAsync("/api/accounts/ResedToken", emailDTO);
+            var responseHttp = await Repository.PostAsync(ApiRoutes.AccountsResendToken, emailDTO);
             loading = false;
             if (responseHttp.Error)
             {
