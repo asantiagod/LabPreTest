@@ -10,7 +10,7 @@
         <div class="mb-3">
             <label>Paciente:</label>
             <div>
-                <select class="form-select" @onchange="PatientChanged">
+                <select class="form-select" @onchange="PatientChanged" value="@PatientDefaultValue">
                     <option value="0">---Seleccione al paciente---</option>
                     @if (Patients is not null)
                     {
@@ -27,7 +27,7 @@
         <div class="mb-3">
             <label>Medico:</label>
             <div>
-                <select class="form-select" @onchange="MedicChanged">
+                <select class="form-select" @onchange="MedicChanged" value="@MedicDefaultValue">
                     <option value="0">---Seleccione al medico---</option>
                     @if (Medics is not null)
                     {
