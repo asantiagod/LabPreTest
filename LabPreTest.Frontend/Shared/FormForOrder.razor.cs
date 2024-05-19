@@ -88,6 +88,7 @@ namespace LabPreTest.Frontend.Shared
             Model.patientId = id;
             Model.patientName = Patients!.First(p => p.Id == id).Name;
         }
+
         private void MedicChanged(ChangeEventArgs e)
         {
             int id = Convert.ToInt32(e.Value!);
@@ -102,13 +103,18 @@ namespace LabPreTest.Frontend.Shared
             var message = ModalService.Show<LookingForTest>();
             var result = await message.Result;
 
-            if(result.Confirmed && result.Data != null)
+            if (result.Confirmed && result.Data != null)
             {
-                Test t = (Test)result.Data;
-                SelectedTests.Add(t);                
+                Test test = (Test)result.Data;
+                SelectedTests.Add(test);
+                
+                List<int> ids = new();
+                foreach (var t in SelectedTests)
+                    ids.Add(t.Id);
+
+                Model.TestIds = ids;
                 StateHasChanged();
             }
-
         }
     }
 }
