@@ -30,7 +30,7 @@
                         <td>@order.Id</td>
                         <td>@order.patientName</td>
                         <td>@order.medicName</td>
-                        <td>@order.TestIds.First()</td>
+                        <td>@order.TestNumber</td>
                         <td>
                             <a href="/orders/edit/@order.Id" class="btn btn-warning">Editar</a>
                             <button @onclick=@(() => DeleteAsync(order)) class="btn btn-danger">Borrar</button>

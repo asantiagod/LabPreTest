@@ -13,8 +13,7 @@ namespace LabPreTest.Frontend.Pages.Orders
     [Authorize(Roles = FrontendStrings.UserString)]
     public partial class OrdersCreate
     {
-        private Order orders = new();
-
+        private Order order = new();
         private FormForOrder<Order>? ordersForm;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
@@ -22,7 +21,7 @@ namespace LabPreTest.Frontend.Pages.Orders
 
         private async Task CreateAsync()
         {
-            var responseHttp = await Repository.PostAsync(ApiRoutes.OrdersRoute, orders);
+            var responseHttp = await Repository.PostAsync(ApiRoutes.OrdersRoute, order);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
