@@ -1,5 +1,4 @@
-﻿using Blazored.Modal;
-using Blazored.Modal.Services;
+﻿using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Shared.ApiRoutes;
@@ -8,7 +7,6 @@ using LabPreTest.Shared.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Routing;
-using System.ComponentModel;
 
 namespace LabPreTest.Frontend.Shared
 {
@@ -18,6 +16,10 @@ namespace LabPreTest.Frontend.Shared
         private List<Patient>? Patients;
         private List<Medic>? Medics;
         private List<Test> SelectedTests = new();
+
+        // variables to control some UI elements
+        private int PatientDefaultValue;
+        private int MedicDefaultValue;
 
         [CascadingParameter] private IModalService ModalService { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
@@ -34,6 +36,7 @@ namespace LabPreTest.Frontend.Shared
             editContext = new(Model);
             await LoadPatientsAsync();
             await LoadMedicsAsync();
+            await LoadTestAsync();
         }
 
         private async Task<List<T>?> LoadListAsync<T>(string apiRoute)
@@ -51,11 +54,30 @@ namespace LabPreTest.Frontend.Shared
         private async Task LoadMedicsAsync()
         {
             Medics = await LoadListAsync<Medic>(ApiRoutes.MedicianFullRoute);
+            if (Medics != null && Medics.FirstOrDefault(m => m.Name == Model.medicName) != null)
+                MedicDefaultValue = Medics.FirstOrDefault(m => m.Name == Model.medicName)!.Id;
         }
 
         private async Task LoadPatientsAsync()
         {
             Patients = await LoadListAsync<Patient>(ApiRoutes.PatientsFullRoute);
+            if (Patients != null && Patients.FirstOrDefault(p => p.Id == Model.patientId) != null)
+                PatientDefaultValue = Model.patientId;
+        }
+
+        private async Task LoadTestAsync()
+        {
+            var testList = await LoadListAsync<Test>(ApiRoutes.TestFullRoute);
+
+            if (testList != null && Model.TestIds != null)
+            {
+                foreach(var testId in Model.TestIds)
+                {
+                    var test = testList.FirstOrDefault(t => t.Id == testId);
+                    if (test != null)
+                        SelectedTests.Add(test);
+                }
+            }
         }
 
         private async Task OnBeforeInternalNavigation(LocationChangingContext context)
@@ -107,7 +129,7 @@ namespace LabPreTest.Frontend.Shared
             {
                 Test test = (Test)result.Data;
                 SelectedTests.Add(test);
-                
+
                 List<int> ids = new();
                 foreach (var t in SelectedTests)
                     ids.Add(t.Id);
