@@ -21,8 +21,8 @@ namespace LabPreTest.Backend.Data
             await CheckCountriesAsync();
             await CheckMediciansAsync();
             await CheckPatientsAsync();
-            await CheckTestAsync();
             await CheckSectionAsync();
+            await CheckTestAsync();
             await CheckTestTubeAsync();
             await CheckPreanalyticConditionAsync();
             await CheckOrdersAsync();
@@ -35,6 +35,13 @@ namespace LabPreTest.Backend.Data
                                  "3140000123",
                                  "any street in any city",
                                  UserType.Admin);
+            await CheckUserAsync("111111",
+                    "First",
+                    "User",
+                    "first.user@yopmail.com",
+                    "1111111111",
+                    "first street of first city",
+                    UserType.User);
         }
 
         private async Task CheckRolesAsync()
@@ -108,7 +115,8 @@ namespace LabPreTest.Backend.Data
                     _context.PreanalyticConditions.Add(new PreanalyticCondition
                     {
                         Name = $"ConditionSeed{i}",
-                        Description = $"Some description {i}"
+                        Description = $"Some description {i}",
+                        Tests = []
                     });
                 }
             }
@@ -123,7 +131,7 @@ namespace LabPreTest.Backend.Data
                 {
                     _context.TestTubes.Add(new TestTube
                     {
-                        Name = $"TestTubeSeed{i}",
+                        Name = $"TestTube {i}",
                     });
                 }
             }
@@ -138,7 +146,8 @@ namespace LabPreTest.Backend.Data
                 {
                     _context.Section.Add(new Section
                     {
-                        Name = $"SectionSeed{i}",
+                        Name = $"Section {i}",
+                        Tests = new List<Test>()
                     });
                 }
             }
@@ -149,16 +158,19 @@ namespace LabPreTest.Backend.Data
         {
             if (!_context.Tests.Any())
             {
+                var sections = _context.Section;
                 for (int i = 0; i <= 13; i++)
                 {
-                    _context.Tests.Add(new Test
+                    var test = new Test
                     {
                         TestID = i,
                         Name = $"TestSeed{i}",
-                        Recipient = $"GenericRecipient{i}",
-                        Conditions = $"GenericCondiciotns{i}",
-                        Section = $"GenericSection{i}",
-                    });
+                        Recipient = $"GenericRecipient {i}",
+                        Conditions = [],
+                        Section = sections.ElementAt(i),
+                    };
+                    _context.Tests.Add(test);
+                    sections.ElementAt(i).Tests.Add(test);
                 }
             }
             await _context.SaveChangesAsync();

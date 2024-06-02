@@ -17,14 +17,14 @@ namespace LabPreTest.Shared.Entities
         public string Name { get; set; } = null!;
 
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
-        public string Section { get; set; } = null!;
+        public Section Section { get; set; } = null!;
+        public int SectionId;
 
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
         public string Recipient { get; set; } = null!;
 
-        [MaxLength(1000, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
-        [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
-        public string Conditions { get; set; } = null!;
+        public ICollection<TestCondition>? Conditions { get; set; }
+        public int ConditionNumber => Conditions == null || Conditions.Count == 0 ? 0 : Conditions.Count;
     }
 }

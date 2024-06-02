@@ -18,7 +18,7 @@
         </div>
         <div>
             <label for="FNacimiento">Ingrese la seccion del examen:</label>
-            <InputText class="form-control" @bind-Value="@Model.Section" />
+            <InputText class="form-control" @bind-Value="@Model.Section.Name" />
             <ValidationMessage For="@(() => Model.Section)" />
         </div>
         <div>
@@ -28,7 +28,7 @@
         </div>
         <div>
             <label for="Direccion">Ingrese las condiciones para tomar el examen</label>
-            <InputTextArea class="form-control" @bind-Value="@Model.Conditions" />
+            <InputTextArea class="form-control" @bind-Value="@Model.Conditions.ElementAt(0).Condition.Name" />
             <ValidationMessage For="@(() => Model.Conditions)" />
         </div>
 

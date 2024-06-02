@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LabPreTest.Shared.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace LabPreTest.Shared.Interfaces
         int TestID { get; set; }
         string Name { get; set; }
         string Recipient { get; set; }
-        string Conditions { get; set; }
-        string Section { get; set; }
+        ICollection<TestCondition>? Conditions { get; set; }
+        Section Section { get; set; }
     }
 }
