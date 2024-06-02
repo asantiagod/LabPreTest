@@ -41,6 +41,5 @@ namespace LabPreTest.Shared.Entities
 
         [Display(Name = EntityMessages.UserDisplayName)]
         public string FullName => $"{FirstName} {LastName}";
-
     }
 }

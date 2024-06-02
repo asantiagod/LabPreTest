@@ -80,12 +80,17 @@ namespace LabPreTest.Backend.Data
         {
             if (!_context.Orders.Any())
             {
+                var patients = _context.Patients;
+                var medicians = _context.Medicians;
+
                 for (int i = 0; i <= 13; i++)
                 {
                     _context.Orders.Add(new Order
                     {
-                        patientName = $"PatientName{i}",
-                        medicName = $"MedicName {i}",
+                        patientId = patients.ElementAt(i).Id,
+                        patientName = patients.ElementAt(i).Name,
+                        MedicId = medicians.ElementAt(i).Id,
+                        medicName = medicians.ElementAt(i).Name,
                         createdAt = DateTime.Now,
                         TestIds = [1, 2, 3, 4, 5, 7]
                     });
@@ -171,7 +176,7 @@ namespace LabPreTest.Backend.Data
                         Address = $"Testing Address {i}",
                         BirthDay = "02/02/1997",
                         Cellphone = rnd.Next().ToString(),
-                        Name = $"NameTest{i}",
+                        Name = $"MedicianName {i}",
                         Email = $"{rnd.Next()}@gmail.com",
                         UserName = $"FirstUser{i}",
                         DocumentId = $"{rnd.Next()}"

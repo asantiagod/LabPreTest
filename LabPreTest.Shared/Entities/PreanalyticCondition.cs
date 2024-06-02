@@ -1,11 +1,10 @@
-﻿
-using LabPreTest.Shared.Interfaces;
+﻿using LabPreTest.Shared.Interfaces;
 using LabPreTest.Shared.Messages;
 using System.ComponentModel.DataAnnotations;
 
 namespace LabPreTest.Shared.Entities
 {
-    public class PreanalyticCondition: IEntityWithId, IEntityWithName
+    public class PreanalyticCondition : IEntityWithId, IEntityWithName
     {
         public int Id { get; set; }
 

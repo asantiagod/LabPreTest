@@ -7,7 +7,7 @@ namespace LabPreTest.Shared.Entities
     public class Section : IEntityWithId, IEntityWithName
     {
         public int Id { get; set; }
-        
+
         [Display(Name = EntityMessages.SectionDisplayName)]
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
