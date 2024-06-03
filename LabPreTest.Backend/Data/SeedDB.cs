@@ -22,8 +22,8 @@ namespace LabPreTest.Backend.Data
             await CheckMediciansAsync();
             await CheckPatientsAsync();
             await CheckSectionAsync();
-            await CheckTestAsync();
             await CheckTestTubeAsync();
+            await CheckTestAsync();
             await CheckPreanalyticConditionAsync();
             await CheckOrdersAsync();
 
@@ -159,6 +159,7 @@ namespace LabPreTest.Backend.Data
             if (!_context.Tests.Any())
             {
                 var sections = _context.Section;
+                var tubes = _context.TestTubes;
                 for (int i = 0; i <= 13; i++)
                 {
                     var test = new Test
@@ -166,11 +167,19 @@ namespace LabPreTest.Backend.Data
                         TestID = i,
                         Name = $"TestSeed{i}",
                         Recipient = $"GenericRecipient {i}",
+                        TestTube = tubes.ElementAt(i),
                         Conditions = [],
                         Section = sections.ElementAt(i),
                     };
                     _context.Tests.Add(test);
+                    
+                    if (sections.ElementAt(i).Tests == null)
+                        sections.ElementAt(i).Tests = new List<Test>();
                     sections.ElementAt(i).Tests.Add(test);
+                    
+                    if (tubes.ElementAt(i).Tests == null)
+                        tubes.ElementAt(i).Tests = new List<Test>();
+                    tubes.ElementAt(i).Tests.Add(test);
                 }
             }
             await _context.SaveChangesAsync();
