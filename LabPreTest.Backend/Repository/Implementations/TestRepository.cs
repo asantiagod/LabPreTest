@@ -22,6 +22,8 @@ namespace LabPreTest.Backend.Repository.Implementations
         {
             var test = await _context.Tests
                 .OrderBy(x => x.Name)
+                .Include(x => x.TestTube)
+                .Include(x => x.Section)
                 .ToListAsync();
             return new ActionResponse<IEnumerable<Test>>
             {
@@ -33,7 +35,10 @@ namespace LabPreTest.Backend.Repository.Implementations
         public override async Task<ActionResponse<Test>> GetAsync(int id)
         {
             var test = await _context.Tests
+                .Include(x => x.TestTube)
+                .Include(x => x.Section)
                 .FirstOrDefaultAsync(c => c.Id == id);
+
             if (test == null)
             {
                 return new ActionResponse<Test>
@@ -53,6 +58,8 @@ namespace LabPreTest.Backend.Repository.Implementations
         public override async Task<ActionResponse<IEnumerable<Test>>> GetAsync(PagingDTO paging)
         {
             var queryable = _context.Tests
+                .Include(x => x.TestTube)
+                .Include(x => x.Section)
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(paging.Filter))

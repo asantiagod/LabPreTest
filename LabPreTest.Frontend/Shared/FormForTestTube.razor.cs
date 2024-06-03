@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components.Routing;
 
 namespace LabPreTest.Frontend.Shared
 {
-    public partial class FormForTestTube<TModel> where TModel : IEntityWithName
+    public partial class FormForTestTube<TModel> where TModel : IEntityWithDescription
     {
         private EditContext editContext = null!;
 

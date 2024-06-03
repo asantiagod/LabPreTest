@@ -116,7 +116,7 @@ namespace LabPreTest.Backend.Data
                     {
                         Name = $"ConditionSeed{i}",
                         Description = $"Some description {i}",
-                        Tests = []
+                        //Tests = []
                     });
                 }
             }
@@ -148,7 +148,7 @@ namespace LabPreTest.Backend.Data
                     _context.Section.Add(new Section
                     {
                         Name = $"Section {i}",
-                        Tests = new List<Test>()
+                        //Tests = new List<Test>()
                     });
                 }
             }
@@ -169,18 +169,10 @@ namespace LabPreTest.Backend.Data
                         Name = $"TestSeed{i}",
                         Recipient = $"GenericRecipient {i}",
                         TestTube = tubes.ElementAt(i),
-                        Conditions = [],
+                        //Conditions = [],
                         Section = sections.ElementAt(i),
                     };
                     _context.Tests.Add(test);
-                    
-                    if (sections.ElementAt(i).Tests == null)
-                        sections.ElementAt(i).Tests = new List<Test>();
-                    sections.ElementAt(i).Tests.Add(test);
-                    
-                    if (tubes.ElementAt(i).Tests == null)
-                        tubes.ElementAt(i).Tests = new List<Test>();
-                    tubes.ElementAt(i).Tests.Add(test);
                 }
             }
             await _context.SaveChangesAsync();

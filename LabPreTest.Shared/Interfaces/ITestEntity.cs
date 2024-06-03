@@ -1,9 +1,4 @@
 ﻿using LabPreTest.Shared.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LabPreTest.Shared.Interfaces
 {
@@ -14,5 +9,8 @@ namespace LabPreTest.Shared.Interfaces
         string Recipient { get; set; }
         ICollection<TestCondition>? Conditions { get; set; }
         Section Section { get; set; }
+        //int SectionId { get; set; }
+        TestTube TestTube { get; set; }
+        int TestTubeId { get; set; }
     }
 }
