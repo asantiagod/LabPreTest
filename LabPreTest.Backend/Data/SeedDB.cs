@@ -132,6 +132,7 @@ namespace LabPreTest.Backend.Data
                     _context.TestTubes.Add(new TestTube
                     {
                         Name = $"TestTube {i}",
+                        Description = $"TestTube description {i}"
                     });
                 }
             }

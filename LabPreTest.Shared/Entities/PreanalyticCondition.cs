@@ -13,7 +13,7 @@ namespace LabPreTest.Shared.Entities
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
         public string Name { get; set; } = null!;
 
-        [Display(Name = EntityMessages.PreanalyticConditionDisplayDescription)]
+        [Display(Name = EntityMessages.DescriptionDisplayName)]
         [MaxLength(300, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
         public string Description { get; set; } = null!;
