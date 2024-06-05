@@ -22,8 +22,8 @@ namespace LabPreTest.Backend.Data
             await CheckMediciansAsync();
             await CheckPatientsAsync();
             await CheckSectionAsync();
-            await CheckTestAsync();
             await CheckTestTubeAsync();
+            await CheckTestAsync();
             await CheckPreanalyticConditionAsync();
             await CheckOrdersAsync();
 
@@ -116,7 +116,7 @@ namespace LabPreTest.Backend.Data
                     {
                         Name = $"ConditionSeed{i}",
                         Description = $"Some description {i}",
-                        Tests = []
+                        //Tests = []
                     });
                 }
             }
@@ -132,6 +132,7 @@ namespace LabPreTest.Backend.Data
                     _context.TestTubes.Add(new TestTube
                     {
                         Name = $"TestTube {i}",
+                        Description = $"TestTube description {i}"
                     });
                 }
             }
@@ -147,7 +148,7 @@ namespace LabPreTest.Backend.Data
                     _context.Section.Add(new Section
                     {
                         Name = $"Section {i}",
-                        Tests = new List<Test>()
+                        //Tests = new List<Test>()
                     });
                 }
             }
@@ -159,6 +160,7 @@ namespace LabPreTest.Backend.Data
             if (!_context.Tests.Any())
             {
                 var sections = _context.Section;
+                var tubes = _context.TestTubes;
                 for (int i = 0; i <= 13; i++)
                 {
                     var test = new Test
@@ -166,11 +168,11 @@ namespace LabPreTest.Backend.Data
                         TestID = i,
                         Name = $"TestSeed{i}",
                         Recipient = $"GenericRecipient {i}",
-                        Conditions = [],
+                        TestTube = tubes.ElementAt(i),
+                        //Conditions = [],
                         Section = sections.ElementAt(i),
                     };
                     _context.Tests.Add(test);
-                    sections.ElementAt(i).Tests.Add(test);
                 }
             }
             await _context.SaveChangesAsync();
