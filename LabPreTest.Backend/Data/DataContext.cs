@@ -22,6 +22,7 @@ namespace LabPreTest.Backend.Data
         public DbSet<Patient> Patients {  get; set; }
         public DbSet<PreanalyticCondition> PreanalyticConditions {  get; set; }
         public DbSet<Test> Tests { get; set; }
+        public DbSet<TestCondition> TestConditions { get; set; }
         public DbSet<TestTube> TestTubes { get; set; }
         public DbSet<Section> Section { get; set; }
 

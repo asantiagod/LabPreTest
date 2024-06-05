@@ -4,6 +4,7 @@ using LabPreTest.Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabPreTest.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240602162706_OrdersToEntities")]
+    partial class OrdersToEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -293,6 +296,11 @@ namespace LabPreTest.Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Conditions")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -303,48 +311,19 @@ namespace LabPreTest.Backend.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("SectionId1")
-                        .HasColumnType("int");
+                    b.Property<string>("Section")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TestID")
                         .HasColumnType("int");
 
-                    b.Property<int>("TestTubeId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("SectionId1");
 
                     b.HasIndex("TestID")
                         .IsUnique();
 
-                    b.HasIndex("TestTubeId");
-
                     b.ToTable("Tests");
-                });
-
-            modelBuilder.Entity("LabPreTest.Shared.Entities.TestCondition", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ConditionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TestId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ConditionId");
-
-                    b.HasIndex("TestId");
-
-                    b.ToTable("TestConditions");
                 });
 
             modelBuilder.Entity("LabPreTest.Shared.Entities.TestTube", b =>
@@ -354,11 +333,6 @@ namespace LabPreTest.Backend.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -639,44 +613,6 @@ namespace LabPreTest.Backend.Migrations
                     b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("LabPreTest.Shared.Entities.Test", b =>
-                {
-                    b.HasOne("LabPreTest.Shared.Entities.Section", "Section")
-                        .WithMany("Tests")
-                        .HasForeignKey("SectionId1")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("LabPreTest.Shared.Entities.TestTube", "TestTube")
-                        .WithMany("Tests")
-                        .HasForeignKey("TestTubeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Section");
-
-                    b.Navigation("TestTube");
-                });
-
-            modelBuilder.Entity("LabPreTest.Shared.Entities.TestCondition", b =>
-                {
-                    b.HasOne("LabPreTest.Shared.Entities.PreanalyticCondition", "Condition")
-                        .WithMany("Tests")
-                        .HasForeignKey("ConditionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("LabPreTest.Shared.Entities.Test", "Test")
-                        .WithMany("Conditions")
-                        .HasForeignKey("TestId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Condition");
-
-                    b.Navigation("Test");
-                });
-
             modelBuilder.Entity("LabPreTest.Shared.Entities.User", b =>
                 {
                     b.HasOne("LabPreTest.Shared.Entities.City", "City")
@@ -759,29 +695,9 @@ namespace LabPreTest.Backend.Migrations
                     b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("LabPreTest.Shared.Entities.PreanalyticCondition", b =>
-                {
-                    b.Navigation("Tests");
-                });
-
-            modelBuilder.Entity("LabPreTest.Shared.Entities.Section", b =>
-                {
-                    b.Navigation("Tests");
-                });
-
             modelBuilder.Entity("LabPreTest.Shared.Entities.State", b =>
                 {
                     b.Navigation("Cities");
-                });
-
-            modelBuilder.Entity("LabPreTest.Shared.Entities.Test", b =>
-                {
-                    b.Navigation("Conditions");
-                });
-
-            modelBuilder.Entity("LabPreTest.Shared.Entities.TestTube", b =>
-                {
-                    b.Navigation("Tests");
                 });
 #pragma warning restore 612, 618
         }

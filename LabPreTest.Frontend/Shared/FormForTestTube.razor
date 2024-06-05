@@ -1,4 +1,4 @@
-﻿@typeparam TModel where TModel : IEntityWithName 
+﻿@typeparam TModel where TModel : IEntityWithDescription
 
 <NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
 
@@ -9,6 +9,11 @@
         <div>
             <label for="Nombre">Ingrese el nombre del tubo de ensayo:</label>
             <InputText class="form-control" @bind-Value="@Model.Name" />
+            <ValidationMessage For="@(() => Model.Name)" />
+        </div>
+        <div>
+            <label for="Nombre">Descripción:</label>
+            <InputText class="form-control" @bind-Value="@Model.Description" />
             <ValidationMessage For="@(() => Model.Name)" />
         </div>
     </div>

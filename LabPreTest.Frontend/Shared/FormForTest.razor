@@ -6,29 +6,65 @@
     <DataAnnotationsValidator />
     <div class="mb-3">
         <label>@Label</label>
-        <div>
+        <div class="mb-3">
             <label for="Documento">Ingrese el Codigo de examen:</label>
             <InputNumber class="form-control" @bind-Value="@Model.TestID" />
             <ValidationMessage For="@(() => Model.TestID)" />
         </div>
-        <div>
+        
+        <div class="mb-3">
             <label for="Nombre">Ingrese el nombre del examen:</label>
             <InputText class="form-control" @bind-Value="@Model.Name" />
             <ValidationMessage For="@(() => Model.Name)" />
         </div>
-        <div>
-            <label for="FNacimiento">Ingrese la seccion del examen:</label>
-            <InputText class="form-control" @bind-Value="@Model.Section" />
-            <ValidationMessage For="@(() => Model.Section)" />
+        
+        <div class="mb-3">
+            <label>Sección:</label>
+            <select class="form-select" @onchange="SectionChanged" value="@SectionDefaultValue">
+                <option value="0">--Seleccione la Sección--</option>
+                @if (Sections is not null)
+                {
+                    @foreach (var s in Sections)
+                    {
+                        <option value="@s.Id">@s.Name</option>
+                    }
+                }
+            </select>
         </div>
-        <div>
-            <label for="Celular">Ingrese el Tipo de recipiente</label>
-            <InputText class="form-control" @bind-Value="@Model.Recipient" />
-            <ValidationMessage For="@(() => Model.Recipient)" />
+        
+        <div class="mb-3">
+            <label>Tipo de Recipiente:</label>
+            <select class="form-select" @onchange="TestTubeChanged" value="@TestTubeDefaultValue">
+                <option value="0">--Seleccione tipo de recipiente--</option>
+                @if (TestTubes is not null)
+                {
+                    @foreach (var t in TestTubes)
+                    {
+                        <option value="@t.Id">@t.Name</option>
+                    }
+                }
+            </select>
         </div>
-        <div>
-            <label for="Direccion">Ingrese las condiciones para tomar el examen</label>
-            <InputTextArea class="form-control" @bind-Value="@Model.Conditions" />
+        
+        <!--TODO: Add Condition-->
+        
+        <div class="mb-3">
+            <table class="table table-striped">
+                <thead>
+                    <th>ID</th>
+                </thead>
+                <tbody>
+                    @if (Model.Conditions != null)
+                    {
+                        @foreach (var condition in Model.Conditions)
+                        {
+                            <tr>
+                                <td>@condition.Id</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
             <ValidationMessage For="@(() => Model.Conditions)" />
         </div>
 

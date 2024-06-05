@@ -13,13 +13,14 @@
                     SelectedPage="SelectedPageAsync"
                     SelectedRedordsNumber="SelectedRedordsNumberAsync" />
 
-        <Filter PlaceHolder="Buscar Examenes..." Callback=@FilterCallback />
+        <Filter PlaceHolder="Buscar Tubo de ensayo..." Callback=@FilterCallback />
 
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Id del tubo de ensayo</th>
-                    <th>Nombre del tubo de ensayo</th>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
                     <th style="width:180px"></th>
                 </tr>
             </thead>
@@ -27,7 +28,9 @@
                 @foreach (var test in TestTubes!)
                 {
                     <tr>
+                        <td>@test.Id</td>
                         <td>@test.Name</td>
+                        <td>@test.Description</td>
 
                         <td>
                             <a @onclick=@(()=>ShowEditModal(test.Id)) class="btn btn-warning">Editar</a>

@@ -21,9 +21,9 @@ namespace LabPreTest.Backend.Data
             await CheckCountriesAsync();
             await CheckMediciansAsync();
             await CheckPatientsAsync();
-            await CheckTestAsync();
             await CheckSectionAsync();
             await CheckTestTubeAsync();
+            await CheckTestAsync();
             await CheckPreanalyticConditionAsync();
             await CheckOrdersAsync();
 
@@ -35,6 +35,13 @@ namespace LabPreTest.Backend.Data
                                  "3140000123",
                                  "any street in any city",
                                  UserType.Admin);
+            await CheckUserAsync("111111",
+                    "First",
+                    "User",
+                    "first.user@yopmail.com",
+                    "1111111111",
+                    "first street of first city",
+                    UserType.User);
         }
 
         private async Task CheckRolesAsync()
@@ -80,12 +87,17 @@ namespace LabPreTest.Backend.Data
         {
             if (!_context.Orders.Any())
             {
+                var patients = _context.Patients;
+                var medicians = _context.Medicians;
+
                 for (int i = 0; i <= 13; i++)
                 {
                     _context.Orders.Add(new Order
                     {
-                        patientName = $"PatientName{i}",
-                        medicName = $"MedicName {i}",
+                        patientId = patients.ElementAt(i).Id,
+                        patientName = patients.ElementAt(i).Name,
+                        MedicId = medicians.ElementAt(i).Id,
+                        medicName = medicians.ElementAt(i).Name,
                         createdAt = DateTime.Now,
                         TestIds = [1, 2, 3, 4, 5, 7]
                     });
@@ -103,7 +115,8 @@ namespace LabPreTest.Backend.Data
                     _context.PreanalyticConditions.Add(new PreanalyticCondition
                     {
                         Name = $"ConditionSeed{i}",
-                        Description = $"Some description {i}"
+                        Description = $"Some description {i}",
+                        //Tests = []
                     });
                 }
             }
@@ -118,7 +131,8 @@ namespace LabPreTest.Backend.Data
                 {
                     _context.TestTubes.Add(new TestTube
                     {
-                        Name = $"TestTubeSeed{i}",
+                        Name = $"TestTube {i}",
+                        Description = $"TestTube description {i}"
                     });
                 }
             }
@@ -133,7 +147,8 @@ namespace LabPreTest.Backend.Data
                 {
                     _context.Section.Add(new Section
                     {
-                        Name = $"SectionSeed{i}",
+                        Name = $"Section {i}",
+                        //Tests = new List<Test>()
                     });
                 }
             }
@@ -144,16 +159,20 @@ namespace LabPreTest.Backend.Data
         {
             if (!_context.Tests.Any())
             {
+                var sections = _context.Section;
+                var tubes = _context.TestTubes;
                 for (int i = 0; i <= 13; i++)
                 {
-                    _context.Tests.Add(new Test
+                    var test = new Test
                     {
                         TestID = i,
                         Name = $"TestSeed{i}",
-                        Recipient = $"GenericRecipient{i}",
-                        Conditions = $"GenericCondiciotns{i}",
-                        Section = $"GenericSection{i}",
-                    });
+                        Recipient = $"GenericRecipient {i}",
+                        TestTube = tubes.ElementAt(i),
+                        //Conditions = [],
+                        Section = sections.ElementAt(i),
+                    };
+                    _context.Tests.Add(test);
                 }
             }
             await _context.SaveChangesAsync();
@@ -171,7 +190,7 @@ namespace LabPreTest.Backend.Data
                         Address = $"Testing Address {i}",
                         BirthDay = "02/02/1997",
                         Cellphone = rnd.Next().ToString(),
-                        Name = $"NameTest{i}",
+                        Name = $"MedicianName {i}",
                         Email = $"{rnd.Next()}@gmail.com",
                         UserName = $"FirstUser{i}",
                         DocumentId = $"{rnd.Next()}"

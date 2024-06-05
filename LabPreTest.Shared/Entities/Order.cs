@@ -18,6 +18,10 @@ namespace LabPreTest.Shared.Entities
 
         [Display(Name = EntityMessages.OrderMedicIdDisplayName)]
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
+        public int MedicId { get; set; }
+
+        [Display(Name = EntityMessages.MedicianDisplayName)]
+        [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
         public string medicName { get; set; } = null!;
 
         [DataType(DataType.Date)]
