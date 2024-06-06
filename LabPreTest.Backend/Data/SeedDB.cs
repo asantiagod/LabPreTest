@@ -22,6 +22,7 @@ namespace LabPreTest.Backend.Data
             await CheckCountriesAsync();
             await CheckMediciansAsync();
             await CheckPatientsAsync();
+            await CheckPreanalyticConditionAsync();
             await CheckSectionAsync();
             await CheckTestTubeAsync();
             await CheckTestAsync();
@@ -169,7 +170,7 @@ namespace LabPreTest.Backend.Data
 
                 _context.TestTubes.Add(new TestTube
                 {
-                    Name = "Blanca",
+                    Name = "Blanco",
                     Description = "K2EDTA y gel para la separación de plasma."
                 });
             }
@@ -193,12 +194,12 @@ namespace LabPreTest.Backend.Data
             int i = 0;
             if (!_context.Tests.Any())
             {
-                await AddTestAsync(++i, "TestHematología 1", "Hematología", "Dorado", ["Ayuno"]);
-                await AddTestAsync(++i, "TestHematología 2", "Hematología", "Rojo", ["Nada"]);
-                await AddTestAsync(++i, "TestHematología 3", "Hematología", "Verde", ["Ayuno", "Supresión"]);
-                await AddTestAsync(++i, "TestToxicología 1", "Toxicología", "Dorado", ["Ayuno", "Especial"]);
-                await AddTestAsync(++i, "TestInmunología 1", "Inmunología", "Rojo", ["Nada"]);
-                await AddTestAsync(++i, "TestEndocrinología", "Endocrinología", "Dorado", ["Ayuno", "Supresión"]);
+                await AddTestAsync(++i, "Examen Hematología 1", "Hematología", "Dorado", ["Ayuno"]);
+                await AddTestAsync(++i, "Examen Hematología 2", "Hematología", "Rojo", ["Nada"]);
+                await AddTestAsync(++i, "Examen Hematología 3", "Hematología", "Verde", ["Ayuno", "Supresión"]);
+                await AddTestAsync(++i, "Examen Toxicología 1", "Toxicología", "Dorado", ["Ayuno", "Especial"]);
+                await AddTestAsync(++i, "Examen Inmunología 1", "Inmunología", "Rojo", ["Nada"]);
+                await AddTestAsync(++i, "Examen Endocrinología", "Endocrinología", "Dorado", ["Ayuno", "Supresión"]);
 
                 await _context.SaveChangesAsync();
             }

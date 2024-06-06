@@ -12,7 +12,7 @@
                     TotalPages="totalPages"
                     SelectedPage="SelectedPageAsync"
                     SelectedRedordsNumber="SelectedRedordsNumberAsync" />
-        <Filter PlaceHolder="Buscar Examenes..." Callback=@FilterCallback />s
+        <Filter PlaceHolder="Buscar Examenes..." Callback=@FilterCallback />
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -30,7 +30,7 @@
                         <td>@test.TestID</td>
                         <td>@test.Name</td>
                         <td>@test.Recipient</td>
-                        <td>@test.Section</td>
+                        <td>@test.Section.Name</td>
 
                         <td>
                             <a class="btn btn-warning" @onclick=@(()=>ShowEditModal(test.Id))>Editar</a>
