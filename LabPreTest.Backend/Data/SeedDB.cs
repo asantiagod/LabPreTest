@@ -1,6 +1,7 @@
 ﻿using LabPreTest.Backend.UnitOfWork.Interfaces;
 using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace LabPreTest.Backend.Data
 {
@@ -110,31 +111,67 @@ namespace LabPreTest.Backend.Data
         {
             if (!_context.PreanalyticConditions.Any())
             {
-                for (int i = 0; i <= 13; i++)
+                _context.PreanalyticConditions.Add(new PreanalyticCondition
                 {
-                    _context.PreanalyticConditions.Add(new PreanalyticCondition
-                    {
-                        Name = $"ConditionSeed{i}",
-                        Description = $"Some description {i}",
-                        //Tests = []
-                    });
-                }
+                    Name = "Ayuno",
+                    Description = "No ingerir alimentos durante 8 horas.",
+                });
+                
+                _context.PreanalyticConditions.Add(new PreanalyticCondition
+                {
+                    Name = "Nada",
+                    Description = "No existe ninguna restricción.",
+                });
+                
+                _context.PreanalyticConditions.Add(new PreanalyticCondition
+                {
+                    Name = "Supresión",
+                    Description = "Supresión de medicamentos.",
+                });
+                
+                _context.PreanalyticConditions.Add(new PreanalyticCondition
+                {
+                    Name = "Especial",
+                    Description = "Necesita supervición especial.",
+                });
+                
+                await _context.SaveChangesAsync();
             }
-            await _context.SaveChangesAsync();
         }
 
         private async Task CheckTestTubeAsync()
         {
             if (!_context.TestTubes.Any())
             {
-                for (int i = 0; i <= 13; i++)
+                _context.TestTubes.Add(new TestTube
                 {
-                    _context.TestTubes.Add(new TestTube
-                    {
-                        Name = $"TestTube {i}",
-                        Description = $"TestTube description {i}"
-                    });
-                }
+                    Name = "Dorado",
+                    Description = "Activador de coagulación y gel para la separación de suero."
+                });
+
+                _context.TestTubes.Add(new TestTube
+                {
+                    Name = "Rojo",
+                    Description = "Recubierta de silicona."
+                });
+
+                _context.TestTubes.Add(new TestTube
+                {
+                    Name = "Naranja",
+                    Description = "Activador de coagulación a base de trombina."
+                });
+
+                _context.TestTubes.Add(new TestTube
+                {
+                    Name = "Verde",
+                    Description = "Heparína de sodio."
+                });
+
+                _context.TestTubes.Add(new TestTube
+                {
+                    Name = "Blanca",
+                    Description = "K2EDTA y gel para la separación de plasma."
+                });
             }
             await _context.SaveChangesAsync();
         }
@@ -143,39 +180,62 @@ namespace LabPreTest.Backend.Data
         {
             if (!_context.Section.Any())
             {
-                for (int i = 0; i <= 13; i++)
-                {
-                    _context.Section.Add(new Section
-                    {
-                        Name = $"Section {i}",
-                        //Tests = new List<Test>()
-                    });
-                }
+                _context.Section.Add(new Section { Name = "Hematología" });
+                _context.Section.Add(new Section { Name = "Toxicología" });
+                _context.Section.Add(new Section { Name = "Inmunología" });
+                _context.Section.Add(new Section { Name = "Endocrinología" });
             }
             await _context.SaveChangesAsync();
         }
 
         private async Task CheckTestAsync()
         {
+            int i = 0;
             if (!_context.Tests.Any())
             {
-                var sections = _context.Section;
-                var tubes = _context.TestTubes;
-                for (int i = 0; i <= 13; i++)
-                {
-                    var test = new Test
-                    {
-                        TestID = i,
-                        Name = $"TestSeed{i}",
-                        Recipient = $"GenericRecipient {i}",
-                        TestTube = tubes.ElementAt(i),
-                        //Conditions = [],
-                        Section = sections.ElementAt(i),
-                    };
-                    _context.Tests.Add(test);
-                }
+                await AddTestAsync(++i, "TestHematología 1", "Hematología", "Dorado", ["Ayuno"]);
+                await AddTestAsync(++i, "TestHematología 2", "Hematología", "Rojo", ["Nada"]);
+                await AddTestAsync(++i, "TestHematología 3", "Hematología", "Verde", ["Ayuno", "Supresión"]);
+                await AddTestAsync(++i, "TestToxicología 1", "Toxicología", "Dorado", ["Ayuno", "Especial"]);
+                await AddTestAsync(++i, "TestInmunología 1", "Inmunología", "Rojo", ["Nada"]);
+                await AddTestAsync(++i, "TestEndocrinología", "Endocrinología", "Dorado", ["Ayuno", "Supresión"]);
+
+                await _context.SaveChangesAsync();
             }
-            await _context.SaveChangesAsync();
+        }
+
+        private async Task AddTestAsync(int testId,
+                                        string name,
+                                        string sectionName,
+                                        string testTube,
+                                        List<string> preanalyticalConditions)
+        {
+            Test test = new()
+            {
+                TestID = testId,
+                Name = name,
+                Recipient = testTube,
+                Conditions = new List<TestCondition>()
+            };
+
+            var section = await _context.Section.FirstOrDefaultAsync(s => s.Name == sectionName);
+            if (section != null)
+                test.Section = section;
+
+            var tube = await _context.TestTubes.FirstOrDefaultAsync(t => t.Name == testTube);
+            if (tube != null)
+                test.TestTube = tube;
+
+            foreach (var condition in preanalyticalConditions)
+            {
+                var pCondition = await _context
+                                       .PreanalyticConditions
+                                       .FirstOrDefaultAsync(c => c.Name == condition);
+                if (condition != null)
+                    test.Conditions.Add(new TestCondition { Condition = pCondition });
+            }
+
+            _context.Tests.Add(test);
         }
 
         private async Task CheckMediciansAsync()
