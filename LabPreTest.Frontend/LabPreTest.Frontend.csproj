@@ -21,4 +21,8 @@
     <ProjectReference Include="..\LabPreTest.Shared\LabPreTest.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Images\" />
+  </ItemGroup>
+
 </Project>
