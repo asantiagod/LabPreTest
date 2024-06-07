@@ -56,6 +56,12 @@ namespace LabPreTest.Backend.Migrations
                 table: "Orders",
                 newName: "Status");
 
+            migrationBuilder.AddColumn<string>(
+                name: "UserId",
+                table: "Orders",
+                type: "nvarchar(450)",
+                nullable: true);
+
             migrationBuilder.CreateTable(
                 name: "OrderDetails",
                 columns: table => new
@@ -97,6 +103,11 @@ namespace LabPreTest.Backend.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Orders_UserId",
+                table: "Orders",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderDetails_MedicId",
                 table: "OrderDetails",
                 column: "MedicId");
@@ -115,13 +126,33 @@ namespace LabPreTest.Backend.Migrations
                 name: "IX_OrderDetails_TestId",
                 table: "OrderDetails",
                 column: "TestId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Orders_AspNetUsers_UserId",
+                table: "Orders",
+                column: "UserId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Orders_AspNetUsers_UserId",
+                table: "Orders");
+
             migrationBuilder.DropTable(
                 name: "OrderDetails");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Orders_UserId",
+                table: "Orders");
+
+            migrationBuilder.DropColumn(
+                name: "UserId",
+                table: "Orders");
 
             migrationBuilder.RenameColumn(
                 name: "CreatedAt",

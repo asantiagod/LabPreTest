@@ -14,6 +14,9 @@ namespace LabPreTest.Shared.Entities
 
         public OrderStatus Status { get; set; }
 
+        public User? User { get; set; }
+        public string? UserId { get; set; }
+
         public ICollection<OrderDetail>? Details { get; set; }
     }
 }
