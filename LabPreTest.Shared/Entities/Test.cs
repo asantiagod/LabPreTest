@@ -19,7 +19,7 @@ namespace LabPreTest.Shared.Entities
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
         public Section Section { get; set; } = null!;
 
-        public int SectionId;
+        public int SectionId { get; set; }
 
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
@@ -32,5 +32,7 @@ namespace LabPreTest.Shared.Entities
 
         public ICollection<TestCondition>? Conditions { get; set; }
         public int ConditionNumber => Conditions == null || Conditions.Count == 0 ? 0 : Conditions.Count;
+        
+        public ICollection<TemporalOrder>? TemporalOrders { get; set; }
     }
 }

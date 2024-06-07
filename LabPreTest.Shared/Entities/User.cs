@@ -41,5 +41,7 @@ namespace LabPreTest.Shared.Entities
 
         [Display(Name = EntityMessages.UserDisplayName)]
         public string FullName => $"{FirstName} {LastName}";
+
+        public ICollection<TemporalOrder>? TemporalOrders { get; set; }
     }
 }

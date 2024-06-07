@@ -38,5 +38,7 @@ namespace LabPreTest.Shared.Entities
         
         [Display(Name = EntityMessages.StatesCitiesDisplayMessage)]
         public int OrdersNumber => Orders == null || Orders.Count == 0 ? 0 : Orders.Count;
+        
+        public ICollection<TemporalOrder>? TemporalOrders { get; set; }
     }
 }
