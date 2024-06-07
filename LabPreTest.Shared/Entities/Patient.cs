@@ -1,11 +1,6 @@
-﻿using LabPreTest.Shared.Messages;
-using LabPreTest.Shared.Interfaces;
-using System;
-using System.Collections.Generic;
+﻿using LabPreTest.Shared.Interfaces;
+using LabPreTest.Shared.Messages;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LabPreTest.Shared.Entities
 {
@@ -39,11 +34,8 @@ namespace LabPreTest.Shared.Entities
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         public string? UserName { get; set; }
 
-        public ICollection<Order>? Orders { get; set; }
-
-        [Display(Name = EntityMessages.StatesCitiesDisplayMessage)]
-        public int OrdersNumber => Orders == null || Orders.Count == 0 ? 0 : Orders.Count;
-        
         public ICollection<TemporalOrder>? TemporalOrders { get; set; }
+
+        public ICollection<OrderDetail>? Details { get; set; }
     }
 }

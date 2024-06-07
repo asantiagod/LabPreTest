@@ -1,4 +1,5 @@
-﻿using LabPreTest.Shared.Interfaces;
+﻿using LabPreTest.Shared.Enums;
+using LabPreTest.Shared.Interfaces;
 using LabPreTest.Shared.Messages;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,28 +9,11 @@ namespace LabPreTest.Shared.Entities
     {
         public int Id { get; set; }
 
-        [Display(Name = EntityMessages.OrderPatientIdDisplayName)]
-        [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
-        public int patientId { get; set; }
-
-        [Display(Name = EntityMessages.PatientDisplayName)]
-        [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
-        public string patientName { get; set; } = null!;
-
-        [Display(Name = EntityMessages.OrderMedicIdDisplayName)]
-        [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
-        public int MedicId { get; set; }
-
-        [Display(Name = EntityMessages.MedicianDisplayName)]
-        [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
-        public string medicName { get; set; } = null!;
-
         [DataType(DataType.Date)]
-        public DateTime createdAt { get; set; }
+        public DateTime CreatedAt { get; set; }
 
-        [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
-        public List<int> TestIds { get; set; } = null!;
+        public OrderStatus Status { get; set; }
 
-        public int TestNumber => TestIds == null || TestIds.Count == 0 ? 0 : TestIds.Count;
+        public ICollection<OrderDetail>? Details { get; set; }
     }
 }

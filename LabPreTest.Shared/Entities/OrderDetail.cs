@@ -1,11 +1,11 @@
 ﻿namespace LabPreTest.Shared.Entities
 {
-    public class TemporalOrder
+    public class OrderDetail
     {
         public int Id { get; set; }
 
-        public User? User { get; set; }
-        public int UserId { get; set; }
+        public Order? Order { get; set; }
+        public int OrderId { get; set; }
 
         public Test? Test { get; set; }
         public int TestId { get; set; }

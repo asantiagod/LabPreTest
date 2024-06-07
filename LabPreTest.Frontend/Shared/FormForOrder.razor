@@ -20,7 +20,6 @@
                         }
                     }
                 </select>
-                <ValidationMessage For="@(() => Model.patientName)" />
             </div>
         </div>
         
@@ -37,7 +36,6 @@
                         }
                     }
                 </select>
-                <ValidationMessage For="@(() => Model.medicName)" />
             </div>
         </div>
         
@@ -51,16 +49,9 @@
                     <th>Nombre</th>
                 </thead>
                 <tbody>
-                    @foreach (var test in SelectedTests)
-                    {
-                        <tr>
-                            <td>@test.Id</td>
-                            <td>@test.Name</td>
-                        </tr>
-                    }
                 </tbody>
             </table>
-            <ValidationMessage For="@(() => Model.TestIds)" />
+            <!--<ValidationMessage For="@(() => Model.TestIds)" />-->
         </div>
     
     </div>

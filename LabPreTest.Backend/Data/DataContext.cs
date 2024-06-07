@@ -19,6 +19,7 @@ namespace LabPreTest.Backend.Data
         public DbSet<Medic> Medicians { get; set; }
          
         public DbSet<Order> Orders {  get; set; }
+        public DbSet<OrderDetail> OrderDetails {  get; set; }
         public DbSet<Patient> Patients {  get; set; }
         public DbSet<PreanalyticCondition> PreanalyticConditions {  get; set; }
         public DbSet<TemporalOrder> TemporalOrders { get; set; }

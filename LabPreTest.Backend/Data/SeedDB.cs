@@ -96,12 +96,7 @@ namespace LabPreTest.Backend.Data
                 {
                     _context.Orders.Add(new Order
                     {
-                        patientId = patients.ElementAt(i).Id,
-                        patientName = patients.ElementAt(i).Name,
-                        MedicId = medicians.ElementAt(i).Id,
-                        medicName = medicians.ElementAt(i).Name,
-                        createdAt = DateTime.Now,
-                        TestIds = [1, 2, 3, 4, 5, 7]
+                        CreatedAt = DateTime.Now,
                     });
                 }
             }
@@ -215,7 +210,6 @@ namespace LabPreTest.Backend.Data
             {
                 TestID = testId,
                 Name = name,
-                Recipient = testTube,
                 Conditions = new List<TestCondition>()
             };
 

@@ -54,30 +54,27 @@ namespace LabPreTest.Frontend.Shared
         private async Task LoadMedicsAsync()
         {
             Medics = await LoadListAsync<Medic>(ApiRoutes.MedicianFullRoute);
-            if (Medics != null && Medics.FirstOrDefault(m => m.Name == Model.medicName) != null)
-                MedicDefaultValue = Medics.FirstOrDefault(m => m.Name == Model.medicName)!.Id;
         }
 
         private async Task LoadPatientsAsync()
         {
             Patients = await LoadListAsync<Patient>(ApiRoutes.PatientsFullRoute);
-            if (Patients != null && Patients.FirstOrDefault(p => p.Id == Model.patientId) != null)
-                PatientDefaultValue = Model.patientId;
         }
 
         private async Task LoadTestAsync()
         {
             var testList = await LoadListAsync<Test>(ApiRoutes.TestFullRoute);
 
-            if (testList != null && Model.TestIds != null)
-            {
-                foreach(var testId in Model.TestIds)
-                {
-                    var test = testList.FirstOrDefault(t => t.Id == testId);
-                    if (test != null)
-                        SelectedTests.Add(test);
-                }
-            }
+            // TODO
+            //if (testList != null && Model.TestIds != null)
+            //{
+            //    foreach(var testId in Model.TestIds)
+            //    {
+            //        var test = testList.FirstOrDefault(t => t.Id == testId);
+            //        if (test != null)
+            //            SelectedTests.Add(test);
+            //    }
+            //}
         }
 
         private async Task OnBeforeInternalNavigation(LocationChangingContext context)
@@ -107,8 +104,6 @@ namespace LabPreTest.Frontend.Shared
         private void PatientChanged(ChangeEventArgs e)
         {
             int id = Convert.ToInt32(e.Value!);
-            Model.patientId = id;
-            Model.patientName = Patients!.First(p => p.Id == id).Name;
         }
 
         private void MedicChanged(ChangeEventArgs e)
@@ -117,7 +112,7 @@ namespace LabPreTest.Frontend.Shared
 
             //TODO: add medicId field
             //Model.medicId = id;
-            Model.medicName = Medics!.First(p => p.Id == id).Name;
+            //Model.medicName = Medics!.First(p => p.Id == id).Name;
         }
 
         private async void ShowAddTestModal()
@@ -134,7 +129,7 @@ namespace LabPreTest.Frontend.Shared
                 foreach (var t in SelectedTests)
                     ids.Add(t.Id);
 
-                Model.TestIds = ids;
+                //Model.TestIds = ids;
                 StateHasChanged();
             }
         }

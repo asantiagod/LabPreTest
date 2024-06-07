@@ -6,7 +6,6 @@ namespace LabPreTest.Shared.Interfaces
     {
         int TestID { get; set; }
         string Name { get; set; }
-        string Recipient { get; set; }
         ICollection<TestCondition>? Conditions { get; set; }
         Section Section { get; set; }
         //int SectionId { get; set; }

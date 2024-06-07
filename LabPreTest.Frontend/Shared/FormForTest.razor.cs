@@ -78,7 +78,6 @@ namespace LabPreTest.Frontend.Shared
         {
             int id = Convert.ToInt32(e.Value!);
             Model.TestTube = TestTubes!.First(t => t.Id == id);
-            Model.Recipient = Model.TestTube.Name;
         }
 
         private async Task OnBeforeInternalNavigation(LocationChangingContext context)
