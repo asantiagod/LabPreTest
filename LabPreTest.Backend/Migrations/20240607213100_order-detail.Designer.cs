@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabPreTest.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240607034602_order-detail")]
+    [Migration("20240607213100_order-detail")]
     partial class orderdetail
     {
         /// <inheritdoc />
@@ -137,10 +137,15 @@ namespace LabPreTest.Backend.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique();
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -661,6 +666,16 @@ namespace LabPreTest.Backend.Migrations
                     b.Navigation("State");
                 });
 
+            modelBuilder.Entity("LabPreTest.Shared.Entities.Order", b =>
+                {
+                    b.HasOne("LabPreTest.Shared.Entities.User", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("LabPreTest.Shared.Entities.OrderDetail", b =>
                 {
                     b.HasOne("LabPreTest.Shared.Entities.Medic", "Medic")
@@ -901,6 +916,8 @@ namespace LabPreTest.Backend.Migrations
 
             modelBuilder.Entity("LabPreTest.Shared.Entities.User", b =>
                 {
+                    b.Navigation("Orders");
+
                     b.Navigation("TemporalOrders");
                 });
 #pragma warning restore 612, 618
