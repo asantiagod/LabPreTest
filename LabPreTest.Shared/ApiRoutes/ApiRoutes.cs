@@ -18,11 +18,14 @@
         public const string StatesRoute = "api/states";
         public const string StatesComboRoute = StatesRoute + $"/{Combo}";
         public const string SectionRoute = "api/Section";
+        public const string TemporalOrdersRoute = "api/TemporalOrders";
+        public const string TemporalOrdersMyRoute = $"{TemporalOrdersRoute}/my";
+        public const string TemporalOrdersFullRoute = $"{TemporalOrdersRoute}/{Full}";
         public const string TestRoute = "api/Test";
-        public const string TestFullRoute = TestRoute + $"/{Full}";
+        public const string TestFullRoute = $"{TestRoute}/{Full}";
         public const string TestTubeRoute = "api/TestTube";
         public const string PatientsRoute = "api/Patients";
-        public const string PatientsFullRoute = PatientsRoute + $"/{Full}";
+        public const string PatientsFullRoute = $"PatientsRoute/{Full}";
         public const string OrdersRoute = "api/Orders";
         public const string Accounts = "/api/accounts";
         public const string AccountsCreateUser = Accounts + $"/{CreateUser}";

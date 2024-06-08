@@ -65,32 +65,40 @@ builder.Services.AddScoped<IMailHelper,MailHelper>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
 
+builder.Services.AddScoped<ICitiesRepository, CitiesRepository>();
+builder.Services.AddScoped<ICitiesUnitOfWork, CitiesUnitOfWork>();
+
 builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
 builder.Services.AddScoped<ICountriesUnitOfWork, CountriesUnitOfWork>();
 
+builder.Services.AddScoped<IMedicianRepository, MedicianRepository>();
+builder.Services.AddScoped<IMedicianUnitOfWork, MediciansUnitOfWork>();
+
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderUnitOfWork, OrderUnitOfWork>();
+
+builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
+builder.Services.AddScoped<IOrdersUnitOfWork, OrdersUnitOfWork>();
+
+builder.Services.AddScoped<IOrdersHelper, OrdersHelper>();
+
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+builder.Services.AddScoped<IPatientUnitOfWork, PatientUnitOfWork>();
+
+builder.Services.AddScoped<ISectionRepository, SectionRepository>();
+builder.Services.AddScoped<ISectionUnitOfWork, SectionUnitOfWork>();
+
 builder.Services.AddScoped<IStatesRepository, StatesRepository>();
 builder.Services.AddScoped<IStatesUnitOfWork, StatesUnitOfWork>();
+
+builder.Services.AddScoped<ITemporalOrdersRepository, TemporalOrderRepository>();
+builder.Services.AddScoped<ITemporalOrdersUnitOfWork, TemporalOrdersUnitOfWork>();
 
 builder.Services.AddScoped<ITestRepository, TestRepository>();
 builder.Services.AddScoped<ITestUnitOfWork, TestUnitOfWork>();
 
 builder.Services.AddScoped<ITestTubeRepository, TestTubeRepository>();
 builder.Services.AddScoped<ITestTubeUnitOfWork, TestTubeUnitOfWork>();
-
-builder.Services.AddScoped<ICitiesRepository, CitiesRepository>();
-builder.Services.AddScoped<ICitiesUnitOfWork, CitiesUnitOfWork>();
-
-builder.Services.AddScoped<IPatientRepository, PatientRepository>();
-builder.Services.AddScoped<IPatientUnitOfWork, PatientUnitOfWork>();
-
-builder.Services.AddScoped<IMedicianRepository, MedicianRepository>();
-builder.Services.AddScoped<IMedicianUnitOfWork, MediciansUnitOfWork>();
-
-builder.Services.AddScoped<ISectionRepository, SectionRepository>();
-builder.Services.AddScoped<ISectionUnitOfWork, SectionUnitOfWork>();
-
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IOrderUnitOfWork, OrderUnitOfWork>();
 
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
