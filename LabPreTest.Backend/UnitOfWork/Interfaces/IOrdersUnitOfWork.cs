@@ -6,6 +6,8 @@ namespace LabPreTest.Backend.UnitOfWork.Interfaces
 {
     public interface IOrdersUnitOfWork
     {
+        Task<ActionResponse<Order>> AddAsync(Order order);
+
         Task<ActionResponse<IEnumerable<Order>>> GetAsync(string email, PagingDTO pagination);
 
         Task<ActionResponse<int>> GetTotalPagesAsync(string email, PagingDTO pagination);
