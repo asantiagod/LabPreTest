@@ -74,9 +74,6 @@ builder.Services.AddScoped<ICountriesUnitOfWork, CountriesUnitOfWork>();
 builder.Services.AddScoped<IMedicianRepository, MedicianRepository>();
 builder.Services.AddScoped<IMedicianUnitOfWork, MediciansUnitOfWork>();
 
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IOrderUnitOfWork, OrderUnitOfWork>();
-
 builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
 builder.Services.AddScoped<IOrdersUnitOfWork, OrdersUnitOfWork>();
 
