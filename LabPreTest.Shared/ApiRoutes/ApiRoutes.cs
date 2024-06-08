@@ -25,7 +25,7 @@
         public const string TestFullRoute = $"{TestRoute}/{Full}";
         public const string TestTubeRoute = "api/TestTube";
         public const string PatientsRoute = "api/Patients";
-        public const string PatientsFullRoute = $"PatientsRoute/{Full}";
+        public const string PatientsFullRoute = $"{PatientsRoute}/{Full}";
         public const string OrdersRoute = "api/Orders";
         public const string Accounts = "/api/accounts";
         public const string AccountsCreateUser = Accounts + $"/{CreateUser}";

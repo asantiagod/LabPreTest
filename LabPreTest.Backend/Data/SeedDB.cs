@@ -44,6 +44,13 @@ namespace LabPreTest.Backend.Data
                     "1111111111",
                     "first street of first city",
                     UserType.User);
+            await CheckUserAsync("222222",
+                    "Second",
+                    "User",
+                    "second.user@yopmail.com",
+                    "2222222222",
+                    "second street of second city",
+                    UserType.User);
         }
 
         private async Task CheckRolesAsync()
