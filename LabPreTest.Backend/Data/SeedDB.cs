@@ -27,7 +27,7 @@ namespace LabPreTest.Backend.Data
             await CheckTestTubeAsync();
             await CheckTestAsync();
             await CheckPreanalyticConditionAsync();
-            await CheckOrdersAsync();
+            //await CheckOrdersAsync();
 
             await CheckRolesAsync();
             await CheckUserAsync("123456789",
@@ -97,6 +97,7 @@ namespace LabPreTest.Backend.Data
                     _context.Orders.Add(new Order
                     {
                         CreatedAt = DateTime.Now,
+                        Status = OrderStatus.Idle
                     });
                 }
             }
