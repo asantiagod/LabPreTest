@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "apis1": {
+      "ignored": "true",
+      "type": "apis.azure"
+    },
+    "identityapp1": {
+      "ignored": "true",
+      "type": "identityapp"
+    },
+    "storage1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/LabPreTestBackend/providers/Microsoft.ServiceLinker/linkers/ConnectionStringsAzureStorage_80B2EF2DF2, /subscriptions/bc3721c1-6fc0-4b3c-a75e-22c11a196fc6/resourcegroups/LabPreTestBackendResourceGroup/providers/Microsoft.Web/sites/LabPreTestBackend/providers/Microsoft.ServiceLinker/linkers/ConnectionStringsAzureStorage_46E928EC84",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Storage/storageAccounts/labpretestbackendstorage",
+      "type": "storage.azure",
+      "connectionId": "ConnectionStrings:AzureStorage",
+      "dynamicId": null
+    },
+    "mssql1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/LabPreTestBackend/providers/Microsoft.ServiceLinker/linkers/ConnectionStrings_6BFB793F65",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/labpretestserver/databases/LabPreTest.Backend_db",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings",
+      "dynamicId": null
+    }
+  }
+}

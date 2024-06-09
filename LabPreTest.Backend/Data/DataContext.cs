@@ -9,6 +9,7 @@ namespace LabPreTest.Backend.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
+            Database.SetCommandTimeout(600);
         }
 
         // for each database entity you need create a DbSet
