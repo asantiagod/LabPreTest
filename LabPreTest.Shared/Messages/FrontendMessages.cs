@@ -8,19 +8,19 @@ namespace LabPreTest.Shared.Messages
 {
     public static class FrontendMessages
     {
-        public const string HttpNotFoundMessage = "Resource not found.";
-        public const string HttpUnauthorizedMessage = "You have to be logged in to execute this operation.";
-        public const string HttpForbiddenMessage = "You do not have permissions to perform this operation.";
-        public const string HttpUnexpectedMessage = "Unexpected error";
+        public const string HttpNotFoundMessage = "Recurso no encontrado.";
+        public const string HttpUnauthorizedMessage = "Tienes que estar logueado para ejecutar esta operación.";
+        public const string HttpForbiddenMessage = "No tienes permisos para ejecutar esta operación.";
+        public const string HttpUnexpectedMessage = "Error inesperado";
         
-        public const string RecordCreatedMessage = "The record was created successfully.";
-        public const string RecordChangedMessage = "The changes were saved successfully.";
-        public const string RecordDeletedMessage = "The record was deleted successfully.";
+        public const string RecordCreatedMessage = "El registro se creó satisfactoriamente.";
+        public const string RecordChangedMessage = "Los cambios se guardaron exitosamente.";
+        public const string RecordDeletedMessage = "El registro se eliminó correctamente.";
         
-        public const string EditButtonMessage = "Edit";
-        public const string DetailButtonMessage = "Details";
-        public const string DeleteButtonMessage = "Delete";
-        public const string NextPageButtonMessage = "Next";
-        public const string PreviousPageButtonMessage = "Previous";
+        public const string EditButtonMessage = "Editar";
+        public const string DetailButtonMessage = "Detalles";
+        public const string DeleteButtonMessage = "Eliminar";
+        public const string NextPageButtonMessage = "Siguiente";
+        public const string PreviousPageButtonMessage = "Anterior";
     }
 }

@@ -1,4 +1,34 @@
 ﻿@page "/"
 
-<img src="./first.png" width="90%" />
-
+<h3>Examenes</h3>
+<GenericList MyList="Tests">
+    <Body>
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    SelectedPage="SelectedPageAsync"
+                    SelectedRedordsNumber="SelectedRedordsNumberAsync" />
+        <Filter PlaceHolder="Buscar Examenes..." Callback=@FilterCallback />
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id del examen</th>
+                    <th>Nombre del examen</th>
+                    <th>Recipiente</th>
+                    <th>Seccion</th>
+                    <th style="width:180px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var test in Tests!)
+                {
+                    <tr>
+                        <td>@test.TestID</td>
+                        <td>@test.Name</td>
+                        <td>@test.TestTube.Name</td>
+                        <td>@test.Section.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Body>
+</GenericList>

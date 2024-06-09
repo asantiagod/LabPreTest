@@ -3,6 +3,7 @@ using LabPreTest.Backend.UnitOfWork.Interfaces;
 using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.DTO;
 using LabPreTest.Shared.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LabPreTest.Backend.Controllers
@@ -17,7 +18,7 @@ namespace LabPreTest.Backend.Controllers
         {
             _testsUnitOfWork = testUnitOfWork;
         }
-
+        [AllowAnonymous]
         [HttpGet]
         public override async Task<IActionResult> GetAsync([FromQuery] PagingDTO pagination)
         {
@@ -29,6 +30,7 @@ namespace LabPreTest.Backend.Controllers
             return BadRequest();
         }
 
+        [AllowAnonymous]
         [HttpGet("full")]
         public override async Task<IActionResult> GetAsync()
         {
@@ -39,7 +41,7 @@ namespace LabPreTest.Backend.Controllers
             }
             return BadRequest();
         }
-
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public override async Task<IActionResult> GetAsync(int id)
         {
@@ -50,7 +52,7 @@ namespace LabPreTest.Backend.Controllers
             }
             return NotFound(response.Message);
         }
-
+        [AllowAnonymous]
         [HttpGet("totalPages")]
         public override async Task<IActionResult> GetPagesAsync([FromQuery] PagingDTO pagination)
         {

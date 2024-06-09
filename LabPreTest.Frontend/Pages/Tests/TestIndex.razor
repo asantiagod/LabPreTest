@@ -20,6 +20,7 @@
                     <th>Nombre del examen</th>
                     <th>Recipiente</th>
                     <th>Seccion</th>
+                    <th>Condiciones</th>
                     <th style="width:180px"></th>
                 </tr>
             </thead>
@@ -31,6 +32,7 @@
                         <td>@test.Name</td>
                         <td>@test.TestTube.Name</td>
                         <td>@test.Section.Name</td>
+                        <td>@test.Conditions</td>
 
                         <td>
                             <a class="btn btn-warning" @onclick=@(()=>ShowEditModal(test.Id))>Editar</a>

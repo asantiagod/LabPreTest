@@ -25,6 +25,7 @@ namespace LabPreTest.Shared.Entities
         public int TestTubeId { get; set; }
 
         public ICollection<TestCondition>? Conditions { get; set; }
+        [Display(Name = EntityMessages.TestConditionsDisplayMessage)]
         public int ConditionNumber => Conditions == null || Conditions.Count == 0 ? 0 : Conditions.Count;
         
         public ICollection<TemporalOrder>? TemporalOrders { get; set; }
