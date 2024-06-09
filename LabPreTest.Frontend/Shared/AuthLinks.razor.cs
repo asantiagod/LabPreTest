@@ -21,8 +21,11 @@ namespace LabPreTest.Frontend.Shared
             var claims = authenticationState.User.Claims.ToList();
             var photoClaim = claims.FirstOrDefault(x => x.Type == "Photo");
             
-            if(photoClaim != null)
+            if(photoClaim is not null)
+            {
                 photoUser = photoClaim.Value;
+            }
+
         }
 
         void ShowModal()

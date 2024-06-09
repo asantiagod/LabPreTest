@@ -1,4 +1,5 @@
-﻿using LabPreTest.Backend.UnitOfWork.Interfaces;
+﻿using LabPreTest.Backend.Migrations;
+using LabPreTest.Backend.UnitOfWork.Interfaces;
 using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -219,6 +220,7 @@ namespace LabPreTest.Backend.Data
                 TestID = testId,
                 Name = name,
                 Conditions = new List<TestCondition>()
+
             };
 
             var section = await _context.Section.FirstOrDefaultAsync(s => s.Name == sectionName);

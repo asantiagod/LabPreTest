@@ -1,4 +1,54 @@
 ﻿@page "/"
 
-<img src="./first.png" width="90%" />
+<h3>Examenes</h3>
+
+<GenericList MyList="Tests">
+    <Body>
+
+        @if (Tests is null)
+        {
+            <Loading />
+        }
+        else
+        {
+            @if (Tests.Count > 0)
+            {
+            <Filter PlaceHolder="Buscar exámenes por nombre..." Callback=@FilterCallback />
+            <div class="row row-cols-1 row-cols-md-4 g-4 mt-1">
+                @foreach (var test in Tests!)
+                {
+                    <div class="col">
+                        <div class="card h-100">
+                            <div class="text-center zoom">
+                                <style ="height:150px; max-width:200px;" class="text-center" alt=@test.Name />
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title text-navy"> @test.Name</h5>
+                                <p class="card-text smfnt">@test.Name</p>
+                            </div>
+                            <div class="card-footer text-center">
+                                    <a @onclick=@(()=>ShowEditModal(test.Id)) class="btn btn-warning"><i class="bi bi-info-circle" /> Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            
+            <br />
+            <Pagination CurrentPage="currentPage"
+                        TotalPages="totalPages"
+                        SelectedPage="SelectedPageAsync"
+                SelectedRedordsNumber="SelectedRedordsNumberAsync" />
+
+            }
+            else
+            {
+                <div class="d-flex justify-content-center align-items-center" style="height: 30vh;">
+                    <h1>Lo siento, no hay productos con estos criterios de búsqueda</h1>
+                </div>
+            }
+        }
+    </Body>
+</GenericList>
+
 

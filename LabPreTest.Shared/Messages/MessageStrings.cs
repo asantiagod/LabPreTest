@@ -2,14 +2,14 @@
 {
     public static class MessageStrings
     {
-        public const string DbUpdateExceptionMessage = "The record you are trying to create already exists.";
-        public const string DbRecordNotFoundMessage = "Recurso no encontrado";
-        public const string DbDeleteErrorMessage = "It cannot be deleted because it has related records.";
+        public const string DbUpdateExceptionMessage = "El registro ya existe.";
+        public const string DbRecordNotFoundMessage = "Registro no encontrado.";
+        public const string DbDeleteErrorMessage = "No se puede eliminar ya que tiene registros asociados.";
         
-        public const string DbCountryNotFoundMessage = "The Country doesn't exist.";
-        public const string DbStateNotFoundMessage = "The State doesn't exist.";
-        public const string DbCityNotFoundMessage = "The City doesn't exist.";
-        public const string DbTestNotFoundMessage = "The test doesn't exist.";
-        public const string DbTestTubeNotFoundMessage = "The test tube doesn't exist.";
+        public const string DbCountryNotFoundMessage = "El país no existe.";
+        public const string DbStateNotFoundMessage = "El estado no existe.";
+        public const string DbCityNotFoundMessage = "La ciudad no existe.";
+        public const string DbTestNotFoundMessage = "El exámen no existe.";
+        public const string DbTestTubeNotFoundMessage = "El tipo de recipiente no existe.";
     }
 }
