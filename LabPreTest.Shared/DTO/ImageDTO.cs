@@ -9,7 +9,7 @@ namespace LabPreTest.Shared.DTO
 {
     public class ImageDTO
     {
-        [Required] public int SectionID { get; set; }
+        [Required] public int SectionId { get; set; }
         [Required] public List<string> Images { get; set; } = null!;
     }
 

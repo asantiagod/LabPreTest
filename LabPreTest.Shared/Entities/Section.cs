@@ -18,7 +18,7 @@ namespace LabPreTest.Shared.Entities
         public ICollection<SectionImage>? SectionImages { get; set; }
 
         [Display(Name = "Imágenes")]
-        public int ProductImagesNumber => SectionImages == null || SectionImages.Count == 0 ? 0 : SectionImages.Count;
+        public int SectionImagesNumber => SectionImages == null || SectionImages.Count == 0 ? 0 : SectionImages.Count;
 
         [Display(Name = "Imagén")]
         public string MainImage => SectionImages == null || SectionImages.Count == 0 ? string.Empty : SectionImages.FirstOrDefault()!.Image;

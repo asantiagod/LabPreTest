@@ -24,13 +24,13 @@ namespace LabPreTest.Backend.Repository.Implementations
         {
             var section = await _context.Section
                 .Include(x => x.SectionImages)
-                .FirstOrDefaultAsync(x => x.Id == imageDTO.SectionID);
+                .FirstOrDefaultAsync(x => x.Id == imageDTO.SectionId);
             if (section == null)
             {
                 return new ActionResponse<ImageDTO>
                 {
                     WasSuccess = false,
-                    Message = "Producto no existe"
+                    Message = "Sección no existe"
                 };
             }
 
@@ -59,7 +59,7 @@ namespace LabPreTest.Backend.Repository.Implementations
         {
             var section = await _context.Section
                 .Include(x => x.SectionImages)
-                .FirstOrDefaultAsync(x => x.Id == imageDTO.SectionID);
+                .FirstOrDefaultAsync(x => x.Id == imageDTO.SectionId);
             if (section == null)
             {
                 return new ActionResponse<ImageDTO>
@@ -80,7 +80,7 @@ namespace LabPreTest.Backend.Repository.Implementations
 
             var lastImage = section.SectionImages.LastOrDefault();
             await _fileStorage.RemoveFileAsync(lastImage!.Image, "sections");
-            _context.Remove(lastImage);
+            _context.SectionImage.Remove(lastImage);
 
             await _context.SaveChangesAsync();
             imageDTO.Images = section.SectionImages.Select(x => x.Image).ToList();
