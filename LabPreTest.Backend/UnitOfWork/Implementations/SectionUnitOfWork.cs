@@ -14,6 +14,9 @@ namespace LabPreTest.Backend.UnitOfWork.Implementations
         {
             _sectionRepository = sectionRepository;
         }
+        public async Task<ActionResponse<ImageDTO>> AddImageAsync(ImageDTO imageDTO) => await _sectionRepository.AddImageAsync(imageDTO);
+
+        public async Task<ActionResponse<ImageDTO>> RemoveLastImageAsync(ImageDTO imageDTO) => await _sectionRepository.RemoveLastImageAsync(imageDTO);
 
         public override async Task<ActionResponse<IEnumerable<Section>>> GetAsync() => await _sectionRepository.GetAsync();
 

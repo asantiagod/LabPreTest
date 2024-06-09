@@ -15,7 +15,27 @@ namespace LabPreTest.Backend.Controllers
         {
             _sectionUnitOfWork = testUnitOfWork;
         }
+        [HttpPost("addImages")]
+        public async Task<IActionResult> PostAddImagesAsync(ImageDTO imageDTO)
+        {
+            var action = await _sectionUnitOfWork.AddImageAsync(imageDTO);
+            if (action.WasSuccess)
+            {
+                return Ok(action.Result);
+            }
+            return BadRequest(action.Message);
+        }
 
+        [HttpPost("removeLastImage")]
+        public async Task<IActionResult> PostRemoveLastImageAsync(ImageDTO imageDTO)
+        {
+            var action = await _sectionUnitOfWork.RemoveLastImageAsync(imageDTO);
+            if (action.WasSuccess)
+            {
+                return Ok(action.Result);
+            }
+            return BadRequest(action.Message);
+        }
         [HttpGet]
         public override async Task<IActionResult> GetAsync([FromQuery] PagingDTO pagination)
         {

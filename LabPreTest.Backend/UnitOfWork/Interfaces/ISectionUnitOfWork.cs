@@ -6,6 +6,10 @@ namespace LabPreTest.Backend.UnitOfWork.Interfaces
 {
     public interface ISectionUnitOfWork
     {
+        Task<ActionResponse<ImageDTO>> AddImageAsync(ImageDTO imageDTO);
+
+        Task<ActionResponse<ImageDTO>> RemoveLastImageAsync(ImageDTO imageDTO);
+
         Task<ActionResponse<IEnumerable<Section>>> GetAsync();
 
         Task<ActionResponse<Section>> GetAsync(int id);

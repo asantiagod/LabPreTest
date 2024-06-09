@@ -15,5 +15,13 @@ namespace LabPreTest.Shared.Entities
 
         public ICollection<Test>? Tests { get; set; }
         public int TestNumber => Tests == null || Tests.Count == 0 ? 0 : Tests.Count;
+        public ICollection<SectionImage>? SectionImages { get; set; }
+
+        [Display(Name = "Imágenes")]
+        public int SectionImagesNumber => SectionImages == null || SectionImages.Count == 0 ? 0 : SectionImages.Count;
+
+        [Display(Name = "Imagén")]
+        public string MainImage => SectionImages == null || SectionImages.Count == 0 ? string.Empty : SectionImages.FirstOrDefault()!.Image;
+    
     }
 }

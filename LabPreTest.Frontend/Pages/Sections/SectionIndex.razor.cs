@@ -158,12 +158,12 @@ namespace LabPreTest.Frontend.Pages.Sections
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordDeletedMessage);
         }
 
-        private void ShowEditModal(int sectionId)
-        {
-            var parameter = new ModalParameters()
-                .Add(nameof(SectionEdit.Id), sectionId);
-            ModalService.Show<SectionEdit>(parameter);
-        }
+        //private void ShowEditModal(int sectionId)
+        //{
+        //    var parameter = new ModalParameters()
+        //        .Add(nameof(SectionEdit.Id), sectionId);
+        //    ModalService.Show<SectionEdit>(parameter);
+        //}
 
         private void ShowCreateModal()
         {

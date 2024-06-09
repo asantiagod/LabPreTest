@@ -1,8 +1,10 @@
-﻿using LabPreTest.Backend.Migrations;
+﻿using LabPreTest.Backend.Helpers;
+using LabPreTest.Backend.Migrations;
 using LabPreTest.Backend.UnitOfWork.Interfaces;
 using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Enums;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.InteropServices;
 
 namespace LabPreTest.Backend.Data
 {
@@ -10,11 +12,13 @@ namespace LabPreTest.Backend.Data
     {
         private readonly DataContext _context;
         private readonly IUsersUnitOfWork _usersUnitOfWork;
+        private readonly IFileStorage _fileStorage;
 
-        public SeedDB(DataContext context, IUsersUnitOfWork usersUnitOfWork)
+        public SeedDB(DataContext context, IUsersUnitOfWork usersUnitOfWork, IFileStorage fileStorage)
         {
             _context = context;
             _usersUnitOfWork = usersUnitOfWork;
+            _fileStorage = fileStorage;
         }
 
         public async Task SeedAsync()
@@ -139,7 +143,12 @@ namespace LabPreTest.Backend.Data
                     Name = "Especial",
                     Description = "Necesita supervición especial.",
                 });
-                
+                _context.PreanalyticConditions.Add(new PreanalyticCondition
+                {
+                    Name = "Sin licor",
+                    Description = "Sin consumo de licor en las últimas 24 horas",
+                });
+
                 await _context.SaveChangesAsync();
             }
         }
@@ -150,47 +159,88 @@ namespace LabPreTest.Backend.Data
             {
                 _context.TestTubes.Add(new TestTube
                 {
-                    Name = "Dorado",
+                    Name = "Tapa Dorada",
                     Description = "Activador de coagulación y gel para la separación de suero."
                 });
 
                 _context.TestTubes.Add(new TestTube
                 {
-                    Name = "Rojo",
+                    Name = "Tapa Azul",
+                    Description = "Con citrato de sodio"
+                });
+                _context.TestTubes.Add(new TestTube
+                {
+                    Name = "Tapa Roja",
                     Description = "Recubierta de silicona."
                 });
 
                 _context.TestTubes.Add(new TestTube
                 {
-                    Name = "Naranja",
+                    Name = "Tapa Naranja",
                     Description = "Activador de coagulación a base de trombina."
                 });
 
                 _context.TestTubes.Add(new TestTube
                 {
-                    Name = "Verde",
+                    Name = "Tapa Verde",
                     Description = "Heparína de sodio."
                 });
 
                 _context.TestTubes.Add(new TestTube
                 {
-                    Name = "Blanco",
+                    Name = "Tapa Blanca",
                     Description = "K2EDTA y gel para la separación de plasma."
+                });
+                _context.TestTubes.Add(new TestTube
+                {
+                    Name = "Tapa Lila",
+                    Description = "Tupo con EDTA dipotásico."
                 });
             }
             await _context.SaveChangesAsync();
         }
-
         private async Task CheckSectionAsync()
         {
             if (!_context.Section.Any())
             {
-                _context.Section.Add(new Section { Name = "Hematología" });
-                _context.Section.Add(new Section { Name = "Toxicología" });
-                _context.Section.Add(new Section { Name = "Inmunología" });
-                _context.Section.Add(new Section { Name = "Endocrinología" });
+                await AddSectionAsync("Hematología", new List<string>() { "hematology.png" });
+                await AddSectionAsync("Inmunología", new List<string>() { "inmunology.png" });
+                await AddSectionAsync("Química General", new List<string>() { "clinicalchemistry.png" });
+                await AddSectionAsync("Hemostasia", new List<string>() { "hemostasy.png" });
+                await AddSectionAsync("Microbiología", new List<string>() { "microbiology.png" });
+                await AddSectionAsync("Biología molecular", new List<string>() { "molecular.jpg" });
+
+                //await AddSectionAsync("Hematología1", new List<string>() { "hematology1.png" });
+                await _context.SaveChangesAsync();
+
             }
-            await _context.SaveChangesAsync();
+
+        }
+        private async Task AddSectionAsync(string name, List<string> images)
+        {
+            Section section = new()
+            {
+                Name = name,
+                SectionImages = new List<SectionImage>()
+            };
+
+            foreach (string? image in images)
+            {
+                string filePath;
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    filePath = $"{Environment.CurrentDirectory}\\Images\\sections\\{image}";
+                }
+                else
+                {
+                    filePath = $"{Environment.CurrentDirectory}/Images/sections/{image}";
+                }
+                var fileBytes = File.ReadAllBytes(filePath);
+                var imagePath = await _fileStorage.SaveFileAsync(fileBytes, ".jpg", "sections");
+                section.SectionImages.Add(new SectionImage { Image = imagePath });
+            }
+
+            _context.Section.Add(section);
         }
 
         private async Task CheckTestAsync()
@@ -198,12 +248,12 @@ namespace LabPreTest.Backend.Data
             int i = 0;
             if (!_context.Tests.Any())
             {
-                await AddTestAsync(++i, "Examen Hematología 1", "Hematología", "Dorado", ["Ayuno"]);
-                await AddTestAsync(++i, "Examen Hematología 2", "Hematología", "Rojo", ["Nada"]);
-                await AddTestAsync(++i, "Examen Hematología 3", "Hematología", "Verde", ["Ayuno", "Supresión"]);
-                await AddTestAsync(++i, "Examen Toxicología 1", "Toxicología", "Dorado", ["Ayuno", "Especial"]);
-                await AddTestAsync(++i, "Examen Inmunología 1", "Inmunología", "Rojo", ["Nada"]);
-                await AddTestAsync(++i, "Examen Endocrinología", "Endocrinología", "Dorado", ["Ayuno", "Supresión"]);
+                await AddTestAsync(++i, "Hemograma", "Hematología", "Tapa lila", ["Nada"]);
+                await AddTestAsync(++i, "Vitamina D", "Inmunología", "Tapa Dorada", ["Supresión"]);
+                await AddTestAsync(++i, "Perfil lipídico", "Química General", "Tapa Dorada", ["Ayuno", "Sin licor"]);
+                await AddTestAsync(++i, "Tiempo de protrombina", "Hemostasia", "Tapa Azul", ["Especial"]);
+                await AddTestAsync(++i, "Serología presuntiva para sifílis", "Microbiología", "Tapa Dorada", ["Nada"]);
+                await AddTestAsync(++i, "PCR para Covid-19", "Biología molecular", "Tapa Verde", ["Nada"]);
 
                 await _context.SaveChangesAsync();
             }

@@ -28,7 +28,7 @@
                         <td>@s.Name</td>
 
                         <td>
-                            <a @onclick=@(()=>ShowEditModal(s.Id)) class="btn btn-warning">Editar</a>
+     @*                        <a @onclick=@(()=>ShowEditModal(s.Id)) class="btn btn-warning">Editar</a> *@
                             <button @onclick=@(() => DeleteAsync(s)) class="btn btn-danger">Borrar</button>
                         </td>
                     </tr>

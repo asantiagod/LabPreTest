@@ -14,11 +14,10 @@ namespace LabPreTest.Backend.Data
 
         // for each database entity you need create a DbSet
         public DbSet<Country> Countries { get; set; }
-
+        public DbSet<SectionImage> SectionImage { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<State> States { get; set; }
         public DbSet<Medic> Medicians { get; set; }
-         
         public DbSet<Order> Orders {  get; set; }
         public DbSet<OrderDetail> OrderDetails {  get; set; }
         public DbSet<Patient> Patients {  get; set; }
@@ -44,8 +43,9 @@ namespace LabPreTest.Backend.Data
             modelBuilder.Entity<Medic>().HasIndex(x => x.UserName).IsUnique();
             modelBuilder.Entity<Test>().HasIndex(x => x.TestID).IsUnique();
             modelBuilder.Entity<TestTube>().HasIndex(x => x.Name).IsUnique();
-            modelBuilder.Entity<Section>().HasIndex(x => x.Name).IsUnique();
-            modelBuilder.Entity<Order>().HasIndex(x => x.Id).IsUnique(); ;
+            modelBuilder.Entity<Order>().HasIndex(x => x.Id).IsUnique();
+            modelBuilder.Entity<SectionImage>().HasIndex(x => x.Id).IsUnique();
+
             DisableCascadingDelete(modelBuilder);
         }
         private void DisableCascadingDelete(ModelBuilder modelBuilder)
