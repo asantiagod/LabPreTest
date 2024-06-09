@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using LabPreTest.Frontend.AuthenticationProviders;
 using LabPreTest.Frontend.Services;
 using Blazored.Modal;
+using MudBlazor.Services;
 
 
 //var urlBackend = "https://labpretestbackend.azurewebsites.net/";
@@ -20,6 +21,7 @@ builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri(urlBa
 builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddSweetAlert2();
 builder.Services.AddBlazoredModal();
+builder.Services.AddMudServices();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationProviderJWT>();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthenticationProviderJWT>(x =>

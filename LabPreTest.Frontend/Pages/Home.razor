@@ -1,6 +1,6 @@
 ﻿@page "/"
 
-<h3>Examenes</h3>
+<h3>Catálogo de exámenes LabPreTest</h3>
 
 <GenericList MyList="Tests">
     <Body>
@@ -23,8 +23,8 @@
                                 <style ="height:150px; max-width:200px;" class="text-center" alt=@test.Name />
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title text-navy"> @test.Name</h5>
-                                <p class="card-text smfnt">@test.Name</p>
+                                <h5 class="card-title text-navy">Nombre: @test.Name</h5>
+                                <p class="card-text smfnt">Sección: @test.Section.Name</p>
                             </div>
                             <div class="card-footer text-center">
                                     <a @onclick=@(()=>ShowEditModal(test.Id)) class="btn btn-warning"><i class="bi bi-info-circle" /> Detalles</a>

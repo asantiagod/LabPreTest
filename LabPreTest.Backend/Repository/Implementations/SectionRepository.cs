@@ -11,11 +11,84 @@ namespace LabPreTest.Backend.Repository.Implementations
 {
     public class SectionRepository : GenericRepository<Section>, ISectionRepository
     {
+        private readonly IFileStorage _fileStorage;
         private readonly DataContext _context;
 
-        public SectionRepository(DataContext context) : base(context)
+        public SectionRepository(DataContext context, IFileStorage fileStorage) : base(context)
         {
             _context = context;
+            _fileStorage = fileStorage;
+        }
+
+        public async Task<ActionResponse<ImageDTO>> AddImageAsync(ImageDTO imageDTO)
+        {
+            var section = await _context.Section
+                .Include(x => x.SectionImages)
+                .FirstOrDefaultAsync(x => x.Id == imageDTO.SectionID);
+            if (section == null)
+            {
+                return new ActionResponse<ImageDTO>
+                {
+                    WasSuccess = false,
+                    Message = "Producto no existe"
+                };
+            }
+
+            for (int i = 0; i < imageDTO.Images.Count; i++)
+            {
+                if (!imageDTO.Images[i].StartsWith("https://"))
+                {
+                    var photoSection = Convert.FromBase64String(imageDTO.Images[i]);
+                    imageDTO.Images[i] = await _fileStorage.SaveFileAsync(photoSection, ".jpg", "products");
+                    section.SectionImages!.Add(new SectionImage { Image = imageDTO.Images[i] });
+                }
+            }
+
+            _context.Update(section);
+            await _context.SaveChangesAsync();
+            return new ActionResponse<ImageDTO>
+            {
+                WasSuccess = true,
+                Result = imageDTO
+            };
+
+        }
+
+
+        public async Task<ActionResponse<ImageDTO>> RemoveLastImageAsync(ImageDTO imageDTO)
+        {
+            var section = await _context.Section
+                .Include(x => x.SectionImages)
+                .FirstOrDefaultAsync(x => x.Id == imageDTO.SectionID);
+            if (section == null)
+            {
+                return new ActionResponse<ImageDTO>
+                {
+                    WasSuccess = false,
+                    Message = "Seccion no existe"
+                };
+            }
+
+            if (section.SectionImages is null || section.SectionImages.Count == 0)
+            {
+                return new ActionResponse<ImageDTO>
+                {
+                    WasSuccess = true,
+                    Result = imageDTO
+                };
+            }
+
+            var lastImage = section.SectionImages.LastOrDefault();
+            await _fileStorage.RemoveFileAsync(lastImage!.Image, "sections");
+            _context.Remove(lastImage);
+
+            await _context.SaveChangesAsync();
+            imageDTO.Images = section.SectionImages.Select(x => x.Image).ToList();
+            return new ActionResponse<ImageDTO>
+            {
+                WasSuccess = true,
+                Result = imageDTO
+            };
         }
 
         public override async Task<ActionResponse<IEnumerable<Section>>> GetAsync()
