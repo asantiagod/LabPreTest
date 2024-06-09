@@ -37,6 +37,8 @@ namespace LabPreTest.Backend.Repository.Implementations
             var test = await _context.Tests
                 .Include(x => x.TestTube)
                 .Include(x => x.Section)
+                .Include(x => x.Conditions!)
+                .ThenInclude(c => c.Condition)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (test == null)

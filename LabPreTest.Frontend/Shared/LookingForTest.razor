@@ -16,7 +16,7 @@ else
 
             <div class="card-body">
                 <select class="form-select" @onchange="TestChanged">
-                    <option value="0">---Seleccione al paciente---</option>
+                    <option value="0">---Seleccione el exámen---</option>
                     @foreach (var test in Tests)
                     {
                         <option value="@test.Id">@test.Name</option>

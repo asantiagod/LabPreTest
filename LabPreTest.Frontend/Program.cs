@@ -8,8 +8,13 @@ using LabPreTest.Frontend.AuthenticationProviders;
 using LabPreTest.Frontend.Services;
 using Blazored.Modal;
 
+<<<<<<< HEAD
 var urlBackend = "https://labpretestbackend.azurewebsites.net/";
 //var urlBackend = "https://localhost:7095/";
+=======
+//var urlBackend = "https://labpretestbackend.azurewebsites.net/";
+var urlBackend = "https://localhost:7095/";
+>>>>>>> main
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
