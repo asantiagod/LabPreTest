@@ -16,7 +16,16 @@ namespace LabPreTest.Frontend.Pages.Orders
     [Authorize(Roles = FrontendStrings.UserString)]
     public partial class OrdersCreate
     {
-        private List<TemporalOrder>? TemporalOrders { get; set; }        private List<Medic>? Medicians { get; set; }        private int MedicValue { get; set; }        private List<Patient>? Patients { get; set; }        private int PatientValue { get; set; }        private int NumberOfTests { get; set; }        private bool IsAddButtonDisabled { get; set; } = true;        private bool IsSelectorDisabled { get; set; } = false;        [CascadingParameter] private IModalService ModalService { get; set; } = null!;
+        private List<TemporalOrder>? TemporalOrders { get; set; }
+        private List<Medic>? Medicians { get; set; }
+        private int MedicValue { get; set; }
+        private List<Patient>? Patients { get; set; }
+        private int PatientValue { get; set; }
+        private int NumberOfTests { get; set; }
+        private bool IsAddButtonDisabled { get; set; } = true;
+        private bool IsSelectorDisabled { get; set; } = false;
+
+        [CascadingParameter] private IModalService ModalService { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
