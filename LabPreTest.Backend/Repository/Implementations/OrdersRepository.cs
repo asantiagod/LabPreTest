@@ -1,10 +1,12 @@
 ﻿using LabPreTest.Backend.Data;
+using LabPreTest.Backend.Helpers;
 using LabPreTest.Backend.Repository.Interfaces;
 using LabPreTest.Shared.DTO;
 using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Enums;
 using LabPreTest.Shared.Responses;
 using Microsoft.EntityFrameworkCore;
+using System.Net.NetworkInformation;
 
 namespace LabPreTest.Backend.Repository.Implementations
 {
@@ -39,7 +41,10 @@ namespace LabPreTest.Backend.Repository.Implementations
             if (!isAdmin)
                 queryable = queryable.Where(o => o.User!.Email == email);
 
-            var result = await queryable.ToListAsync();
+            var result = await queryable
+                .OrderBy(x => x.Id)
+                .Paginate(pagination)
+                .ToListAsync();
             return BuildSuccessfulActionResponse<IEnumerable<Order>>(result);
         }
 
