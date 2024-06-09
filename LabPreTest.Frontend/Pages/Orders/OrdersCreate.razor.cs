@@ -18,8 +18,9 @@ namespace LabPreTest.Frontend.Pages.Orders
     {
         private List<TemporalOrder>? TemporalOrders { get; set; }
         private List<Medic>? Medicians { get; set; }
+        private string? MedicianName { get; set; }
         private int MedicValue { get; set; }
-        private List<Patient>? Patients { get; set; }
+        private string? PatientName { get; set; }
         private int PatientValue { get; set; }
         private int NumberOfTests { get; set; }
         private bool IsAddButtonDisabled { get; set; } = true;
@@ -33,8 +34,6 @@ namespace LabPreTest.Frontend.Pages.Orders
         protected override async Task OnInitializedAsync()
         {
             await LoadTemporalOrdersAsync();
-            await LoadMediciansAsync();
-            await LoadPatientsAsync();
             SetButtonStatus();
             SetSelectorStatus();
         }
@@ -56,7 +55,15 @@ namespace LabPreTest.Frontend.Pages.Orders
             try
             {
                 TemporalOrders = await LoadListAsync<TemporalOrder>(ApiRoutes.TemporalOrdersMyRoute);
-                NumberOfTests = TemporalOrders!.Count;
+                if (TemporalOrders!.Any())
+                {
+                    NumberOfTests = TemporalOrders!.Count;
+                    var fto = TemporalOrders.First();
+                    MedicianName = fto.Medic!.Name;
+                    MedicValue = fto.MedicId;
+                    PatientName = fto.Patient!.Name;
+                    PatientValue = fto.PatientId;
+                }
             }
             catch (Exception ex)
             {
@@ -65,22 +72,6 @@ namespace LabPreTest.Frontend.Pages.Orders
 
             SetButtonStatus();
             SetSelectorStatus();
-        }
-
-        private async Task LoadMediciansAsync()
-        {
-            Medicians = await LoadListAsync<Medic>(ApiRoutes.MedicianFullRoute);
-            if (TemporalOrders != null && TemporalOrders.Any())
-                MedicValue = TemporalOrders.First().MedicId;
-            SetButtonStatus();
-        }
-
-        private async Task LoadPatientsAsync()
-        {
-            Patients = await LoadListAsync<Patient>(ApiRoutes.PatientsFullRoute);
-            if (TemporalOrders != null && TemporalOrders.Any())
-                PatientValue = TemporalOrders.First().PatientId;
-            SetButtonStatus();
         }
 
         private async Task CreateAsync()
@@ -103,18 +94,6 @@ namespace LabPreTest.Frontend.Pages.Orders
                 Timer = 3000
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordCreatedMessage);
-        }
-
-        private void PatientChanged(ChangeEventArgs e)
-        {
-            PatientValue = Convert.ToInt32(e.Value!);
-            SetButtonStatus();
-        }
-
-        private void MedicChanged(ChangeEventArgs e)
-        {
-            MedicValue = Convert.ToInt32(e.Value!);
-            SetButtonStatus();
         }
 
         private void SetButtonStatus()
@@ -156,6 +135,36 @@ namespace LabPreTest.Frontend.Pages.Orders
                 }
 
                 await LoadTemporalOrdersAsync();
+                StateHasChanged();
+            }
+        }
+
+        private async void ShowFindPatientModal()
+        {
+            var modalMessage = ModalService.Show<LookingForPatient>();
+            var result = await modalMessage.Result;
+
+            if (result.Confirmed && result.Data != null)
+            {
+                var patient = (Patient)result.Data;
+                PatientName = patient.Name;
+                PatientValue = patient.Id;
+                SetButtonStatus();
+                StateHasChanged();
+            }
+        }
+
+        private async void ShowFindMedicianModal()
+        {
+            var modalMessage = ModalService.Show<LookingForMedician>();
+            var result = await modalMessage.Result;
+
+            if (result.Confirmed && result.Data != null)
+            {
+                var medician = (Medic)result.Data;
+                MedicianName = medician.Name;
+                MedicValue = medician.Id;
+                SetButtonStatus();
                 StateHasChanged();
             }
         }

@@ -9,7 +9,7 @@
 else
 {
     <div class="mb-3">
-        <button class="btn btn-primary" @onclick="ProcessOrder">Guardar Cambios</button>
+        <button class="btn btn-primary" @onclick="ProcessOrder">Crear</button>
         <button class="btn btn-success" @onclick="Return">Regresar</button>
     </div>
     <div class="mb-3">
@@ -17,34 +17,14 @@ else
     </div>
     <div class="mb-3">
         <label>Paciente:</label>
-        <div>
-            <select class="form-select" disabled="@IsSelectorDisabled" @onchange="PatientChanged" value="@PatientValue">
-                <option value="0">---Seleccione al paciente---</option>
-                @if (Patients is not null)
-                {
-                    foreach (var patient in Patients)
-                    {
-                        <option value="@patient.Id">@patient.Name</option>
-                    }
-                }
-            </select>
-        </div>
+        <input type="text" value="@PatientName" disabled="true"/>
+        <button class="btn btn-success" disabled=@IsSelectorDisabled @onclick=@(()=>ShowFindPatientModal())>Buscar</button>
     </div>
 
     <div class="mb-3">
-        <label>Medico:</label>
-        <div>
-            <select class="form-select" disabled="@IsSelectorDisabled" @onchange="MedicChanged" value="@MedicValue">
-                <option value="0">---Seleccione al medico---</option>
-                @if (Medicians is not null)
-                {
-                    foreach (var medic in Medicians)
-                    {
-                        <option value="@medic.Id">@medic.Name</option>
-                    }
-                }
-            </select>
-        </div>
+        <label>Médico:</label>
+        <input type="text" value="@MedicianName" disabled="true"/>
+        <button class="btn btn-success"  disabled=@IsSelectorDisabled @onclick=@(()=>ShowFindMedicianModal())>Buscar</button>
     </div>
 
     <div class="mb-3">

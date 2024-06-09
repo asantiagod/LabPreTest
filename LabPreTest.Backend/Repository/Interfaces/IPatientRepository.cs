@@ -9,6 +9,8 @@ namespace LabPreTest.Backend.Repository.Interfaces
         Task<ActionResponse<IEnumerable<Patient>>> GetAsync();
 
         Task<ActionResponse<Patient>> GetAsync(int id);
+        
+        Task<ActionResponse<Patient>> GetAsync(string documentId);
 
         Task<ActionResponse<IEnumerable<Patient>>> GetAsync(PagingDTO paging);
 

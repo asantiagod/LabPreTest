@@ -112,46 +112,6 @@ namespace LabPreTest.Frontend.Pages.Orders
             int page = 1;
             await SelectedPageAsync(page);
         }
-
-        private async Task DeleteAsync(Order order)
-        {
-            var result = await SweetAlertService.FireAsync(new SweetAlertOptions
-            {
-                Title = "Confirmation",
-                Text = $"Are you sure you want to delete the country: {order.Id}?",
-                Icon = SweetAlertIcon.Question,
-                ShowCancelButton = true,
-            });
-            var confirm = string.IsNullOrEmpty(result.Value);
-            if (confirm)
-            {
-                return;
-            }
-
-            var responseHttp = await Repository.DeleteAsync<Order>(ApiRoutes.OrdersRoute + $"/{order.Id}");
-            if (responseHttp.Error)
-            {
-                if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
-                {
-                    NavigationManager.NavigateTo(PagesRoutes.CreateCountry);
-                }
-                else
-                {
-                    var mensajeError = await responseHttp.GetErrorMessageAsync();
-                    await SweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
-                }
-                return;
-            }
-
-            await LoadAsync();
-            var toast = SweetAlertService.Mixin(new SweetAlertOptions
-            {
-                Toast = true,
-                Position = SweetAlertPosition.BottomEnd,
-                ShowConfirmButton = true,
-                Timer = 3000
-            });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordDeletedMessage);
-        }
+        
     }
 }

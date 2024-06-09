@@ -22,6 +22,8 @@ namespace LabPreTest.Backend.UnitOfWork.Implementations
 
         public override async Task<ActionResponse<IEnumerable<Patient>>> GetAsync(PagingDTO paging) => await _patientRepository.GetAsync(paging);
 
+        public async Task<ActionResponse<Patient>> GetAsync(string documentId) => await _patientRepository.GetAsync(documentId);  
+
         public override async Task<ActionResponse<int>> GetTotalPagesAsync(PagingDTO paging) => await _patientRepository.GetTotalPagesAsync(paging);
     }
 }

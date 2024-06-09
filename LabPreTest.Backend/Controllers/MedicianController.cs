@@ -55,6 +55,16 @@ namespace LabPreTest.Backend.Controllers
             return NotFound(response.Message);
         }
 
+        [HttpGet("document/{documentId}")]
+        public async Task<IActionResult> GetAsync(string documentId)
+        {
+            var response = await _mediciansUnitOfWork.GetAsync(documentId);
+            if(response.WasSuccess)
+                return Ok(response.Result);
+
+            return NotFound(response.Message);
+        }
+
         [HttpGet("totalPages")]
         public override async Task<IActionResult> GetPagesAsync([FromQuery] PagingDTO pagination)
         {

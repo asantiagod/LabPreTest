@@ -1,5 +1,4 @@
-﻿using LabPreTest.Backend.Repository.Implementations;
-using LabPreTest.Backend.Repository.Interfaces;
+﻿using LabPreTest.Backend.Repository.Interfaces;
 using LabPreTest.Backend.UnitOfWork.Interfaces;
 using LabPreTest.Shared.DTO;
 using LabPreTest.Shared.Entities;
@@ -21,6 +20,8 @@ namespace LabPreTest.Backend.UnitOfWork.Implementations
         public override async Task<ActionResponse<Medic>> GetAsync(int id) => await _medicianRepository.GetAsync(id);
 
         public override async Task<ActionResponse<IEnumerable<Medic>>> GetAsync(PagingDTO paging) => await _medicianRepository.GetAsync(paging);
+
+        public async Task<ActionResponse<Medic>> GetAsync(string documentId) => await _medicianRepository.GetAsync(documentId);
 
         public override async Task<ActionResponse<int>> GetTotalPagesAsync(PagingDTO paging) => await _medicianRepository.GetTotalPagesAsync(paging);
     }

@@ -1,0 +1,28 @@
+﻿<div class="col-12">
+    <div class="card bg-light">
+        <div class="card-header justify-content-center">
+            <span>
+                <i />Buscar Paciente
+                <a class="btn btn-sm btn-success float-end" @onclick=@(()=>CloseModalAsync())><i class="bi bi-arrow-left" /> Regresar</a>
+                <button class="btn btn-sm btn-primary float-end mx-2" @onclick=@(()=>SaveChangesAsync())><i class="bi bi-floppy" /> Guardar Cambios</button>
+            </span>
+        </div>
+
+        <div class="card-body">
+            <div class="mb-3">
+                <label>Documento:</label>
+                <input type="text" 
+                       placeholder="Documento de identidad"
+                       @bind-value=DocumentId />
+                <button class="btn btn-success" @onclick="FindUserAsync">Buscar</button>
+            </div>
+            <div class="mb-3">
+                <label>Nombre:</label>
+                <input type="text" 
+                       placeholder="Nombre del paciente"
+                       disabled="true"
+                       value="@PatientName"/>
+            </div>
+        </div>
+    </div>
+</div>

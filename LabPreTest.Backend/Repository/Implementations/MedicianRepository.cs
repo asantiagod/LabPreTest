@@ -69,6 +69,17 @@ namespace LabPreTest.Backend.Repository.Implementations
             };
         }
 
+        public async Task<ActionResponse<Medic>> GetAsync(string documentId)
+        {
+            var medician = await _context.Medicians
+               .FirstOrDefaultAsync(c => c.DocumentId == documentId);
+
+            if (medician == null)
+                return ActionResponse<Medic>.BuildFailed(MessageStrings.DbRecordNotFoundMessage);
+
+            return ActionResponse<Medic>.BuildSuccessful(medician);
+        }
+
         public override async Task<ActionResponse<int>> GetTotalPagesAsync(PagingDTO paging)
         {
             var queryable = _context.Medicians.AsQueryable();
@@ -83,8 +94,6 @@ namespace LabPreTest.Backend.Repository.Implementations
                 WasSuccess = true,
                 Result = totalPages
             };
-
         }
-
     }
 }

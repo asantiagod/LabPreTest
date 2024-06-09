@@ -243,7 +243,7 @@ namespace LabPreTest.Backend.Data
 
         private async Task CheckMediciansAsync()
         {
-            Random rnd = new Random(1000000000);
+            Random rnd = new Random((int)DateTime.Now.Ticks);
             if (!_context.Medicians.Any())
             {
                 for (int i = 0; i <= 13; i++)
@@ -265,7 +265,7 @@ namespace LabPreTest.Backend.Data
 
         private async Task CheckPatientsAsync()
         {
-            Random rnd = new Random(1000000000);
+            Random rnd = new Random((int)DateTime.Now.Ticks);
             if (!_context.Patients.Any())
             {
                 for (int i = 0; i <= 13; i++)

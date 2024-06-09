@@ -39,7 +39,7 @@ namespace LabPreTest.Backend.Repository.Implementations
                 return new ActionResponse<Patient>
                 {
                     WasSuccess = false,
-                    Message = MessageStrings.DbCountryNotFoundMessage
+                    Message = MessageStrings.DbRecordNotFoundMessage
                 };
             }
 
@@ -66,6 +66,17 @@ namespace LabPreTest.Backend.Repository.Implementations
                 .Paginate(paging)
                 .ToListAsync()
             };
+        }
+
+        public async Task<ActionResponse<Patient>> GetAsync(string documentId)
+        {
+            var patient = await _context.Patients
+                .FirstOrDefaultAsync(p => p.DocumentId == documentId);
+            
+            if (patient == null)
+                return ActionResponse<Patient>.BuildFailed(MessageStrings.DbRecordNotFoundMessage);
+
+            return ActionResponse<Patient>.BuildSuccessful(patient);
         }
 
         public override async Task<ActionResponse<int>> GetTotalPagesAsync(PagingDTO paging)
