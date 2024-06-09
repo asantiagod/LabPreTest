@@ -1,0 +1,13 @@
+﻿@*@page "/tests/show/{Id:int}"*@
+
+@if (test is null)
+{
+    <Loading />
+}
+else
+{
+    <FormForShowTest @ref="testForm"
+                 Label="Examen:"
+                 Model="test"
+                 ReturnAction="Return" />
+}

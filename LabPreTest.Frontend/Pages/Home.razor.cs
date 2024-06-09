@@ -5,6 +5,11 @@ using LabPreTest.Shared.DTO;
 using Microsoft.AspNetCore.Components;
 using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.ApiRoutes;
+using LabPreTest.Shared.PagesRoutes;
+using System.Net;
+using Blazored.Modal;
+using LabPreTest.Frontend.Pages.Tests;
+using LabPreTest.Shared.Messages;
 
 
 namespace LabPreTest.Frontend.Pages
@@ -16,12 +21,13 @@ namespace LabPreTest.Frontend.Pages
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
-
+        [EditorRequired, Parameter] public int Id { get; set; }
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string RecordNumberQueryString { get; set; } = string.Empty;
         [CascadingParameter] private IModalService ModalService { get; set; } = null!;
 
+        private Test? test;
         public List<Test>? Tests { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -111,5 +117,14 @@ namespace LabPreTest.Frontend.Pages
             await SelectedPageAsync(page);
         }
 
+        private void ShowEditModal(int testId)
+        {
+            var parameter = new ModalParameters()
+                .Add(nameof(TestShow.Id), testId);
+            ModalService.Show<TestShow>(parameter);
+        }
+
     }
+
 }
+
