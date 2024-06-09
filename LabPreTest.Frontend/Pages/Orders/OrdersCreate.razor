@@ -1,16 +1,71 @@
 ﻿@page "/orders/create"
 
-<h3>Create Order</h3>
+<h3>Crear Orden</h3>
 
-@if (order is null)
+@if (TemporalOrders is null)
 {
     <Loading />
 }
 else
 {
-    <FormForOrder @ref="ordersForm"
-                  Label=""
-                  Model="order"
-                  OnValidSubmit="CreateAsync"
-                  ReturnAction="Return" />
+    <div class="mb-3">
+        <button class="btn btn-primary" @onclick="ProcessOrder">Guardar Cambios</button>
+        <button class="btn btn-success" @onclick="Return">Regresar</button>
+    </div>
+    <div class="mb-3">
+        <label>Numero de exámenes: @NumberOfTests</label>
+    </div>
+    <div class="mb-3">
+        <label>Paciente:</label>
+        <div>
+            <select class="form-select" disabled="@IsSelectorDisabled" @onchange="PatientChanged" value="@PatientValue">
+                <option value="0">---Seleccione al paciente---</option>
+                @if (Patients is not null)
+                {
+                    foreach (var patient in Patients)
+                    {
+                        <option value="@patient.Id">@patient.Name</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Medico:</label>
+        <div>
+            <select class="form-select" disabled="@IsSelectorDisabled" @onchange="MedicChanged" value="@MedicValue">
+                <option value="0">---Seleccione al medico---</option>
+                @if (Medicians is not null)
+                {
+                    foreach (var medic in Medicians)
+                    {
+                        <option value="@medic.Id">@medic.Name</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <button class="btn btn-primary" disabled=@IsAddButtonDisabled @onclick=@(()=>ShowAddTestModal())>Agregar Examen</button>
+    </div>
+    <div class="mb-3">
+        <table class="table table-striped">
+            <thead>
+            <th>ID</th>
+            <th>Nombre</th>
+            </thead>
+            <tbody>
+                @foreach (var to in TemporalOrders)
+                {
+                    <tr>
+                        <td>@to.TestId</td>
+                        <td>@to.Test!.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <!--<ValidationMessage For="@(() => Model.TestIds)" />-->
+    </div>
 }
