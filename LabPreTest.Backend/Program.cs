@@ -56,10 +56,7 @@ builder.Services.AddSwaggerGen(c =>
         });
 });
 
-<<<<<<< HEAD
-=======
-//builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=AzureConnection"));
->>>>>>> main
+
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=LocalConnection"));
 builder.Services.AddTransient<SeedDB>();
 builder.Services.AddScoped<IFileStorage,FileStorage>();
