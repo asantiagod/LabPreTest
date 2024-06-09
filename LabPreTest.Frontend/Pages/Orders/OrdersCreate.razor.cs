@@ -1,4 +1,5 @@
-﻿using Blazored.Modal.Services;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Frontend.Shared;
@@ -17,14 +18,15 @@ namespace LabPreTest.Frontend.Pages.Orders
     public partial class OrdersCreate
     {
         private List<TemporalOrder>? TemporalOrders { get; set; }
-        private List<Medic>? Medicians { get; set; }
-        private string? MedicianName { get; set; }
+        private Medic? Medician { get; set; }
         private int MedicValue { get; set; }
-        private string? PatientName { get; set; }
+        private Patient? Patient { get; set; }
         private int PatientValue { get; set; }
         private int NumberOfTests { get; set; }
         private bool IsAddButtonDisabled { get; set; } = true;
         private bool IsSelectorDisabled { get; set; } = false;
+
+        public bool IsEditable { get; set; } = true;
 
         [CascadingParameter] private IModalService ModalService { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
@@ -59,9 +61,9 @@ namespace LabPreTest.Frontend.Pages.Orders
                 {
                     NumberOfTests = TemporalOrders!.Count;
                     var fto = TemporalOrders.First();
-                    MedicianName = fto.Medic!.Name;
+                    Medician = fto.Medic;
                     MedicValue = fto.MedicId;
-                    PatientName = fto.Patient!.Name;
+                    Patient = fto.Patient;
                     PatientValue = fto.PatientId;
                 }
             }
@@ -72,28 +74,6 @@ namespace LabPreTest.Frontend.Pages.Orders
 
             SetButtonStatus();
             SetSelectorStatus();
-        }
-
-        private async Task CreateAsync()
-        {
-            var responseHttp = await Repository.PostAsync(ApiRoutes.OrdersRoute,
-                                                          new OrderDTO { Status = OrderStatus.Idle });
-            if (responseHttp.Error)
-            {
-                var message = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-                return;
-            }
-
-            Return();
-            var toast = SweetAlertService.Mixin(new SweetAlertOptions
-            {
-                Toast = true,
-                Position = SweetAlertPosition.BottomEnd,
-                ShowConfirmButton = true,
-                Timer = 3000
-            });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordCreatedMessage);
         }
 
         private void SetButtonStatus()
@@ -146,9 +126,8 @@ namespace LabPreTest.Frontend.Pages.Orders
 
             if (result.Confirmed && result.Data != null)
             {
-                var patient = (Patient)result.Data;
-                PatientName = patient.Name;
-                PatientValue = patient.Id;
+                Patient = (Patient)result.Data;
+                PatientValue = Patient.Id;
                 SetButtonStatus();
                 StateHasChanged();
             }
@@ -161,12 +140,18 @@ namespace LabPreTest.Frontend.Pages.Orders
 
             if (result.Confirmed && result.Data != null)
             {
-                var medician = (Medic)result.Data;
-                MedicianName = medician.Name;
-                MedicValue = medician.Id;
+                Medician = (Medic)result.Data;
+                MedicValue = Medician.Id;
                 SetButtonStatus();
                 StateHasChanged();
             }
+        }
+
+        private void ShowEditModal(int testId)
+        {
+            var parameter = new ModalParameters()
+                .Add(nameof(OrdersShowTestDetails.Id), testId);
+            ModalService.Show<OrdersShowTestDetails>(parameter);
         }
 
         private void Return()

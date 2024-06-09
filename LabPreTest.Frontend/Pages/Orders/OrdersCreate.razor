@@ -16,25 +16,119 @@ else
         <label>Numero de exámenes: @NumberOfTests</label>
     </div>
     <div class="mb-3">
-        <label>Paciente:</label>
-        <input type="text" value="@PatientName" disabled="true"/>
-        <button class="btn btn-success" disabled=@IsSelectorDisabled @onclick=@(()=>ShowFindPatientModal())>Buscar</button>
+        <table class="table table-striped">
+            <thead>
+            <th style="width:180px;">
+                <div>
+                    Paciente
+                </div>
+            </th>
+            <th style="max-width:300px; width:100%;">
+                <div>
+                    @if(IsEditable)
+                    {
+                        <button class="btn btn-success" disabled=@IsSelectorDisabled @onclick=@(()=>ShowFindPatientModal())>Buscar</button>
+                    }
+                </div>
+            </th>
+            </thead>
+            <tbody>
+                @if (Patient is not null)
+                {
+                    <tr>
+                        <td><label>Nombre:</label></td>
+                        <td><input type="text" value="@Patient.Name" disabled /></td>
+                    </tr>
+                    <tr>
+                        <td><label>Documento:</label></td>
+                        <td><input type="text" value="@Patient.DocumentId" disabled /></td>
+                    </tr>
+                    <tr>
+                        <td><label>Documento:</label></td>
+                        <td><input type="text" value="@Patient.DocumentId" disabled /></td>
+                    </tr>
+                    <tr>
+                        <td><label>Fecha de nacimiento:</label></td>
+                        <td><input type="text" value="@Patient.BirthDay" disabled /></td>
+                    </tr>
+                    <tr>
+                        <td><label>Teléfono:</label></td>
+                        <td><input type="text" value="@Patient.Cellphone" disabled /></td>
+                    </tr>
+                    <tr>
+                        <td><label>Dirección:</label></td>
+                        <td><input type="text" value="@Patient.Address" disabled /></td>
+                    </tr>
+                    <tr>
+                        <td><label>Correo Electrónico:</label></td>
+                        <td><input type="text" value="@Patient.Email" disabled /></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 
     <div class="mb-3">
-        <label>Médico:</label>
-        <input type="text" value="@MedicianName" disabled="true"/>
-        <button class="btn btn-success"  disabled=@IsSelectorDisabled @onclick=@(()=>ShowFindMedicianModal())>Buscar</button>
+        <table class="table table-striped">
+            <thead>
+            <th style="width:180px;">
+                <div>
+                    Médico
+                </div>
+            </th>
+            <th style="max-width:300px; width:100%;">
+                <div>
+                        @if (IsEditable)
+                        {
+                        <button class="btn btn-success" disabled=@IsSelectorDisabled @onclick=@(()=>ShowFindMedicianModal())>Buscar</button>
+                        }
+                </div>
+            </th>
+            </thead>
+            <tbody>
+                @if (Medician is not null)
+                {
+                    <tr>
+                        <td><label>Nombre:</label></td>
+                        <td><input type="text" value="@Medician.Name" disabled="true" /></td>
+                    </tr>
+                    <tr>
+                        <td><label>Documento:</label></td>
+                        <td><input type="text" value="@Medician.DocumentId" disabled="true" /></td>
+                    </tr>
+                    <tr>
+                        <td><label>Fecha de nacimiento:</label></td>
+                        <td><input type="text" value="@Medician.BirthDay" disabled /></td>
+                    </tr>
+                    <tr>
+                        <td><label>Teléfono:</label></td>
+                        <td><input type="text" value="@Medician.Cellphone" disabled /></td>
+                    </tr>
+                    <tr>
+                        <td><label>Dirección:</label></td>
+                        <td><input type="text" value="@Medician.Address" disabled /></td>
+                    </tr>
+                    <tr>
+                        <td><label>Correo Electrónico:</label></td>
+                        <td><input type="text" value="@Medician.Email" disabled /></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 
-    <div class="mb-3">
-        <button class="btn btn-primary" disabled=@IsAddButtonDisabled @onclick=@(()=>ShowAddTestModal())>Agregar Examen</button>
-    </div>
+    @if (IsEditable)
+    {
+        <div class="mb-3">
+            <button class="btn btn-primary" disabled=@IsAddButtonDisabled @onclick=@(()=>ShowAddTestModal())>Agregar Examen</button>
+        </div>
+    }
     <div class="mb-3">
         <table class="table table-striped">
             <thead>
             <th>ID</th>
             <th>Nombre</th>
+            <th style="width:180px"></th>
             </thead>
             <tbody>
                 @foreach (var to in TemporalOrders)
@@ -42,6 +136,9 @@ else
                     <tr>
                         <td>@to.TestId</td>
                         <td>@to.Test!.Name</td>
+                        <td>
+                            <a @onclick=@(()=>ShowEditModal(@to.Test.Id)) class="btn btn-warning"><i class="bi bi-info-circle" /> Detalles</a>
+                        </td>
                     </tr>
                 }
             </tbody>

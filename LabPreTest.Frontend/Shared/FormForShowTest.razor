@@ -2,38 +2,35 @@
 
 <NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
 
-<EditForm EditContext="editContext" >
-    <DataAnnotationsValidator />
+<div class="mb-3">
+    <label>@Label</label>
     <div class="mb-3">
-        <label>@Label</label>      
-        <div class="mb-3">
-            <label for="Nombre">Nombre del exámen</label>
-            <InputText class="form-control" @bind-Value="@Model.Name" disabled />
-        </div>
-        <div class="mb-3">
-            <label>Sección:</label>
-            <InputText class="form-control" @bind-Value="@Model.Section.Name" disabled />
-        </div>
-        <div class="mb-3">
-            <label>Condiciones preanalíticas:</label>
+        <label for="Nombre">Nombre del exámen</label>
+        <InputText class="form-control" @bind-Value="@Model.Name" disabled />
+    </div>
+    <div class="mb-3">
+        <label>Sección:</label>
+        <InputText class="form-control" @bind-Value="@Model.Section.Name" disabled />
+    </div>
+    <div class="mb-3">
+        <label>Condiciones preanalíticas:</label>
         <tr>
-        <th>Condición preanalítica</th>
-        <th>Descripción</th>
+            <th>Condición preanalítica</th>
+            <th>Descripción</th>
         </tr>
 
-            @foreach (var t in Model.Conditions)
-            {
-                <tr>
-                    <td class="">@t.Condition.Name</td>
-                   <td>@t.Condition.Description</td>
-                </tr>
-            }
-        </div>
+        @foreach (var t in Model.Conditions)
+        {
+            <tr>
+                <td class="">@t.Condition.Name</td>
+                <td>@t.Condition.Description</td>
+            </tr>
+        }
+    </div>
     <div class="mb-3">
         <label>Tipo de recipiente  </label>
         <InputText class="form-control" @bind-Value="@Model.TestTube.Name" disabled />
     </div>
-    </div>
-    <button class="btn btn-success align-self-center" @onclick="ReturnAction">Regresar</button>
-</EditForm>
+</div>
+<button class="btn btn-success align-self-center" @onclick="ReturnAction">Regresar</button>
 

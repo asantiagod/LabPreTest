@@ -5,14 +5,13 @@ using LabPreTest.Frontend.Repositories;
 using LabPreTest.Frontend.Shared;
 using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.Entities;
-using LabPreTest.Shared.Messages;
 using LabPreTest.Shared.PagesRoutes;
 using Microsoft.AspNetCore.Components;
 using System.Net;
 
-namespace LabPreTest.Frontend.Pages.Tests
+namespace LabPreTest.Frontend.Pages.Orders
 {
-    public partial class TestShow
+    public partial class OrdersShowTestDetails
     {
         private Test? test;
         private FormForShowTest<Test>? testForm;
@@ -20,9 +19,9 @@ namespace LabPreTest.Frontend.Pages.Tests
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
+        [CascadingParameter] private BlazoredModalInstance BlazoredModal { get; set; } = default!;
 
         [EditorRequired, Parameter] public int Id { get; set; }
-        [CascadingParameter] private BlazoredModalInstance BlazoredModal { get; set; } = default!;
 
         protected override async Task OnParametersSetAsync()
         {
