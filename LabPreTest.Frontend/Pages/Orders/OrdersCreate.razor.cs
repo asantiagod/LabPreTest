@@ -53,6 +53,9 @@ namespace LabPreTest.Frontend.Pages.Orders
             {
                 await SweetAlertService.FireAsync("Error", ex.Message, SweetAlertIcon.Error);
             }
+
+            SetButtonStatus();
+            SetSelectorStatus();
         }
 
         private async Task LoadMediciansAsync()
@@ -150,6 +153,19 @@ namespace LabPreTest.Frontend.Pages.Orders
 
         private void Return()
         {
+            NavigationManager.NavigateTo(PagesRoutes.Orders);
+        }
+
+        private async void ProcessOrder()
+        {
+            var responseHttp = await Repository.PostAsync(ApiRoutes.OrdersRoute,
+                                                          new OrderDTO { Status = OrderStatus.Idle });
+
+            if (responseHttp.Error)
+            {
+                var errorMessage = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", errorMessage, SweetAlertIcon.Error);
+            }
             NavigationManager.NavigateTo(PagesRoutes.Orders);
         }
     }
