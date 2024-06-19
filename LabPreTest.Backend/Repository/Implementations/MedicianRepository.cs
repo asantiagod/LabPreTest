@@ -23,11 +23,7 @@ namespace LabPreTest.Backend.Repository.Implementations
             var medician = await _context.Medicians
                 .OrderBy(x => x.Name)
                 .ToListAsync();
-            return new ActionResponse<IEnumerable<Medic>>
-            {
-                WasSuccess = true,
-                Result = medician
-            };
+            return ActionResponse<IEnumerable<Medic>>.BuildSuccessful(medician);
         }
 
         public override async Task<ActionResponse<Medic>> GetAsync(int id)
@@ -36,19 +32,9 @@ namespace LabPreTest.Backend.Repository.Implementations
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (medician == null)
-            {
-                return new ActionResponse<Medic>
-                {
-                    WasSuccess = false,
-                    Message = MessageStrings.DbCountryNotFoundMessage
-                };
-            }
+                return ActionResponse<Medic>.BuildFailed(MessageStrings.DbMedicianNotFoundMessage);
 
-            return new ActionResponse<Medic>
-            {
-                WasSuccess = true,
-                Result = medician
-            };
+            return ActionResponse<Medic>.BuildSuccessful(medician);
         }
 
         public override async Task<ActionResponse<IEnumerable<Medic>>> GetAsync(PagingDTO paging)
@@ -59,14 +45,12 @@ namespace LabPreTest.Backend.Repository.Implementations
             if (!string.IsNullOrWhiteSpace(paging.Filter))
                 queryable = queryable.Where(x => x.Name.ToLower().Contains(paging.Filter.ToLower()));
 
-            return new ActionResponse<IEnumerable<Medic>>
-            {
-                WasSuccess = true,
-                Result = await queryable
+            var result = await queryable
                 .OrderBy(x => x.Name)
                 .Paginate(paging)
-                .ToListAsync()
-            };
+                .ToListAsync();
+
+            return ActionResponse<IEnumerable<Medic>>.BuildSuccessful(result);
         }
 
         public async Task<ActionResponse<Medic>> GetAsync(string documentId)
@@ -89,11 +73,7 @@ namespace LabPreTest.Backend.Repository.Implementations
 
             int count = await queryable.CountAsync();
             int totalPages = (int)Math.Ceiling((double)count / paging.RecordsNumber);
-            return new ActionResponse<int>
-            {
-                WasSuccess = true,
-                Result = totalPages
-            };
+            return ActionResponse<int>.BuildSuccessful(totalPages);
         }
     }
 }

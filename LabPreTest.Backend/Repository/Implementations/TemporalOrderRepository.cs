@@ -22,19 +22,19 @@ namespace LabPreTest.Backend.Repository.Implementations
         {
             var test = await _context.Tests.FirstOrDefaultAsync(t => t.Id == temporalOrderDTO.TestId);
             if (test == null)
-                return GetErrorActionResponse("El examen no existe");
+                return ActionResponse<TemporalOrdersDTO>.BuildFailed("El examen no existe");
 
             var medician = await _context.Medicians.FirstOrDefaultAsync(m => m.Id == temporalOrderDTO.MedicId);
             if (medician == null)
-                return GetErrorActionResponse("El medico no existe");
+                return ActionResponse<TemporalOrdersDTO>.BuildFailed("El medico no existe");
 
             var patient = await _context.Patients.FirstOrDefaultAsync(m => m.Id == temporalOrderDTO.PatientId);
             if (patient == null)
-                return GetErrorActionResponse("El paciente no encontrado");
+                return ActionResponse<TemporalOrdersDTO>.BuildFailed("El paciente no encontrado");
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
             if (user == null)
-                return GetErrorActionResponse("El usuario no existe");
+                return ActionResponse<TemporalOrdersDTO>.BuildFailed("El usuario no existe");
 
             var temporalOrder = new TemporalOrder
             {
@@ -48,15 +48,11 @@ namespace LabPreTest.Backend.Repository.Implementations
             {
                 _context.Add(temporalOrder);
                 await _context.SaveChangesAsync();
-                return new ActionResponse<TemporalOrdersDTO>
-                {
-                    WasSuccess = true,
-                    Result = temporalOrderDTO
-                };
+                return ActionResponse<TemporalOrdersDTO>.BuildSuccessful(temporalOrderDTO);
             }
             catch (Exception ex)
             {
-                return GetErrorActionResponse(ex.Message);
+                return ActionResponse<TemporalOrdersDTO>.BuildFailed(ex.Message);
             }
         }
 
@@ -70,11 +66,7 @@ namespace LabPreTest.Backend.Repository.Implementations
                 .Where(to => to.User!.Email == email)
                 .ToListAsync();
 
-            return new ActionResponse<IEnumerable<TemporalOrder>>
-            {
-                WasSuccess = true,
-                Result = temporalOrders
-            };
+            return ActionResponse<IEnumerable<TemporalOrder>>.BuildSuccessful(temporalOrders);
         }
 
         public async Task<ActionResponse<int>> GetCountAsync(string email)
@@ -82,20 +74,7 @@ namespace LabPreTest.Backend.Repository.Implementations
             var count = await _context.TemporalOrders
                 .Where(x => x.User!.Email == email)
                 .CountAsync();
-            return new ActionResponse<int>
-            {
-                WasSuccess = true,
-                Result = count
-            };
-        }
-
-        private static ActionResponse<TemporalOrdersDTO> GetErrorActionResponse(string errorMessage)
-        {
-            return new ActionResponse<TemporalOrdersDTO>
-            {
-                WasSuccess = false,
-                Message = errorMessage,
-            };
+            return ActionResponse<int>.BuildSuccessful(count);
         }
     }
 }

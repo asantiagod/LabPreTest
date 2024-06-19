@@ -23,12 +23,9 @@ namespace LabPreTest.Backend.Repository.Implementations
             var cities = await _context.Cities
                 .OrderBy(x => x.Name)
                 .ToListAsync();
-            return new ActionResponse<IEnumerable<City>>
-            {
-                WasSuccess = true,
-                Result = cities
-            };
+            return ActionResponse<IEnumerable<City>>.BuildSuccessful(cities);
         }
+
         public async Task<IEnumerable<City>> GetComboAsync(int stateId)
         {
             return await _context.Cities
@@ -42,19 +39,9 @@ namespace LabPreTest.Backend.Repository.Implementations
             var city = await _context.Cities.FirstOrDefaultAsync(x => x.Id == id);
 
             if (city == null)
-            {
-                return new ActionResponse<City>
-                {
-                    WasSuccess = false,
-                    Message = MessageStrings.DbCityNotFoundMessage,
-                };
-            }
+                return ActionResponse<City>.BuildFailed(MessageStrings.DbCityNotFoundMessage);
 
-            return new ActionResponse<City>
-            {
-                WasSuccess = true,
-                Result = city
-            };
+            return ActionResponse<City>.BuildSuccessful(city);
         }
 
         public override async Task<ActionResponse<IEnumerable<City>>> GetAsync(PagingDTO paging)
@@ -64,14 +51,11 @@ namespace LabPreTest.Backend.Repository.Implementations
             if (!string.IsNullOrWhiteSpace(paging.Filter))
                 queryable = queryable.Where(x => x.Name.ToLower().Contains(paging.Filter.ToLower()));
 
-            return new ActionResponse<IEnumerable<City>>
-            {
-                WasSuccess = true,
-                Result = await queryable
-                .OrderBy(x => x.Name)
-                .Paginate(paging)
-                .ToListAsync()
-            };
+            var result = await queryable
+                            .OrderBy(x => x.Name)
+                            .Paginate(paging)
+                            .ToListAsync();
+            return ActionResponse<IEnumerable<City>>.BuildSuccessful(result);
         }
 
         public override async Task<ActionResponse<int>> GetTotalPagesAsync(PagingDTO paging)
@@ -83,11 +67,7 @@ namespace LabPreTest.Backend.Repository.Implementations
 
             int count = await queryable.CountAsync();
             int totalPages = (int)Math.Ceiling((double)count / paging.RecordsNumber);
-            return new ActionResponse<int>
-            {
-                WasSuccess = true,
-                Result = totalPages
-            };
+            return ActionResponse<int>.BuildSuccessful(totalPages);
         }
     }
 }

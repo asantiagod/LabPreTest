@@ -26,13 +26,7 @@ namespace LabPreTest.Backend.Repository.Implementations
                 .Include(x => x.SectionImages)
                 .FirstOrDefaultAsync(x => x.Id == imageDTO.SectionId);
             if (section == null)
-            {
-                return new ActionResponse<ImageDTO>
-                {
-                    WasSuccess = false,
-                    Message = "Sección no existe"
-                };
-            }
+                return ActionResponse<ImageDTO>.BuildFailed(MessageStrings.DbSectionNotFoundMessage);
 
             for (int i = 0; i < imageDTO.Images.Count; i++)
             {
@@ -46,14 +40,9 @@ namespace LabPreTest.Backend.Repository.Implementations
 
             _context.Update(section);
             await _context.SaveChangesAsync();
-            return new ActionResponse<ImageDTO>
-            {
-                WasSuccess = true,
-                Result = imageDTO
-            };
 
+            return ActionResponse<ImageDTO>.BuildSuccessful(imageDTO);
         }
-
 
         public async Task<ActionResponse<ImageDTO>> RemoveLastImageAsync(ImageDTO imageDTO)
         {
@@ -61,22 +50,10 @@ namespace LabPreTest.Backend.Repository.Implementations
                 .Include(x => x.SectionImages)
                 .FirstOrDefaultAsync(x => x.Id == imageDTO.SectionId);
             if (section == null)
-            {
-                return new ActionResponse<ImageDTO>
-                {
-                    WasSuccess = false,
-                    Message = "Seccion no existe"
-                };
-            }
+                return ActionResponse<ImageDTO>.BuildFailed(MessageStrings.DbSectionNotFoundMessage);
 
             if (section.SectionImages is null || section.SectionImages.Count == 0)
-            {
-                return new ActionResponse<ImageDTO>
-                {
-                    WasSuccess = true,
-                    Result = imageDTO
-                };
-            }
+                return ActionResponse<ImageDTO>.BuildSuccessful(imageDTO);
 
             var lastImage = section.SectionImages.LastOrDefault();
             await _fileStorage.RemoveFileAsync(lastImage!.Image, "sections");
@@ -84,23 +61,15 @@ namespace LabPreTest.Backend.Repository.Implementations
 
             await _context.SaveChangesAsync();
             imageDTO.Images = section.SectionImages.Select(x => x.Image).ToList();
-            return new ActionResponse<ImageDTO>
-            {
-                WasSuccess = true,
-                Result = imageDTO
-            };
+            return ActionResponse<ImageDTO>.BuildSuccessful(imageDTO);
         }
 
         public override async Task<ActionResponse<IEnumerable<Section>>> GetAsync()
         {
-            var test = await _context.Section
+            var section = await _context.Section
                 .OrderBy(x => x.Name)
                 .ToListAsync();
-            return new ActionResponse<IEnumerable<Section>>
-            {
-                WasSuccess = true,
-                Result = test
-            };
+            return ActionResponse<IEnumerable<Section>>.BuildSuccessful(section);
         }
 
         public override async Task<ActionResponse<Section>> GetAsync(int id)
@@ -108,19 +77,9 @@ namespace LabPreTest.Backend.Repository.Implementations
             var section = await _context.Section
                 .FirstOrDefaultAsync(c => c.Id == id);
             if (section == null)
-            {
-                return new ActionResponse<Section>
-                {
-                    WasSuccess = false,
-                    Message = MessageStrings.DbCountryNotFoundMessage
-                };
-            }
+                return ActionResponse<Section>.BuildFailed(MessageStrings.DbSectionNotFoundMessage);
 
-            return new ActionResponse<Section>
-            {
-                WasSuccess = true,
-                Result = section
-            };
+            return ActionResponse<Section>.BuildSuccessful(section);
         }
 
         public override async Task<ActionResponse<IEnumerable<Section>>> GetAsync(PagingDTO paging)
@@ -131,14 +90,11 @@ namespace LabPreTest.Backend.Repository.Implementations
             if (!string.IsNullOrWhiteSpace(paging.Filter))
                 queryable = queryable.Where(x => x.Name.ToLower().Contains(paging.Filter.ToLower()));
 
-            return new ActionResponse<IEnumerable<Section>>
-            {
-                WasSuccess = true,
-                Result = await queryable
+            var result = await queryable
                 .OrderBy(x => x.Name)
                 .Paginate(paging)
-                .ToListAsync()
-            };
+                .ToListAsync();
+            return ActionResponse<IEnumerable<Section>>.BuildSuccessful(result);
         }
 
         public override async Task<ActionResponse<int>> GetTotalPagesAsync(PagingDTO paging)
@@ -150,12 +106,7 @@ namespace LabPreTest.Backend.Repository.Implementations
 
             int count = await queryable.CountAsync();
             int totalPages = (int)Math.Ceiling((double)count / paging.RecordsNumber);
-            return new ActionResponse<int>
-            {
-                WasSuccess = true,
-                Result = totalPages
-            };
-
+            return ActionResponse<int>.BuildSuccessful(totalPages);
         }
     }
 }

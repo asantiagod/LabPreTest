@@ -17,24 +17,22 @@ namespace LabPreTest.Backend.Repository.Implementations
         {
             _context = context;
         }
+
         public async Task<IEnumerable<State>> GetComboAsync(int countryId)
         {
             return await _context.States
-                .Where(s => s.CountryId == countryId)   
+                .Where(s => s.CountryId == countryId)
                 .OrderBy(s => s.Name)
                 .Include(c => c.Cities!)
                 .ToListAsync();
         }
+
         public override async Task<ActionResponse<IEnumerable<State>>> GetAsync()
         {
             var states = await _context.States
                 .OrderBy(x => x.Name)
                 .ToListAsync();
-            return new ActionResponse<IEnumerable<State>>
-            {
-                WasSuccess = true,
-                Result = states
-            };
+            return ActionResponse<IEnumerable<State>>.BuildSuccessful(states);
         }
 
         public override async Task<ActionResponse<State>> GetAsync(int stateId)
@@ -43,18 +41,9 @@ namespace LabPreTest.Backend.Repository.Implementations
                 .Include(x => x.Cities)
                 .FirstOrDefaultAsync(s => s.Id == stateId);
             if (state == null)
-            {
-                return new ActionResponse<State>
-                {
-                    WasSuccess = false,
-                    Message = MessageStrings.DbStateNotFoundMessage
-                };
-            }
-            return new ActionResponse<State>
-            {
-                WasSuccess = true,
-                Result = state
-            };
+                return ActionResponse<State>.BuildFailed(MessageStrings.DbStateNotFoundMessage);
+
+            return ActionResponse<State>.BuildSuccessful(state);
         }
 
         public override async Task<ActionResponse<IEnumerable<State>>> GetAsync(PagingDTO paging)
@@ -66,14 +55,11 @@ namespace LabPreTest.Backend.Repository.Implementations
             if (!string.IsNullOrWhiteSpace(paging.Filter))
                 queryable = queryable.Where(x => x.Name.ToLower().Contains(paging.Filter.ToLower()));
 
-            return new ActionResponse<IEnumerable<State>>
-            {
-                WasSuccess = true,
-                Result = await queryable
+            var result = await queryable
                 .OrderBy(x => x.Name)
                 .Paginate(paging)
-                .ToListAsync()
-            };
+                .ToListAsync();
+            return ActionResponse<IEnumerable<State>>.BuildSuccessful(result);
         }
 
         public override async Task<ActionResponse<int>> GetTotalPagesAsync(PagingDTO paging)
@@ -87,11 +73,7 @@ namespace LabPreTest.Backend.Repository.Implementations
 
             int count = await queryable.CountAsync();
             int totalPages = (int)Math.Ceiling((double)count / paging.RecordsNumber);
-            return new ActionResponse<int>
-            {
-                WasSuccess = true,
-                Result = totalPages
-            };
+            return ActionResponse<int>.BuildSuccessful(totalPages);
         }
     }
 }
