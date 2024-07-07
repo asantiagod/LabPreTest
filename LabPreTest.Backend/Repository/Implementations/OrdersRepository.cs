@@ -28,13 +28,7 @@ namespace LabPreTest.Backend.Repository.Implementations
                 return ActionResponse<IEnumerable<Order>>.BuildFailed("Usuario no valido");
 
             var queryable = _context.Orders
-                .Include(o => o.User)
                 .Include(o => o.Details!)
-                .ThenInclude(d => d.Test)
-                .Include(o => o.Details!)
-                .ThenInclude(d => d.Medic)
-                .Include(o => o.Details!)
-                .ThenInclude(d => d.Patient)
                 .AsQueryable();
 
             var isAdmin = await _usersRepository.IsUserInRoleAsync(user, UserType.Admin.ToString());
@@ -69,16 +63,7 @@ namespace LabPreTest.Backend.Repository.Implementations
         public override async Task<ActionResponse<Order>> GetAsync(int id)
         {
             var order = await _context.Orders
-                .Include(o => o.User!)
-                .ThenInclude(u => u.City!)
-                .ThenInclude(c => c.State!)
-                .ThenInclude(s => s.Country)
                 .Include(o => o.Details!)
-                .ThenInclude(od => od.Test)
-                .Include(o => o.Details!)
-                .ThenInclude(od => od.Medic)
-                .Include(o => o.Details!)
-                .ThenInclude(od => od.Patient)
                 .FirstOrDefaultAsync(o => o.Id == id);
 
             if (order == null)
