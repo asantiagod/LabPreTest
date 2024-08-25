@@ -38,6 +38,14 @@ namespace LabPreTest.Backend.Repository.Implementations
             var result = await queryable
                 .OrderBy(x => x.Id)
                 .Paginate(pagination)
+                .Select(o => new Order
+                {
+                    Id = o.Id,
+                    CreatedAt = o.CreatedAt,
+                    Status = o.Status,
+                    UserId = o.UserId,
+                    Details = o.Details,
+                })
                 .ToListAsync();
             return ActionResponse<IEnumerable<Order>>.BuildSuccessful(result);
         }
