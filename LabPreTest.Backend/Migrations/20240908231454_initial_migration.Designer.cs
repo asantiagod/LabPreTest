@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabPreTest.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240607024554_temporal-order")]
-    partial class temporalorder
+    [Migration("20240908231454_initial_migration")]
+    partial class initial_migration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -131,37 +131,56 @@ namespace LabPreTest.Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("MedicId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TestIds")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("medicName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("patientId")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<string>("patientName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique();
 
-                    b.HasIndex("MedicId");
-
-                    b.HasIndex("patientId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("LabPreTest.Shared.Entities.OrderDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("MedicId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TestId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MedicId");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("PatientId");
+
+                    b.HasIndex("TestId");
+
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("LabPreTest.Shared.Entities.Patient", b =>
@@ -258,10 +277,32 @@ namespace LabPreTest.Backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
+                    b.ToTable("Section");
+                });
+
+            modelBuilder.Entity("LabPreTest.Shared.Entities.SectionImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SectionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
                         .IsUnique();
 
-                    b.ToTable("Section");
+                    b.HasIndex("SectionId");
+
+                    b.ToTable("SectionImage");
                 });
 
             modelBuilder.Entity("LabPreTest.Shared.Entities.State", b =>
@@ -305,10 +346,7 @@ namespace LabPreTest.Backend.Migrations
                     b.Property<int>("TestId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId1")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -319,7 +357,7 @@ namespace LabPreTest.Backend.Migrations
 
                     b.HasIndex("TestId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("TemporalOrders");
                 });
@@ -333,11 +371,6 @@ namespace LabPreTest.Backend.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Recipient")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -654,17 +687,58 @@ namespace LabPreTest.Backend.Migrations
 
             modelBuilder.Entity("LabPreTest.Shared.Entities.Order", b =>
                 {
-                    b.HasOne("LabPreTest.Shared.Entities.Medic", null)
+                    b.HasOne("LabPreTest.Shared.Entities.User", "User")
                         .WithMany("Orders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("LabPreTest.Shared.Entities.OrderDetail", b =>
+                {
+                    b.HasOne("LabPreTest.Shared.Entities.Medic", "Medic")
+                        .WithMany("Details")
                         .HasForeignKey("MedicId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("LabPreTest.Shared.Entities.Patient", null)
-                        .WithMany("Orders")
-                        .HasForeignKey("patientId")
+                    b.HasOne("LabPreTest.Shared.Entities.Order", "Order")
+                        .WithMany("Details")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("LabPreTest.Shared.Entities.Patient", "Patient")
+                        .WithMany("Details")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("LabPreTest.Shared.Entities.Test", "Test")
+                        .WithMany("Details")
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Medic");
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Patient");
+
+                    b.Navigation("Test");
+                });
+
+            modelBuilder.Entity("LabPreTest.Shared.Entities.SectionImage", b =>
+                {
+                    b.HasOne("LabPreTest.Shared.Entities.Section", "Section")
+                        .WithMany("SectionImages")
+                        .HasForeignKey("SectionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Section");
                 });
 
             modelBuilder.Entity("LabPreTest.Shared.Entities.State", b =>
@@ -700,7 +774,7 @@ namespace LabPreTest.Backend.Migrations
 
                     b.HasOne("LabPreTest.Shared.Entities.User", "User")
                         .WithMany("TemporalOrders")
-                        .HasForeignKey("UserId1")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Medic");
@@ -824,14 +898,19 @@ namespace LabPreTest.Backend.Migrations
 
             modelBuilder.Entity("LabPreTest.Shared.Entities.Medic", b =>
                 {
-                    b.Navigation("Orders");
+                    b.Navigation("Details");
 
                     b.Navigation("TemporalOrders");
                 });
 
+            modelBuilder.Entity("LabPreTest.Shared.Entities.Order", b =>
+                {
+                    b.Navigation("Details");
+                });
+
             modelBuilder.Entity("LabPreTest.Shared.Entities.Patient", b =>
                 {
-                    b.Navigation("Orders");
+                    b.Navigation("Details");
 
                     b.Navigation("TemporalOrders");
                 });
@@ -843,6 +922,8 @@ namespace LabPreTest.Backend.Migrations
 
             modelBuilder.Entity("LabPreTest.Shared.Entities.Section", b =>
                 {
+                    b.Navigation("SectionImages");
+
                     b.Navigation("Tests");
                 });
 
@@ -855,6 +936,8 @@ namespace LabPreTest.Backend.Migrations
                 {
                     b.Navigation("Conditions");
 
+                    b.Navigation("Details");
+
                     b.Navigation("TemporalOrders");
                 });
 
@@ -865,6 +948,8 @@ namespace LabPreTest.Backend.Migrations
 
             modelBuilder.Entity("LabPreTest.Shared.Entities.User", b =>
                 {
+                    b.Navigation("Orders");
+
                     b.Navigation("TemporalOrders");
                 });
 #pragma warning restore 612, 618

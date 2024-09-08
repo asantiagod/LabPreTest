@@ -32,4 +32,8 @@
     <ProjectReference Include="..\LabPreTest.Shared\LabPreTest.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
