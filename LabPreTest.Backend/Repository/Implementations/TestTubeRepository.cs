@@ -6,7 +6,6 @@ using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Messages;
 using LabPreTest.Shared.Responses;
 using Microsoft.EntityFrameworkCore;
-using System.Net.NetworkInformation;
 
 namespace LabPreTest.Backend.Repository.Implementations
 {
@@ -24,11 +23,7 @@ namespace LabPreTest.Backend.Repository.Implementations
             var testTubes = await _context.TestTubes
                 .OrderBy(t => t.Name)
                 .ToListAsync();
-            return new ActionResponse<IEnumerable<TestTube>>
-            {
-                WasSuccess = true,
-                Result = testTubes
-            };
+            return ActionResponse<IEnumerable<TestTube>>.BuildSuccessful(testTubes);
         }
 
         public override async Task<ActionResponse<TestTube>> GetAsync(int id)
@@ -36,19 +31,9 @@ namespace LabPreTest.Backend.Repository.Implementations
             var testTube = await _context.TestTubes
                         .FirstOrDefaultAsync(c => c.Id == id);
             if (testTube == null)
-            {
-                return new ActionResponse<TestTube>
-                {
-                    WasSuccess = false,
-                    Message = MessageStrings.DbCountryNotFoundMessage
-                };
-            }
+                return ActionResponse<TestTube>.BuildFailed(MessageStrings.DbTestTubeNotFoundMessage);
 
-            return new ActionResponse<TestTube>
-            {
-                WasSuccess = true,
-                Result = testTube
-            };
+            return ActionResponse<TestTube>.BuildSuccessful(testTube);
         }
 
         public override async Task<ActionResponse<IEnumerable<TestTube>>> GetAsync(PagingDTO paging)
@@ -59,14 +44,11 @@ namespace LabPreTest.Backend.Repository.Implementations
             if (!string.IsNullOrWhiteSpace(paging.Filter))
                 queryable = queryable.Where(x => x.Name.ToLower().Contains(paging.Filter.ToLower()));
 
-            return new ActionResponse<IEnumerable<TestTube>>
-            {
-                WasSuccess = true,
-                Result = await queryable
+            var result = await queryable
                 .OrderBy(x => x.Name)
                 .Paginate(paging)
-                .ToListAsync()
-            };
+                .ToListAsync();
+            return ActionResponse<IEnumerable<TestTube>>.BuildSuccessful(result);
         }
 
         public override async Task<ActionResponse<int>> GetTotalPagesAsync(PagingDTO paging)
@@ -78,11 +60,7 @@ namespace LabPreTest.Backend.Repository.Implementations
 
             int count = await queryable.CountAsync();
             int totalPages = (int)Math.Ceiling((double)count / paging.RecordsNumber);
-            return new ActionResponse<int>
-            {
-                WasSuccess = true,
-                Result = totalPages
-            };
+            return ActionResponse<int>.BuildSuccessful(totalPages);
         }
     }
 }

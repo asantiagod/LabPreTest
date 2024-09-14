@@ -25,11 +25,7 @@ namespace LabPreTest.Backend.Repository.Implementations
             try
             {
                 await _context.SaveChangesAsync();
-                return new ActionResponse<T>
-                {
-                    WasSuccess = true,
-                    Result = entity
-                };
+                return ActionResponse<T>.BuildSuccessful(entity);
             }
             catch (DbUpdateException)
             {
@@ -45,24 +41,14 @@ namespace LabPreTest.Backend.Repository.Implementations
         {
             var row = await _entity.FindAsync(id);
             if (row == null)
-            {
-                return new ActionResponse<T>
-                {
-                    WasSuccess = false,
-                    Message = MessageStrings.DbRecordNotFoundMessage
-                };
-            }
+                return ActionResponse<T>.BuildFailed(MessageStrings.DbRecordNotFoundMessage);
 
             try
             {
                 // TODO: check if the next row can be taken out of the try-catch
                 _entity.Remove(row);
                 await _context.SaveChangesAsync();
-                return new ActionResponse<T>
-                {
-                    WasSuccess = true,
-                    Result = row
-                };
+                return ActionResponse<T>.BuildSuccessful(row);
             }
             catch (DbUpdateException)
             {
@@ -70,50 +56,30 @@ namespace LabPreTest.Backend.Repository.Implementations
             }
             catch
             {
-                return new ActionResponse<T>
-                {
-                    WasSuccess = false,
-                    Message = MessageStrings.DbDeleteErrorMessage
-                };
+                return ActionResponse<T>.BuildFailed(MessageStrings.DbDeleteErrorMessage);
             }
         }
 
         public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync()
         {
-            return new ActionResponse<IEnumerable<T>>
-            {
-                WasSuccess = true,
-                Result = await _entity.AsNoTracking().ToListAsync()
-            };
+            var result = await _entity.AsNoTracking().ToListAsync();
+            return ActionResponse<IEnumerable<T>>.BuildSuccessful(result);
         }
 
         public virtual async Task<ActionResponse<T>> GetAsync(int id)
         {
             var row = await _entity.FindAsync(id);
             if (row == null)
-            {
-                return new ActionResponse<T>
-                {
-                    WasSuccess = false,
-                    Message = MessageStrings.DbRecordNotFoundMessage
-                };
-            }
+                return ActionResponse<T>.BuildFailed(MessageStrings.DbRecordNotFoundMessage);
 
-            return new ActionResponse<T>
-            {
-                WasSuccess = true,
-                Result = row
-            };
+            return ActionResponse<T>.BuildSuccessful(row);
         }
 
         public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync(PagingDTO paging)
         {
-            var queryable = _entity.AsQueryable();
-            return new ActionResponse<IEnumerable<T>>
-            {
-                WasSuccess = true,
-                Result = await queryable.Paginate(paging).ToListAsync()
-            };
+            var result = await _entity.AsQueryable()
+                               .Paginate(paging).ToListAsync();
+            return ActionResponse<IEnumerable<T>>.BuildSuccessful(result);
         }
 
         public virtual async Task<ActionResponse<int>> GetTotalPagesAsync(PagingDTO paging)
@@ -122,11 +88,7 @@ namespace LabPreTest.Backend.Repository.Implementations
             var queryable = _entity.AsQueryable();
             var count = await queryable.CountAsync();
             int totalPages = (int)Math.Ceiling((double)count / paging.RecordsNumber);
-            return new ActionResponse<int>
-            {
-                WasSuccess = true,
-                Result = totalPages
-            };
+            return ActionResponse<int>.BuildSuccessful(totalPages);
         }
 
         public virtual async Task<ActionResponse<T>> UpdateAsync(T entity)
@@ -135,11 +97,7 @@ namespace LabPreTest.Backend.Repository.Implementations
             try
             {
                 await _context.SaveChangesAsync();
-                return new ActionResponse<T>
-                {
-                    WasSuccess = true,
-                    Result = entity
-                };
+                return ActionResponse<T>.BuildSuccessful(entity);
             }
             catch (DbUpdateException)
             {
@@ -153,20 +111,12 @@ namespace LabPreTest.Backend.Repository.Implementations
 
         private ActionResponse<T> DbUpdateExceptionActionResponse()
         {
-            return new ActionResponse<T>
-            {
-                WasSuccess = false,
-                Message = MessageStrings.DbUpdateExceptionMessage
-            };
+            return ActionResponse<T>.BuildFailed(MessageStrings.DbUpdateExceptionMessage);
         }
 
         private ActionResponse<T> ExceptionActionResponse(Exception ex)
         {
-            return new ActionResponse<T>
-            {
-                WasSuccess = false,
-                Message = ex.Message
-            };
+            return ActionResponse<T>.BuildFailed(ex.Message);
         }
     }
 }

@@ -25,16 +25,10 @@ namespace LabPreTest.Backend.Repository.Implementations
         {
             var user = await _usersRepository.GetUserAsync(email);
             if (user == null)
-                return BuildErrorActionResponse<IEnumerable<Order>>("Usuario no valido");
+                return ActionResponse<IEnumerable<Order>>.BuildFailed("Usuario no valido");
 
             var queryable = _context.Orders
-                .Include(o => o.User)
                 .Include(o => o.Details!)
-                .ThenInclude(d => d.Test)
-                .Include(o => o.Details!)
-                .ThenInclude(d => d.Medic)
-                .Include(o => o.Details!)
-                .ThenInclude(d => d.Patient)
                 .AsQueryable();
 
             var isAdmin = await _usersRepository.IsUserInRoleAsync(user, UserType.Admin.ToString());
@@ -44,15 +38,23 @@ namespace LabPreTest.Backend.Repository.Implementations
             var result = await queryable
                 .OrderBy(x => x.Id)
                 .Paginate(pagination)
+                .Select(o => new Order
+                {
+                    Id = o.Id,
+                    CreatedAt = o.CreatedAt,
+                    Status = o.Status,
+                    UserId = o.UserId,
+                    Details = o.Details,
+                })
                 .ToListAsync();
-            return BuildSuccessfulActionResponse<IEnumerable<Order>>(result);
+            return ActionResponse<IEnumerable<Order>>.BuildSuccessful(result);
         }
 
         public async Task<ActionResponse<int>> GetTotalPagesAsync(string email, PagingDTO pagination)
         {
             var user = await _usersRepository.GetUserAsync(email);
             if (user == null)
-                return BuildErrorActionResponse<int>("Usuario no valido");
+                return ActionResponse<int>.BuildFailed("Usuario no valido");
 
             var queryable = _context.Orders.AsQueryable();
 
@@ -63,70 +65,43 @@ namespace LabPreTest.Backend.Repository.Implementations
             double count = await queryable.CountAsync();
             double totalPages = Math.Ceiling(count / pagination.RecordsNumber);
 
-            return BuildSuccessfulActionResponse((int)totalPages);
+            return ActionResponse<int>.BuildSuccessful((int)totalPages);
         }
 
         public override async Task<ActionResponse<Order>> GetAsync(int id)
         {
             var order = await _context.Orders
-                .Include(o => o.User!)
-                .ThenInclude(u => u.City!)
-                .ThenInclude(c => c.State!)
-                .ThenInclude(s => s.Country)
                 .Include(o => o.Details!)
-                .ThenInclude(od => od.Test)
-                .Include(o => o.Details!)
-                .ThenInclude(od => od.Medic)
-                .Include(o => o.Details!)
-                .ThenInclude(od => od.Patient)
                 .FirstOrDefaultAsync(o => o.Id == id);
 
             if (order == null)
-                return BuildErrorActionResponse<Order>("La orden no existe");
+                return ActionResponse<Order>.BuildFailed("La orden no existe");
 
-            return BuildSuccessfulActionResponse(order);
+            return ActionResponse<Order>.BuildSuccessful(order);
         }
 
         public async Task<ActionResponse<Order>> UpdateFullAsync(string email, OrderDTO orderDTO)
         {
             var user = await _usersRepository.GetUserAsync(email);
             if (user == null)
-                return BuildErrorActionResponse<Order>("El usuario no existe");
+                return ActionResponse<Order>.BuildFailed("El usuario no existe");
 
             var isAdmin = await _usersRepository.IsUserInRoleAsync(user, UserType.Admin.ToString());
             var isUser = await _usersRepository.IsUserInRoleAsync(user, UserType.User.ToString());
             if (!isAdmin && !isUser)
-                return BuildErrorActionResponse<Order>("No tienes permiso para realizar esta acción");
+                return ActionResponse<Order>.BuildFailed("No tienes permiso para realizar esta acción");
 
             var order = await _context.Orders
                 .Include(o => o.Details)
                 .FirstOrDefaultAsync(o => o.Id != orderDTO.Id);
             if (order == null)
-                return BuildErrorActionResponse<Order>("La orden no existe");
+                return ActionResponse<Order>.BuildFailed("La orden no existe");
 
             order.Status = orderDTO.Status;
             _context.Update(order);
             await _context.SaveChangesAsync();
 
-            return BuildSuccessfulActionResponse(order);
-        }
-
-        private static ActionResponse<T> BuildErrorActionResponse<T>(string errorMessage)
-        {
-            return new ActionResponse<T>
-            {
-                WasSuccess = false,
-                Message = errorMessage,
-            };
-        }
-
-        private static ActionResponse<T> BuildSuccessfulActionResponse<T>(T result)
-        {
-            return new ActionResponse<T>
-            {
-                WasSuccess = true,
-                Result = result
-            };
+            return ActionResponse<Order>.BuildSuccessful(order);
         }
     }
 }

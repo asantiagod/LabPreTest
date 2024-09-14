@@ -18,5 +18,6 @@ namespace LabPreTest.Shared.Entities
         public string? UserId { get; set; }
 
         public ICollection<OrderDetail>? Details { get; set; }
+        public int DetailsNumber => Details == null || Details.Count == 0 ? 0 : Details.Count;
     }
 }
