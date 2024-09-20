@@ -22,9 +22,6 @@ namespace LabPreTest.Backend.Repository.Implementations
         {
             var test = await _context.Tests
                 .OrderBy(x => x.Name)
-                .Include(x => x.TestTube)
-                .Include(x => x.Section)
-                .ThenInclude(x => x.SectionImages)
                 .ToListAsync();
             return ActionResponse<IEnumerable<Test>>.BuildSuccessful(test);
         }
@@ -34,7 +31,6 @@ namespace LabPreTest.Backend.Repository.Implementations
             var test = await _context.Tests
                 .Include(x => x.TestTube)
                 .Include(x => x.Section)
-                .ThenInclude(c => c.SectionImages)
                 .Include(x => x.Conditions!)
                 .ThenInclude(c => c.Condition)
                 .FirstOrDefaultAsync(c => c.Id == id);
@@ -48,9 +44,6 @@ namespace LabPreTest.Backend.Repository.Implementations
         public override async Task<ActionResponse<IEnumerable<Test>>> GetAsync(PagingDTO paging)
         {
             var queryable = _context.Tests
-                .Include(x => x.TestTube)
-                .Include(x => x.Section)
-                .ThenInclude(x => x.SectionImages)
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(paging.Filter))
