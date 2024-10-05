@@ -6,11 +6,9 @@ using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Responses;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net;
 using System.Security.Claims;
 using System.Text;
 
@@ -54,7 +52,7 @@ namespace LabPreTest.Backend.Controllers
                 currentUser.LastName = user.LastName;
                 currentUser.Address = user.Address;
                 currentUser.CityId = user.CityId;
-                
+
                 if (!string.IsNullOrEmpty(user.Photo))
                 {
                     var photoUser = Convert.FromBase64String(user.Photo);

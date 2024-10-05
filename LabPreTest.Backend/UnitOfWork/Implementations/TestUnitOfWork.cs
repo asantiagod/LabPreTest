@@ -15,6 +15,8 @@ namespace LabPreTest.Backend.UnitOfWork.Implementations
             _testRepository = testRepository;
         }
 
+        public async Task<ActionResponse<TestDTO>> AddAsync(TestDTO testDTO) => await _testRepository.AddAsync(testDTO);
+
         public override async Task<ActionResponse<IEnumerable<Test>>> GetAsync() => await _testRepository.GetAsync();
 
         public override async Task<ActionResponse<Test>> GetAsync(int id) => await _testRepository.GetAsync(id);

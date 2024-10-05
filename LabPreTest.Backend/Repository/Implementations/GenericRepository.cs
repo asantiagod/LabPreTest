@@ -109,12 +109,12 @@ namespace LabPreTest.Backend.Repository.Implementations
             }
         }
 
-        private ActionResponse<T> DbUpdateExceptionActionResponse()
+        protected ActionResponse<T> DbUpdateExceptionActionResponse()
         {
             return ActionResponse<T>.BuildFailed(MessageStrings.DbUpdateExceptionMessage);
         }
 
-        private ActionResponse<T> ExceptionActionResponse(Exception ex)
+        protected ActionResponse<T> ExceptionActionResponse(Exception ex)
         {
             return ActionResponse<T>.BuildFailed(ex.Message);
         }

@@ -18,6 +18,42 @@ namespace LabPreTest.Backend.Repository.Implementations
             _context = context;
         }
 
+        public async Task<ActionResponse<TestDTO>> AddAsync(TestDTO testDTO)
+        {
+            var section = _context.Section.FirstOrDefault(s => s.Id == testDTO.SectionID);
+            var testTube = _context.TestTubes.FirstOrDefault(t => t.Id == testDTO.TestTubeID);
+            ICollection<TestCondition> conditions = await _context.TestConditions
+               .Where(c => testDTO.Conditions.Contains(c.Id))
+               .ToListAsync();
+
+            //if (section == null || testTube == null)
+            //    return ActionResponse<TestDTO>.BuildFailed(MessageStrings.);
+
+            var test = new Test
+            {
+                TestID = testDTO.TestID,
+                Name = testDTO.Name,
+                Section = section!,
+                TestTube = testTube!,
+                Conditions = conditions
+            };
+
+            try
+            {
+                _context.Tests.Add(test);
+                await _context.SaveChangesAsync();
+                return ActionResponse<TestDTO>.BuildSuccessful(testDTO);
+            }
+            catch (DbUpdateException ) 
+            {
+                return ActionResponse<TestDTO>.BuildFailed(MessageStrings.DbUpdateExceptionMessage);
+            }
+            catch(Exception ex)
+            {
+                return ActionResponse<TestDTO>.BuildFailed(ex.Message);
+            }
+        }
+
         public override async Task<ActionResponse<IEnumerable<Test>>> GetAsync()
         {
             var test = await _context.Tests
