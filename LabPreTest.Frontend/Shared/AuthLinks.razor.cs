@@ -32,6 +32,10 @@ namespace LabPreTest.Frontend.Shared
         {
             Modal.Show<Login>();
         }
+        void ShowModalLogout()
+        {
+            
+        }
 
     }
 }
