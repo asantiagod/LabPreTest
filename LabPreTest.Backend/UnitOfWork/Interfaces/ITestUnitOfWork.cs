@@ -13,5 +13,7 @@ namespace LabPreTest.Backend.UnitOfWork.Interfaces
         Task<ActionResponse<IEnumerable<Test>>> GetAsync(PagingDTO paging);
 
         Task<ActionResponse<int>> GetTotalPagesAsync(PagingDTO pagination);
+
+        Task<ActionResponse<TestDTO>> AddAsync(TestDTO testDTO);
     }
 }

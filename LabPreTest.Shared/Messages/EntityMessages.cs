@@ -14,6 +14,7 @@
         public const string PreanalyticConditionDisplayDescription = "Descripción";
         public const string StateDisplayName = "Estado/Departamento";
         public const string SectionDisplayName = "Sección";
+        public const string TestDisplayName = "Test";
         public const string TestTubeDisplayName = "Tipo de recipiente";
 
         public const string TestConditionsDisplayMessage = "Examen/Preanaliticos";

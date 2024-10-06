@@ -11,7 +11,7 @@ namespace LabPreTest.Shared.Entities
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
         public int TestID { get; set; }
 
-        [Display(Name = EntityMessages.PatientDisplayName)]
+        [Display(Name = EntityMessages.TestDisplayName)]
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
         public string Name { get; set; } = null!;

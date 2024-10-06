@@ -5,6 +5,7 @@ using LabPreTest.Shared.DTO;
 using LabPreTest.Shared.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.JSInterop.Implementation;
 
 namespace LabPreTest.Backend.Controllers
 {
@@ -63,5 +64,15 @@ namespace LabPreTest.Backend.Controllers
             }
             return BadRequest();
         }
+
+        [HttpPost("dto")]
+        public async Task<IActionResult> PostAsync([FromBody]TestDTO testDTO)
+        {
+            var action = await _testsUnitOfWork.AddAsync(testDTO);
+            if(action.WasSuccess)
+                return Ok(action.Result);
+            return BadRequest(action.Message);
+        }
+
     }
 }
