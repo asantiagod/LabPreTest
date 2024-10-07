@@ -19,6 +19,16 @@ namespace LabPreTest.Backend.Controllers
         {
             _testsUnitOfWork = testUnitOfWork;
         }
+        
+        [HttpDelete("{id}")]
+        public override async Task<IActionResult> DeleteAsync(int id)
+        {
+            var action = await _testsUnitOfWork.DeleteAsync(id);
+            if (action.WasSuccess)
+                return NoContent();
+            return BadRequest(action.Message);
+        }
+
         [AllowAnonymous]
         [HttpGet]
         public override async Task<IActionResult> GetAsync([FromQuery] PagingDTO pagination)

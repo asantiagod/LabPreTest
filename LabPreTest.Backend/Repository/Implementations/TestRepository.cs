@@ -22,12 +22,12 @@ namespace LabPreTest.Backend.Repository.Implementations
         {
             var section = _context.Section.FirstOrDefault(s => s.Id == testDTO.SectionID);
             var testTube = _context.TestTubes.FirstOrDefault(t => t.Id == testDTO.TestTubeID);
-            ICollection<TestCondition> conditions = await _context.TestConditions
+            ICollection<PreanalyticCondition> conditions = await _context.PreanalyticConditions
                .Where(c => testDTO.Conditions.Contains(c.Id))
                .ToListAsync();
 
-            //if (section == null || testTube == null)
-            //    return ActionResponse<TestDTO>.BuildFailed(MessageStrings.);
+            if (conditions.Count != testDTO.Conditions.Count)
+                return ActionResponse<TestDTO>.BuildFailed(MessageStrings.DbParameterNotFoundMessage);
 
             var test = new Test
             {
@@ -44,13 +44,38 @@ namespace LabPreTest.Backend.Repository.Implementations
                 await _context.SaveChangesAsync();
                 return ActionResponse<TestDTO>.BuildSuccessful(testDTO);
             }
-            catch (DbUpdateException ) 
+            catch (DbUpdateException)
             {
                 return ActionResponse<TestDTO>.BuildFailed(MessageStrings.DbUpdateExceptionMessage);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return ActionResponse<TestDTO>.BuildFailed(ex.Message);
+            }
+        }
+
+        public override async Task<ActionResponse<Test>> DeleteAsync(int id)
+        {
+            var test = await _context.Tests.Include(t => t.Conditions).FirstOrDefaultAsync(t => t.Id == id);
+            if (test == null)
+                return ActionResponse<Test>.BuildFailed(MessageStrings.DbRecordNotFoundMessage);
+
+            test.Conditions?.Clear();
+            //_context.SaveChanges();
+            _context.Tests.Remove(test);
+
+            try
+            {
+                _context.SaveChanges();
+                return ActionResponse<Test>.BuildSuccessful(test);
+            }
+            catch(DbUpdateException)
+            {
+                return ActionResponse<Test>.BuildFailed(MessageStrings.DbUpdateExceptionMessage);
+            }
+            catch(Exception ex) 
+            {
+                return ActionResponse<Test>.BuildFailed(ex.Message);
             }
         }
 
@@ -68,7 +93,6 @@ namespace LabPreTest.Backend.Repository.Implementations
                 .Include(x => x.TestTube)
                 .Include(x => x.Section)
                 .Include(x => x.Conditions!)
-                .ThenInclude(c => c.Condition)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (test == null)

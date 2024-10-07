@@ -269,8 +269,7 @@ namespace LabPreTest.Backend.Data
             {
                 TestID = testId,
                 Name = name,
-                Conditions = new List<TestCondition>()
-
+                Conditions = []
             };
 
             var section = await _context.Section.FirstOrDefaultAsync(s => s.Name == sectionName);
@@ -286,8 +285,8 @@ namespace LabPreTest.Backend.Data
                 var pCondition = await _context
                                        .PreanalyticConditions
                                        .FirstOrDefaultAsync(c => c.Name == condition);
-                if (condition != null)
-                    test.Conditions.Add(new TestCondition { Condition = pCondition });
+                if (pCondition != null)
+                    test.Conditions.Add(pCondition);
             }
 
             _context.Tests.Add(test);

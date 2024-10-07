@@ -3,6 +3,7 @@
     public static class MessageStrings
     {
         public const string DbUpdateExceptionMessage = "El registro ya existe.";
+        public const string DbParameterNotFoundMessage = "Parametro no encontrado";
         public const string DbRecordNotFoundMessage = "Registro no encontrado.";
         public const string DbDeleteErrorMessage = "No se puede eliminar ya que tiene registros asociados.";
         
