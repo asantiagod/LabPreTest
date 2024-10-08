@@ -8,13 +8,14 @@
                 </div>
             }
             <a href="EditUser" class="nav-link btn user-name"> @context.User.Identity!.Name</a>
-            <a href="Logout" class="nav-link btn user-name">Cerrar Sesión</a>
+            <a class="nav-link btn user-name" @onclick=@(()=> ShowLogoutModal())>Cerrar Sesión</a>
         </div>
     </Authorized>
     <NotAuthorized>
-        <div class="top-row px-3">
-            <a href="Register" class="nav-link btn btn-link">Registro</a>
-            <a class="nav-link btn btn-link" @onclick=@(()=> ShowModal())>Iniciar Sesión</a>
+        <div class="top-row px-3 d-flex justify-content-lg-end">
+            <a href="/" class="bi bi-house-door-fill-nav-menu btn btn-md btn-lg-custom btn-primary mx-2 flex-grow-0 fs-5"></a>
+            <a href="Register" class="btn btn-sm btn-primary mx-2 flex-grow-0 fs-5">Registro</a>
+            <a class="btn btn-primary mx-2 flex-grow-0 fs-5" @onclick=@(()=> ShowModal())>Iniciar Sesión</a>
         </div>
     </NotAuthorized>
 </AuthorizeView>
