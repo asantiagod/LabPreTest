@@ -1,10 +1,8 @@
 ﻿@page "/"
 
-<h3>Catálogo de exámenes LabPreTest</h3>
-
 <GenericList MyList="Tests">
     <Body>
-
+        <h1 class="me-auto">Catálogo de examenes</h1>
         @if (Tests is null)
         {
             <Loading />
