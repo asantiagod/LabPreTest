@@ -27,11 +27,10 @@ namespace LabPreTest.Backend.Controllers
 
             if (action.WasSuccess == true)
                 return Ok(action.Result);
-            return BadRequest();
+            return BadRequest(action.Message);
         }
 
-        [
-        HttpGet("my")]
+        [HttpGet("my")]
         public override async Task<IActionResult> GetAsync()
         {
             var action = await _temporalOrdersUnitOfWork.GetAsync(User.Identity!.Name!);

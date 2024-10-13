@@ -30,7 +30,7 @@ namespace LabPreTest.Backend.Repository.Implementations
 
             var patient = await _context.Patients.FirstOrDefaultAsync(m => m.Id == temporalOrderDTO.PatientId);
             if (patient == null)
-                return ActionResponse<TemporalOrdersDTO>.BuildFailed("El paciente no encontrado");
+                return ActionResponse<TemporalOrdersDTO>.BuildFailed("El paciente no existe");
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
             if (user == null)
@@ -59,10 +59,6 @@ namespace LabPreTest.Backend.Repository.Implementations
         public async Task<ActionResponse<IEnumerable<TemporalOrder>>> GetAsync(string email)
         {
             var temporalOrders = await _context.TemporalOrders
-                .Include(to => to.User)
-                .Include(to => to.Test)
-                .Include(to => to.Medic)
-                .Include(to => to.Patient)
                 .Where(to => to.User!.Email == email)
                 .ToListAsync();
 
