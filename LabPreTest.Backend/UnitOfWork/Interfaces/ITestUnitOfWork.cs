@@ -16,6 +16,8 @@ namespace LabPreTest.Backend.UnitOfWork.Interfaces
 
         Task<ActionResponse<TestDTO>> AddAsync(TestDTO testDTO);
 
+        Task<ActionResponse<TestDTO>> UpdateAsync(int id, TestDTO testDTO);
+
         Task<ActionResponse<Test>> DeleteAsync(int id);
     }
 }

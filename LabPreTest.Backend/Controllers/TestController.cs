@@ -19,7 +19,7 @@ namespace LabPreTest.Backend.Controllers
         {
             _testsUnitOfWork = testUnitOfWork;
         }
-        
+
         [HttpDelete("{id}")]
         public override async Task<IActionResult> DeleteAsync(int id)
         {
@@ -52,6 +52,7 @@ namespace LabPreTest.Backend.Controllers
             }
             return BadRequest();
         }
+
         [AllowAnonymous]
         [HttpGet("{id}")]
         public override async Task<IActionResult> GetAsync(int id)
@@ -63,6 +64,7 @@ namespace LabPreTest.Backend.Controllers
             }
             return NotFound(response.Message);
         }
+
         [AllowAnonymous]
         [HttpGet("totalPages")]
         public override async Task<IActionResult> GetPagesAsync([FromQuery] PagingDTO pagination)
@@ -76,13 +78,21 @@ namespace LabPreTest.Backend.Controllers
         }
 
         [HttpPost("dto")]
-        public async Task<IActionResult> PostAsync([FromBody]TestDTO testDTO)
+        public async Task<IActionResult> PostAsync([FromBody] TestDTO testDTO)
         {
             var action = await _testsUnitOfWork.AddAsync(testDTO);
-            if(action.WasSuccess)
+            if (action.WasSuccess)
                 return Ok(action.Result);
             return BadRequest(action.Message);
         }
 
+        [HttpPut("dto/{id}")]
+        public async Task<IActionResult> UpdateAsync(int id, [FromBody] TestDTO testDTO)
+        {
+            var action = await _testsUnitOfWork.UpdateAsync(id, testDTO);
+            if (action.WasSuccess)
+                return Ok(action.Result);
+            return BadRequest(action.Message);
+        }
     }
 }
