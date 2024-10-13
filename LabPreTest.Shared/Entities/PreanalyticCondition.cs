@@ -18,7 +18,7 @@ namespace LabPreTest.Shared.Entities
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
         public string Description { get; set; } = null!;
 
-        public ICollection<TestCondition>? Tests { get; set; }
+        public ICollection<Test>? Tests { get; set; }
         public int TestConditionNumber => Tests == null || Tests.Count == 0 ? 0 : Tests.Count;
     }
 }

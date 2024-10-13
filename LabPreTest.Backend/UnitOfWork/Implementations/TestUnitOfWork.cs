@@ -24,5 +24,9 @@ namespace LabPreTest.Backend.UnitOfWork.Implementations
         public override async Task<ActionResponse<IEnumerable<Test>>> GetAsync(PagingDTO paging) => await _testRepository.GetAsync(paging);
 
         public override async Task<ActionResponse<int>> GetTotalPagesAsync(PagingDTO paging) => await _testRepository.GetTotalPagesAsync(paging);
+
+        public async Task<ActionResponse<TestDTO>> UpdateAsync(int id, TestDTO testDTO) => await _testRepository.UpdateAsync(id, testDTO);
+
+        public override async Task<ActionResponse<Test>> DeleteAsync(int id) => await _testRepository.DeleteAsync(id);
     }
 }

@@ -22,12 +22,12 @@ namespace LabPreTest.Backend.Repository.Implementations
         {
             var section = _context.Section.FirstOrDefault(s => s.Id == testDTO.SectionID);
             var testTube = _context.TestTubes.FirstOrDefault(t => t.Id == testDTO.TestTubeID);
-            ICollection<TestCondition> conditions = await _context.TestConditions
+            ICollection<PreanalyticCondition> conditions = await _context.PreanalyticConditions
                .Where(c => testDTO.Conditions.Contains(c.Id))
                .ToListAsync();
 
-            //if (section == null || testTube == null)
-            //    return ActionResponse<TestDTO>.BuildFailed(MessageStrings.);
+            if (conditions.Count != testDTO.Conditions.Count)
+                return ActionResponse<TestDTO>.BuildFailed(MessageStrings.DbParameterNotFoundMessage);
 
             var test = new Test
             {
@@ -38,20 +38,56 @@ namespace LabPreTest.Backend.Repository.Implementations
                 Conditions = conditions
             };
 
-            try
+            _context.Tests.Add(test);
+            return await SaveChangesAsync(testDTO);
+        }
+
+        public async Task<ActionResponse<TestDTO>> UpdateAsync(int id, TestDTO testDTO)
+        {
+            ICollection<PreanalyticCondition> conditions = await _context.PreanalyticConditions
+               .Where(c => testDTO.Conditions.Contains(c.Id))
+               .ToListAsync();
+
+            if (conditions.Count != testDTO.Conditions.Count)
+                return ActionResponse<TestDTO>.BuildFailed(MessageStrings.DbParameterNotFoundMessage);
+
+            var test = await _context.Tests
+                       .Include(x =>  x.Conditions)
+                       .FirstOrDefaultAsync(x => x.Id == id);
+            if (test == null)
+                return ActionResponse<TestDTO>.BuildFailed(MessageStrings.DbRecordNotFoundMessage);
+            test.TestID = testDTO.TestID;
+            test.Name = testDTO.Name;
+            test.Conditions?.Clear(); // Clear old relationships
+            test.Conditions = conditions;
+            if (test.SectionId != testDTO.SectionID)
             {
-                _context.Tests.Add(test);
-                await _context.SaveChangesAsync();
-                return ActionResponse<TestDTO>.BuildSuccessful(testDTO);
+                var section = _context.Section.FirstOrDefault(s => s.Id == testDTO.SectionID);
+                if (section == null)
+                    return ActionResponse<TestDTO>.BuildFailed(MessageStrings.DbParameterNotFoundMessage);
+                test.Section = section;
             }
-            catch (DbUpdateException ) 
+            if (test.TestTubeId != testDTO.TestTubeID)
             {
-                return ActionResponse<TestDTO>.BuildFailed(MessageStrings.DbUpdateExceptionMessage);
+                var tube = _context.TestTubes.FirstOrDefault(t => t.Id == testDTO.TestTubeID);
+                if (tube == null)
+                    return ActionResponse<TestDTO>.BuildFailed(MessageStrings.DbParameterNotFoundMessage);
+                test.TestTube = tube;
             }
-            catch(Exception ex)
-            {
-                return ActionResponse<TestDTO>.BuildFailed(ex.Message);
-            }
+
+            _context.Update(test);
+            return await SaveChangesAsync(testDTO);
+        }
+
+        public override async Task<ActionResponse<Test>> DeleteAsync(int id)
+        {
+            var test = await _context.Tests.Include(t => t.Conditions).FirstOrDefaultAsync(t => t.Id == id);
+            if (test == null)
+                return ActionResponse<Test>.BuildFailed(MessageStrings.DbRecordNotFoundMessage);
+
+            test.Conditions?.Clear();
+            _context.Tests.Remove(test);
+            return await SaveChangesAsync(test);
         }
 
         public override async Task<ActionResponse<IEnumerable<Test>>> GetAsync()
@@ -68,7 +104,6 @@ namespace LabPreTest.Backend.Repository.Implementations
                 .Include(x => x.TestTube)
                 .Include(x => x.Section)
                 .Include(x => x.Conditions!)
-                .ThenInclude(c => c.Condition)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (test == null)
@@ -102,6 +137,24 @@ namespace LabPreTest.Backend.Repository.Implementations
             int count = await queryable.CountAsync();
             int totalPages = (int)Math.Ceiling((double)count / paging.RecordsNumber);
             return ActionResponse<int>.BuildSuccessful(totalPages);
+        }
+
+        private async Task<ActionResponse<T>> SaveChangesAsync<T>(T model,
+                                                                  string errorMessage = MessageStrings.DbUpdateExceptionMessage)
+        {
+            try
+            {
+                await _context.SaveChangesAsync();
+                return ActionResponse<T>.BuildSuccessful(model);
+            }
+            catch (DbUpdateException)
+            {
+                return ActionResponse<T>.BuildFailed(errorMessage);
+            }
+            catch (Exception ex)
+            {
+                return ActionResponse<T>.BuildFailed(ex.Message);
+            }
         }
     }
 }
