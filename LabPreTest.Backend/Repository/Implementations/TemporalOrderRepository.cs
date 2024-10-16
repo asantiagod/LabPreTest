@@ -2,6 +2,7 @@
 using LabPreTest.Backend.Repository.Interfaces;
 using LabPreTest.Shared.DTO;
 using LabPreTest.Shared.Entities;
+using LabPreTest.Shared.Messages;
 using LabPreTest.Shared.Responses;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,40 +21,34 @@ namespace LabPreTest.Backend.Repository.Implementations
 
         public async Task<ActionResponse<TemporalOrdersDTO>> AddFullAsync(string email, TemporalOrdersDTO temporalOrderDTO)
         {
-            var test = await _context.Tests.FirstOrDefaultAsync(t => t.Id == temporalOrderDTO.TestId);
-            if (test == null)
-                return ActionResponse<TemporalOrdersDTO>.BuildFailed("El examen no existe");
+            var actionResponse = await CheckRelatedEntitiesAsync(email, temporalOrderDTO);
+            if (!actionResponse.WasSuccess)
+                return ActionResponse<TemporalOrdersDTO>.BuildFailed(actionResponse.Message!);
 
-            var medician = await _context.Medicians.FirstOrDefaultAsync(m => m.Id == temporalOrderDTO.MedicId);
-            if (medician == null)
-                return ActionResponse<TemporalOrdersDTO>.BuildFailed("El medico no existe");
+            var temporalOrder = actionResponse.Result!;
+            _context.Add(temporalOrder);
 
-            var patient = await _context.Patients.FirstOrDefaultAsync(m => m.Id == temporalOrderDTO.PatientId);
-            if (patient == null)
-                return ActionResponse<TemporalOrdersDTO>.BuildFailed("El paciente no existe");
+            return await SaveContextChangesAsync(temporalOrderDTO);
+        }
 
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-            if (user == null)
-                return ActionResponse<TemporalOrdersDTO>.BuildFailed("El usuario no existe");
+        public async Task<ActionResponse<TemporalOrdersDTO>> UpdateAsync(string email, TemporalOrdersDTO temporalOrderDTO)
+        {
+            var tempOrder = await _context.TemporalOrders.FirstOrDefaultAsync(to => to.Id == temporalOrderDTO.Id);
+            if (tempOrder == null)
+                return ActionResponse<TemporalOrdersDTO>.BuildFailed(MessageStrings.DbRecordNotFoundMessage);
 
-            var temporalOrder = new TemporalOrder
-            {
-                User = user,
-                Test = test,
-                Medic = medician,
-                Patient = patient
-            };
+            var actionResponse = await CheckRelatedEntitiesAsync(email, temporalOrderDTO);
+            if (!actionResponse.WasSuccess)
+                return ActionResponse<TemporalOrdersDTO>.BuildFailed(actionResponse.Message!);
 
-            try
-            {
-                _context.Add(temporalOrder);
-                await _context.SaveChangesAsync();
-                return ActionResponse<TemporalOrdersDTO>.BuildSuccessful(temporalOrderDTO);
-            }
-            catch (Exception ex)
-            {
-                return ActionResponse<TemporalOrdersDTO>.BuildFailed(ex.Message);
-            }
+            var tO = actionResponse.Result!;
+            tempOrder.User = tO.User;
+            tempOrder.Test = tO.Test;
+            tempOrder.Medic = tO.Medic;
+            tempOrder.Patient = tO.Patient;
+            _context.Update(tempOrder);
+            
+            return await SaveContextChangesAsync(temporalOrderDTO);
         }
 
         public async Task<ActionResponse<IEnumerable<TemporalOrder>>> GetAsync(string email)
@@ -71,6 +66,46 @@ namespace LabPreTest.Backend.Repository.Implementations
                 .Where(x => x.User!.Email == email)
                 .CountAsync();
             return ActionResponse<int>.BuildSuccessful(count);
+        }
+
+        private async Task<ActionResponse<TemporalOrder>> CheckRelatedEntitiesAsync(string email, TemporalOrdersDTO temporalOrderDTO)
+        {
+            var test = await _context.Tests.FirstOrDefaultAsync(t => t.Id == temporalOrderDTO.TestId);
+            if (test == null)
+                return ActionResponse<TemporalOrder>.BuildFailed("El examen no existe");
+
+            var medician = await _context.Medicians.FirstOrDefaultAsync(m => m.Id == temporalOrderDTO.MedicId);
+            if (medician == null)
+                return ActionResponse<TemporalOrder>.BuildFailed("El medico no existe");
+
+            var patient = await _context.Patients.FirstOrDefaultAsync(m => m.Id == temporalOrderDTO.PatientId);
+            if (patient == null)
+                return ActionResponse<TemporalOrder>.BuildFailed("El paciente no existe");
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if (user == null)
+                return ActionResponse<TemporalOrder>.BuildFailed("El usuario no existe");
+
+            return ActionResponse<TemporalOrder>.BuildSuccessful(new TemporalOrder
+            {
+                User = user,
+                Test = test,
+                Medic = medician,
+                Patient = patient
+            });
+        }
+
+        private async Task<ActionResponse<T>> SaveContextChangesAsync<T>(T result)
+        {
+            try
+            {
+                await _context.SaveChangesAsync();
+                return ActionResponse<T>.BuildSuccessful(result);
+            }
+            catch (Exception ex)
+            {
+                return ActionResponse<T>.BuildFailed(ex.Message);
+            }
         }
     }
 }

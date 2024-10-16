@@ -9,7 +9,7 @@ namespace LabPreTest.Backend.Controllers
 {
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Route("api/[controller]")]
+    [Route("api/[controller]", Order = -10)]
     public class TemporalOrdersController : GenericController<TemporalOrder>
     {
         private readonly ITemporalOrdersUnitOfWork _temporalOrdersUnitOfWork;
@@ -20,10 +20,20 @@ namespace LabPreTest.Backend.Controllers
             _temporalOrdersUnitOfWork = temporalOrdersUnitOfWork;
         }
 
-        [HttpPost("full")]
+        [HttpPost("dto")]
         public async Task<IActionResult> PostAsync(TemporalOrdersDTO temporalOrdersDTO)
         {
             var action = await _temporalOrdersUnitOfWork.AddFullAsync(User.Identity!.Name!, temporalOrdersDTO);
+
+            if (action.WasSuccess == true)
+                return Ok(action.Result);
+            return BadRequest(action.Message);
+        }
+
+        [HttpPut("dto")]
+        public async Task<IActionResult> PutAsync(TemporalOrdersDTO temporalOrdersDTO)
+        {
+            var action = await _temporalOrdersUnitOfWork.UpdateAsync(User.Identity!.Name!, temporalOrdersDTO);
 
             if (action.WasSuccess == true)
                 return Ok(action.Result);

@@ -20,5 +20,7 @@ namespace LabPreTest.Backend.UnitOfWork.Implementations
         public Task<ActionResponse<IEnumerable<TemporalOrder>>> GetAsync(string email) => _temporalOrdersRepository.GetAsync(email);
 
         public Task<ActionResponse<int>> GetCountAsync(string email) => _temporalOrdersRepository.GetCountAsync(email);
+
+        public Task<ActionResponse<TemporalOrdersDTO>> UpdateAsync(string email, TemporalOrdersDTO temporalOrderDTO) => _temporalOrdersRepository.UpdateAsync(email, temporalOrderDTO);
     }
 }
