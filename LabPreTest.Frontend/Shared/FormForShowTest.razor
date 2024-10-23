@@ -4,36 +4,50 @@
 
 <EditForm EditContext="editContext" >
     <DataAnnotationsValidator />
-    <div class="mb-3">
-        <label>@Label</label>      
-        <div class="mb-3">
-            <label for="Nombre">Nombre del exámen</label>
-            <InputText class="form-control" @bind-Value="@Model.Name" disabled />
-        </div>
-        <div class="mb-3">
-            <label>Sección:</label>
-            <InputText class="form-control" @bind-Value="@Model.Section.Name" disabled />
-        </div>
-        <div class="mb-3">
-            <label>Condiciones preanalíticas:</label>
-        <tr>
-        <th>Condición preanalítica</th>
-        <th>Descripción</th>
-        </tr>
-
-            @foreach (var t in Model.Conditions)
-            {
+    <div class="mb-3 d-flex flex-column align-items-center">
+        <label><h1>Detalles del exámen</h1></label>
+    </div>
+    <div class="mb-3 d-flex flex-column align-items-center">
+        <table class="table table-bordered table-striped w-75">
+            <thead class="text-center">
                 <tr>
-                    <td class="">@t.Condition.Name</td>
-                   <td>@t.Condition.Description</td>
+                    <td colspan="4">
+                    <InputText class="form-control" @bind-Value="@Model.Name" disabled />
+                    </td>
                 </tr>
-            }
-        </div>
-    <div class="mb-3">
-        <label>Tipo de recipiente  </label>
-        <InputText class="form-control" @bind-Value="@Model.TestTube.Name" disabled />
+                <tr>
+                    <th>Condición preanalítica</th>
+                    <th>Descripción</th>
+                    <th>Tipo de recipiente</th>
+                    <th>Sección</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in Model.Conditions)
+                {
+                    <tr>
+                        <td>@t.Condition.Name</td>
+                        <td>@t.Condition.Description</td>
+                        <td>@Model.TestTube.Name</td>
+                        <td>@Model.Section.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
+
+    <style>
+        th, td {
+            padding: 10px 20px;
+        }
+
+        .form-control {
+            text-align: center; /* Centra el texto dentro del input */
+        }
+    </style>
+    <div class="d-flex flex-column align-items-center">
+        <button class="btn btn-success " @onclick="ReturnAction">Regresar</button>
     </div>
-    <button class="btn btn-success align-self-center" @onclick="ReturnAction">Regresar</button>
+
 </EditForm>
 
