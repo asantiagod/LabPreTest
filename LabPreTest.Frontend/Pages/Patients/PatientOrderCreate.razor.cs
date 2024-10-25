@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Components;
 namespace LabPreTest.Frontend.Pages.Patients
 {
     [Authorize(Roles = FrontendStrings.UserString)]
-    public partial class PatientCreate
+    public partial class PatientOrderCreate
     {
         private Patient patient = new();
 
@@ -44,7 +44,7 @@ namespace LabPreTest.Frontend.Pages.Patients
         private void Return()
         {
             patientForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo("/patients");
+            NavigationManager.NavigateTo("/orders/create");
         }
     }
 }

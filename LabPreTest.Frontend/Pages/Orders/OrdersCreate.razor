@@ -33,20 +33,16 @@ else
 
     <div class="mb-3">
         <label>Medico:</label>
-        <div class="mb-3">
-            <a class="btn btn-primary" @onclick=@(()=>ShowCreateModal())>Nuevo medico</a>
-        </div>
         <div>
-            <select class="form-select" disabled="@IsSelectorDisabled" @onchange="MedicChanged" value="@MedicValue">
-                <option value="0">---Seleccione al medico---</option>
-                @if (Medicians is not null)
-                {
-                    foreach (var medic in Medicians)
-                    {
-                        <option value="@medic.Id">@medic.Name</option>
-                    }
-                }
-            </select>
+            <div class="mb-3">
+                <label>Ingrese el documento del medico:</label>
+                <input type="number" class="form-control" @bind="MedicDocumentValue" placeholder="Ingrese documento a buscar..." />
+                <button class="btn btn-primary" @onclick="SearchMedic">Buscar Medico</button>
+            </div>
+            @if (SelectedMedic != null)
+            {
+                <LabPreTest.Frontend.Pages.Medician.MedicOrderEdit_ Id="@SelectedMedic.Id"></LabPreTest.Frontend.Pages.Medician.MedicOrderEdit_>
+            }
         </div>
     </div>
 

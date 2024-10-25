@@ -1,0 +1,12 @@
+﻿@page "/orders/medicians/edit/{Id:int}"
+
+<h3>Editar Medico</h3>
+
+@if (medic is null)
+{
+    <Loading />
+}
+else
+{
+    <FormForUser @ref="medicForm" Label="Medico:" Model="medic" OnValidSubmit="EditAsync" ReturnAction="Return" />
+}

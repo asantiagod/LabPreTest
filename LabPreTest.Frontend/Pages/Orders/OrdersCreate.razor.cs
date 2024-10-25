@@ -1,6 +1,8 @@
-﻿using Blazored.Modal.Services;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
 using LabPreTest.Frontend.Pages.Medician;
+using LabPreTest.Frontend.Pages.Patients;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Frontend.Shared;
 using LabPreTest.Shared.ApiRoutes;
@@ -24,15 +26,19 @@ namespace LabPreTest.Frontend.Pages.Orders
         private List<Patient>? Patients { get; set; }
         private int PatientValue { get; set; }
         private string? PatientDocumentValue { get; set; }
+        private string? MedicDocumentValue { get; set; }
 
         private Patient? patient;
+
+        private bool wasClose;
         private int NumberOfTests { get; set; }
         private bool IsAddButtonDisabled { get; set; } = true;
         private bool IsSelectorDisabled { get; set; } = false;
         private Patient? SelectedPatient { get; set; }
-        private Patient? SelectedPatientId { get; set; }
+        private Medic? SelectedMedic { get; set; }
         private bool PatientFound { get; set; }
 
+        [CascadingParameter] private BlazoredModalInstance BlazoredModal { get; set; } = default!;
         [CascadingParameter] private IModalService ModalService { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
@@ -54,23 +60,55 @@ namespace LabPreTest.Frontend.Pages.Orders
             {
                 SelectedPatient = Patients.FirstOrDefault(p => p.DocumentId.ToString() == PatientDocumentValue);
             }
-            if (SelectedPatient == null) 
+            if (SelectedPatient == null)
             {
-                await SweetAlertService.FireAsync("Error", "Paciente no encontrado", SweetAlertIcon.Error);
+                var result = await SweetAlertService.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Busqueda de paciente",
+                    Text = "Paciente no encontrado. ¿Deseas crear un nuevo paciente?",
+                    Icon = SweetAlertIcon.Error,
+                    ShowCancelButton = true,
+                    ConfirmButtonText = "Sí",
+                    CancelButtonText = "No"
+                });
+                if (result.IsConfirmed)
+                {
+                    ShowCreatePatientModal();
+                }
             }
 
         }
 
-        private async Task FindIdPatient()
+        private async Task SearchMedic()
         {
-            if (PatientDocumentValue != null)
+            if (MedicDocumentValue != null)
             {
-                SelectedPatientId = Patients.FirstOrDefault(p => p.Id.ToString() == PatientDocumentValue);
+
+                SelectedMedic = Medicians.FirstOrDefault(x => x.DocumentId.ToString() == MedicDocumentValue);
+
             }
-            if (SelectedPatientId == null)
+            if (SelectedMedic == null)
             {
-                await SweetAlertService.FireAsync("Error", "Paciente no encontrado", SweetAlertIcon.Error);
+                var result = await SweetAlertService.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Busqueda de medico",
+                    Text = "Médico no encontrado. ¿Deseas crear un nuevo médico?",
+                    Icon = SweetAlertIcon.Error,
+                    ShowCancelButton = true,
+                    ConfirmButtonText = "Sí",
+                    CancelButtonText = "No"
+                });
+                if (result.IsConfirmed)
+                {
+                    ShowCreateMedicModal();
+                }
             }
+        }
+
+        private async Task CloseModalAsync()
+        {
+            wasClose = true;
+            await BlazoredModal.CloseAsync(ModalResult.Ok());
         }
 
         private async Task<List<T>?> LoadListAsync<T>(string apiRoute)
@@ -212,9 +250,13 @@ namespace LabPreTest.Frontend.Pages.Orders
             NavigationManager.NavigateTo(PagesRoutes.Orders);
         }
 
-        private void ShowCreateModal()
+        private void ShowCreateMedicModal()
         {
             ModalService.Show<MedicOrderCreate>();
+        }
+        private void ShowCreatePatientModal()
+        {
+            ModalService.Show<PatientOrderCreate>();
         }
     }
 }
