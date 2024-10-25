@@ -10,7 +10,7 @@
         <div class="mb-3">
             <label>Paciente:</label>
             <div>
-                <select class="form-select" @onchange="PatientChanged" value="@PatientDefaultValue">
+                <select class="input-group-text" @onchange="PatientChanged" value="@PatientDefaultValue">
                     <option value="0">---Seleccione al paciente---</option>
                     @if (Patients is not null)
                     {

@@ -1,5 +1,6 @@
 ﻿using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
+using LabPreTest.Frontend.Pages.Medician;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Frontend.Shared;
 using LabPreTest.Shared.ApiRoutes;
@@ -10,6 +11,7 @@ using LabPreTest.Shared.Messages;
 using LabPreTest.Shared.PagesRoutes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using System.Net;
 
 namespace LabPreTest.Frontend.Pages.Orders
 {
@@ -21,14 +23,21 @@ namespace LabPreTest.Frontend.Pages.Orders
         private int MedicValue { get; set; }
         private List<Patient>? Patients { get; set; }
         private int PatientValue { get; set; }
+        private string? PatientDocumentValue { get; set; }
+
+        private Patient? patient;
         private int NumberOfTests { get; set; }
         private bool IsAddButtonDisabled { get; set; } = true;
         private bool IsSelectorDisabled { get; set; } = false;
+        private Patient? SelectedPatient { get; set; }
+        private Patient? SelectedPatientId { get; set; }
+        private bool PatientFound { get; set; }
 
         [CascadingParameter] private IModalService ModalService { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
+        [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
 
         protected override async Task OnInitializedAsync()
         {
@@ -37,6 +46,31 @@ namespace LabPreTest.Frontend.Pages.Orders
             await LoadPatientsAsync();
             SetButtonStatus();
             SetSelectorStatus();
+        }
+
+        private async Task FindPatient()
+        {
+            if (PatientDocumentValue != null)
+            {
+                SelectedPatient = Patients.FirstOrDefault(p => p.DocumentId.ToString() == PatientDocumentValue);
+            }
+            if (SelectedPatient == null) 
+            {
+                await SweetAlertService.FireAsync("Error", "Paciente no encontrado", SweetAlertIcon.Error);
+            }
+
+        }
+
+        private async Task FindIdPatient()
+        {
+            if (PatientDocumentValue != null)
+            {
+                SelectedPatientId = Patients.FirstOrDefault(p => p.Id.ToString() == PatientDocumentValue);
+            }
+            if (SelectedPatientId == null)
+            {
+                await SweetAlertService.FireAsync("Error", "Paciente no encontrado", SweetAlertIcon.Error);
+            }
         }
 
         private async Task<List<T>?> LoadListAsync<T>(string apiRoute)
@@ -176,6 +210,11 @@ namespace LabPreTest.Frontend.Pages.Orders
                 await SweetAlertService.FireAsync("Error", errorMessage, SweetAlertIcon.Error);
             }
             NavigationManager.NavigateTo(PagesRoutes.Orders);
+        }
+
+        private void ShowCreateModal()
+        {
+            ModalService.Show<MedicOrderCreate>();
         }
     }
 }

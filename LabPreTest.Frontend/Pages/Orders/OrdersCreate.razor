@@ -2,6 +2,7 @@
 
 <h3>Crear Orden</h3>
 
+
 @if (TemporalOrders is null)
 {
     <Loading />
@@ -18,21 +19,23 @@ else
     <div class="mb-3">
         <label>Paciente:</label>
         <div>
-            <select class="form-select" disabled="@IsSelectorDisabled" @onchange="PatientChanged" value="@PatientValue">
-                <option value="0">---Seleccione al paciente---</option>
-                @if (Patients is not null)
-                {
-                    foreach (var patient in Patients)
-                    {
-                        <option value="@patient.Id">@patient.Name</option>
-                    }
-                }
-            </select>
+            <div class="mb-3">
+                <label>Ingrese el documento del paciente:</label>
+                <input type="number" class="form-control" @bind="PatientDocumentValue" placeholder="Ingrese documento a buscar..." />
+                <button class="btn btn-primary" @onclick="FindPatient">Buscar Paciente</button>
+            </div>
+            @if (SelectedPatient != null)
+            {
+                <LabPreTest.Frontend.Pages.Patients.PatientEdit Id="@SelectedPatient.Id"></LabPreTest.Frontend.Pages.Patients.PatientEdit>
+            }
         </div>
     </div>
 
     <div class="mb-3">
         <label>Medico:</label>
+        <div class="mb-3">
+            <a class="btn btn-primary" @onclick=@(()=>ShowCreateModal())>Nuevo medico</a>
+        </div>
         <div>
             <select class="form-select" disabled="@IsSelectorDisabled" @onchange="MedicChanged" value="@MedicValue">
                 <option value="0">---Seleccione al medico---</option>

@@ -23,15 +23,27 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var t in Model.Conditions)
+                @if (Model.Conditions != null && Model.Conditions.Any())
                 {
-                    <tr>
-                        <td>@t.Condition.Name</td>
-                        <td>@t.Condition.Description</td>
-                        <td>@Model.TestTube.Name</td>
-                        <td>@Model.Section.Name</td>
-                    </tr>
+                    int rowCount = Model.Conditions.Count();
+                    bool firstRowRendered = false;
+
+                    @foreach (var t in Model.Conditions)
+                    {
+                        <tr>
+                            <td>@t.Condition.Name</td>
+                            <td>@t.Condition.Description</td>
+
+                            @if (!firstRowRendered)
+                            {
+                                <td rowspan="@rowCount">@Model.TestTube.Name</td>
+                                <td rowspan="@rowCount">@Model.Section.Name</td>
+                                firstRowRendered = true;
+                            }
+                        </tr>
+                    }
                 }
+
             </tbody>
         </table>
     </div>

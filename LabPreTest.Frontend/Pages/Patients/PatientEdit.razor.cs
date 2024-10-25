@@ -15,6 +15,7 @@ namespace LabPreTest.Frontend.Pages.Patients
     public partial class PatientEdit
     {
         private Patient? patient;
+
         private FormForUser<Patient>? patientForm;
 
         [Inject] private IRepository Repository { get; set; } = null!;
