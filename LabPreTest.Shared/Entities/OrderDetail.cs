@@ -1,4 +1,6 @@
-﻿namespace LabPreTest.Shared.Entities
+﻿using LabPreTest.Shared.Enums;
+
+namespace LabPreTest.Shared.Entities
 {
     public class OrderDetail
     {
@@ -15,5 +17,6 @@
 
         public Patient? Patient { get; set; }
         public int PatientId { get; set; }
+        public OrderStatus? Status { get; set; }
     }
 }

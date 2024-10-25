@@ -11,14 +11,23 @@ namespace LabPreTest.Backend.Helpers
         private readonly IUsersUnitOfWork _usersUnitOfWork;
         private readonly ITemporalOrdersUnitOfWork _temporalOrdersUnitOfWork;
         private readonly IOrdersUnitOfWork _ordersUnitOfWork;
+        private readonly ITestUnitOfWork _testUnitOfWork;
+        private readonly IMedicianUnitOfWork _medicianUnitOfWork;
+        private readonly IPatientUnitOfWork _patientUnitOfWork;
 
         public OrdersHelper(IUsersUnitOfWork usersUnitOfWork,
                             ITemporalOrdersUnitOfWork temporalOrdersUnitOfWork,
-                            IOrdersUnitOfWork ordersUnitOfWork)
+                            IOrdersUnitOfWork ordersUnitOfWork,
+                            ITestUnitOfWork testUnitOfWork,
+                            IMedicianUnitOfWork medicianUnitOfWork,
+                            IPatientUnitOfWork patientUnitOfWork)
         {
             _usersUnitOfWork = usersUnitOfWork;
             _temporalOrdersUnitOfWork = temporalOrdersUnitOfWork;
             _ordersUnitOfWork = ordersUnitOfWork;
+            _testUnitOfWork = testUnitOfWork;
+            _medicianUnitOfWork = medicianUnitOfWork;
+            _patientUnitOfWork = patientUnitOfWork;
         }
 
         public async Task<ActionResponse<bool>> ProcessOrderAsync(string email)
@@ -46,11 +55,18 @@ namespace LabPreTest.Backend.Helpers
 
             foreach (var orderDetail in temporalOrders)
             {
+                var testResponse = await _testUnitOfWork.GetAsync(orderDetail.TestId);
+                var medicResponse = await _medicianUnitOfWork.GetAsync(orderDetail.MedicId);
+                var patientResponse = await _patientUnitOfWork.GetAsync(orderDetail.PatientId);
+
+                if (!testResponse.WasSuccess || !medicResponse.WasSuccess || !patientResponse.WasSuccess)
+                    return ActionResponse<bool>.BuildFailed(MessageStrings.DbRecordNotFoundMessage);
+
                 order.Details.Add(new OrderDetail
                 {
-                    Test = orderDetail.Test,
-                    Medic = orderDetail.Medic,
-                    Patient = orderDetail.Patient
+                    Test = testResponse.Result,
+                    Medic = medicResponse.Result,
+                    Patient = patientResponse.Result,
                 });
             }
 
@@ -58,9 +74,9 @@ namespace LabPreTest.Backend.Helpers
             if (!response.WasSuccess)
                 return ActionResponse<bool>.BuildFailed(response.Message!);
 
-            foreach(var orderDetail in temporalOrders)
+            foreach (var orderDetail in temporalOrders)
                 await _temporalOrdersUnitOfWork.DeleteAsync(orderDetail!.Id);
-            
+
             return ActionResponse<bool>.BuildSuccessful(true);
         }
     }
