@@ -4,9 +4,9 @@ using LabPreTest.Backend.Repository.Interfaces;
 using LabPreTest.Shared.DTO;
 using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Enums;
+using LabPreTest.Shared.Messages;
 using LabPreTest.Shared.Responses;
 using Microsoft.EntityFrameworkCore;
-using System.Net.NetworkInformation;
 
 namespace LabPreTest.Backend.Repository.Implementations
 {
@@ -80,16 +80,11 @@ namespace LabPreTest.Backend.Repository.Implementations
             return ActionResponse<Order>.BuildSuccessful(order);
         }
 
+        //TODO: check if is necessary delete this method
         public async Task<ActionResponse<Order>> UpdateFullAsync(string email, OrderDTO orderDTO)
         {
-            var user = await _usersRepository.GetUserAsync(email);
-            if (user == null)
-                return ActionResponse<Order>.BuildFailed("El usuario no existe");
-
-            var isAdmin = await _usersRepository.IsUserInRoleAsync(user, UserType.Admin.ToString());
-            var isUser = await _usersRepository.IsUserInRoleAsync(user, UserType.User.ToString());
-            if (!isAdmin && !isUser)
-                return ActionResponse<Order>.BuildFailed("No tienes permiso para realizar esta acción");
+            if (!await HavePermissionsAsync(email))
+                return ActionResponse<Order>.BuildFailed(MessageStrings.UserDoesNotHavePermissions);
 
             var order = await _context.Orders
                 .Include(o => o.Details)
@@ -102,6 +97,82 @@ namespace LabPreTest.Backend.Repository.Implementations
             await _context.SaveChangesAsync();
 
             return ActionResponse<Order>.BuildSuccessful(order);
+        }
+
+        public async Task<ActionResponse<OrderDetailDTO>> UpdateAsync(string email, int detailId, OrderDetailDTO orderDetailDTO)
+        {
+            if (!await HavePermissionsAsync(email))
+                return ActionResponse<OrderDetailDTO>.BuildFailed(MessageStrings.UserDoesNotHavePermissions);
+            var order = await _context.Orders
+                .Include(o => o.Details)
+                .FirstOrDefaultAsync(o => o.Id == orderDetailDTO.OrderId);
+            if (order == null || order.Details == null)
+                return ActionResponse<OrderDetailDTO>.BuildFailed(MessageStrings.DbParameterNotFoundMessage);
+
+            var newDetail = order.Details.FirstOrDefault(d => d.Id == detailId);
+            if (newDetail == null)
+                return ActionResponse<OrderDetailDTO>.BuildFailed(MessageStrings.DbParameterNotFoundMessage);
+
+            if (orderDetailDTO.TestId.HasValue)
+            {
+                var newTest = await _context.Tests.FirstOrDefaultAsync(t => t.Id == orderDetailDTO.TestId);
+                if (newTest == null)
+                    return ActionResponse<OrderDetailDTO>.BuildFailed(MessageStrings.DbRecordNotFoundMessage);
+                newDetail.Test = newTest;
+            }
+
+            if (orderDetailDTO.MedicId.HasValue)
+                if (!await UpdateMedicAsync(order, (int)orderDetailDTO.MedicId))
+                    return ActionResponse<OrderDetailDTO>.BuildFailed(MessageStrings.DbRecordNotFoundMessage);
+
+            if (orderDetailDTO.PatientId.HasValue)
+                if (!await UpdatePatientAsync(order, (int)orderDetailDTO.PatientId))
+                    return ActionResponse<OrderDetailDTO>.BuildFailed(MessageStrings.DbRecordNotFoundMessage);
+
+            if (orderDetailDTO.Status.HasValue)
+                newDetail.Status = orderDetailDTO.Status;
+
+            _context.Orders.Update(order);
+            return await SaveContextChangesAsync<OrderDetailDTO>(orderDetailDTO);
+        }
+
+        private async Task<bool> HavePermissionsAsync(string email)
+        {
+            var user = await _usersRepository.GetUserAsync(email);
+            if (user == null)
+                return false;
+
+            var isAdmin = await _usersRepository.IsUserInRoleAsync(user, UserType.Admin.ToString());
+            var isUser = await _usersRepository.IsUserInRoleAsync(user, UserType.User.ToString());
+            if (!isAdmin && !isUser)
+                return false;
+            return true;
+        }
+
+        private async Task<bool> UpdateMedicAsync(Order order, int medicId)
+        {
+            var medic = await _context.Medicians.FirstOrDefaultAsync(m => m.Id == medicId);
+            if (medic == null)
+                return false;
+
+            if (order.Details != null)
+                foreach (var detail in order.Details)
+                    detail.Medic = medic;
+
+            return true;
+        }
+
+        private async Task<bool> UpdatePatientAsync(Order order, int patientId)
+        {
+            var patient = await _context.Patients.FirstOrDefaultAsync(m => m.Id == patientId);
+            if (patient == null)
+                return false;
+
+            if (order.Details != null)
+                foreach (var detail in order.Details)
+                    detail.Patient = patient;
+
+            return true;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using LabPreTest.Backend.Helpers;
 using LabPreTest.Backend.UnitOfWork.Interfaces;
 using LabPreTest.Shared.DTO;
-using LabPreTest.Shared.Entities;
+using LabPreTest.Shared.Messages;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -49,23 +49,34 @@ namespace LabPreTest.Backend.Controllers
         public async Task<IActionResult> GetPagesAsync([FromQuery] PagingDTO pagination)
         {
             var action = await _ordersUnitOfWork.GetTotalPagesAsync(User.Identity!.Name!, pagination);
+
             if (action.WasSuccess)
-            {
                 return Ok(action.Result);
-            }
+
             return BadRequest();
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync(OrderDTO orderDTO)
+        public async Task<IActionResult> PostAsync()
         {
             var response = await _ordersHelper.ProcessOrderAsync(User.Identity!.Name!);
             if (response.WasSuccess)
-            {
                 return NoContent();
-            }
 
             return BadRequest(response.Message);
+        }
+
+        [HttpPut("details/{id}")]
+        public async Task<IActionResult> PutDetailAsync(int id, OrderDetailDTO orderDetailDTO)
+        {
+            if (orderDetailDTO.OrderId == 0)
+                return BadRequest(MessageStrings.DbRecordNotFoundMessage);
+
+            var action = await _ordersUnitOfWork.UpdateAsync(User.Identity!.Name!, id, orderDetailDTO);
+            if (action.WasSuccess)
+                return Ok();
+
+            return BadRequest(action.Message);
         }
     }
 }
