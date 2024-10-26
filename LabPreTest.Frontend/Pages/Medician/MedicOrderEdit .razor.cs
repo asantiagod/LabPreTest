@@ -13,7 +13,7 @@ namespace LabPreTest.Frontend.Pages.Medician
     public partial class MedicOrderEdit_
     {
         private Medic? medic;
-        private FormForUser<Medic>? medicForm;
+        private FormForUserOrder<Medic>? medicFormOrder;
 
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
@@ -65,7 +65,7 @@ namespace LabPreTest.Frontend.Pages.Medician
 
         private void Return()
         {
-            medicForm!.FormPostedSuccessfully = true;
+            medicFormOrder!.FormPostedSuccessfully = true;
             NavigationManager.NavigateTo("/orders/create");
         }
     }

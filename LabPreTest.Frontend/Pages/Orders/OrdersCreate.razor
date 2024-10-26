@@ -22,6 +22,8 @@ else
             <div class="mb-3">
                 <label>Ingrese el documento del paciente:</label>
                 <input type="number" class="form-control" @bind="PatientDocumentValue" placeholder="Ingrese documento a buscar..." />
+            </div>
+                <div class="mb-3">
                 <button class="btn btn-primary" @onclick="FindPatient">Buscar Paciente</button>
             </div>
             @if (SelectedPatient != null)
@@ -37,7 +39,9 @@ else
             <div class="mb-3">
                 <label>Ingrese el documento del medico:</label>
                 <input type="number" class="form-control" @bind="MedicDocumentValue" placeholder="Ingrese documento a buscar..." />
-                <button class="btn btn-primary" @onclick="SearchMedic">Buscar Medico</button>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-primary" @onclick="SearchMedic">buscar medico</button>
             </div>
             @if (SelectedMedic != null)
             {

@@ -53,56 +53,58 @@ namespace LabPreTest.Frontend.Pages.Orders
             SetButtonStatus();
             SetSelectorStatus();
         }
-
-        private async Task FindPatient()
+        private async Task<int?> FindPatient()
         {
-            if (PatientDocumentValue != null)
+            if (!string.IsNullOrWhiteSpace(PatientDocumentValue)) 
             {
                 SelectedPatient = Patients.FirstOrDefault(p => p.DocumentId.ToString() == PatientDocumentValue);
-            }
-            if (SelectedPatient == null)
-            {
-                var result = await SweetAlertService.FireAsync(new SweetAlertOptions
+                if (SelectedPatient == null)
                 {
-                    Title = "Busqueda de paciente",
-                    Text = "Paciente no encontrado. ¿Deseas crear un nuevo paciente?",
-                    Icon = SweetAlertIcon.Error,
-                    ShowCancelButton = true,
-                    ConfirmButtonText = "Sí",
-                    CancelButtonText = "No"
-                });
-                if (result.IsConfirmed)
-                {
-                    ShowCreatePatientModal();
+                    var result = await SweetAlertService.FireAsync(new SweetAlertOptions
+                    {
+                        Title = "Búsqueda de paciente",
+                        Text = "Paciente no encontrado. ¿Deseas crear un nuevo paciente?",
+                        Icon = SweetAlertIcon.Error,
+                        ShowCancelButton = true,
+                        ConfirmButtonText = "Sí",
+                        CancelButtonText = "No"
+                    });
+
+                    if (result.IsConfirmed)
+                    {
+                        ShowCreatePatientModal();
+                    }
+                    return null;
                 }
             }
 
+            return SelectedPatient?.Id;
         }
 
-        private async Task SearchMedic()
+        private async Task<int?> SearchMedic()
         {
-            if (MedicDocumentValue != null)
+            if (!string.IsNullOrWhiteSpace(MedicDocumentValue))
             {
-
                 SelectedMedic = Medicians.FirstOrDefault(x => x.DocumentId.ToString() == MedicDocumentValue);
-
-            }
-            if (SelectedMedic == null)
-            {
-                var result = await SweetAlertService.FireAsync(new SweetAlertOptions
+                if (SelectedMedic == null)
                 {
-                    Title = "Busqueda de medico",
-                    Text = "Médico no encontrado. ¿Deseas crear un nuevo médico?",
-                    Icon = SweetAlertIcon.Error,
-                    ShowCancelButton = true,
-                    ConfirmButtonText = "Sí",
-                    CancelButtonText = "No"
-                });
-                if (result.IsConfirmed)
-                {
-                    ShowCreateMedicModal();
+                    var result = await SweetAlertService.FireAsync(new SweetAlertOptions
+                    {
+                        Title = "Busqueda de medico",
+                        Text = "Médico no encontrado. ¿Deseas crear un nuevo médico?",
+                        Icon = SweetAlertIcon.Error,
+                        ShowCancelButton = true,
+                        ConfirmButtonText = "Sí",
+                        CancelButtonText = "No"
+                    });
+                    if (result.IsConfirmed)
+                    {
+                        ShowCreateMedicModal();
+                    }
+                    return null;
                 }
             }
+            return SelectedMedic?.Id;
         }
 
         private async Task CloseModalAsync()
@@ -191,7 +193,7 @@ namespace LabPreTest.Frontend.Pages.Orders
 
         private void SetButtonStatus()
         {
-            if (MedicValue != 0 && PatientValue != 0)
+            if (FindPatient() != null && SearchMedic() != null)
                 IsAddButtonDisabled = false;
             else
                 IsAddButtonDisabled = true;
@@ -217,8 +219,8 @@ namespace LabPreTest.Frontend.Pages.Orders
                                                       new TemporalOrdersDTO
                                                       {
                                                           TestId = test.Id,
-                                                          MedicId = MedicValue,
-                                                          PatientId = PatientValue
+                                                          MedicId = SelectedMedic.Id,
+                                                          PatientId = SelectedPatient.Id
                                                       });
                 if (responseHttp.Error)
                 {
