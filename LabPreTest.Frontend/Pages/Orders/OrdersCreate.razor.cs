@@ -3,6 +3,7 @@ using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
 using LabPreTest.Frontend.Pages.Medician;
 using LabPreTest.Frontend.Pages.Patients;
+using LabPreTest.Frontend.Pages.Tests;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Frontend.Shared;
 using LabPreTest.Shared.ApiRoutes;
@@ -30,12 +31,18 @@ namespace LabPreTest.Frontend.Pages.Orders
 
         private Patient? patient;
 
+        private List<PreanalyticCondition>? conditions; 
+
+        private List<Test>? tests;
+
         private bool wasClose;
         private int NumberOfTests { get; set; }
         private bool IsAddButtonDisabled { get; set; } = true;
         private bool IsSelectorDisabled { get; set; } = false;
         private Patient? SelectedPatient { get; set; }
         private Medic? SelectedMedic { get; set; }
+
+        private Test? SelectedTest { get; set; }    
         private bool PatientFound { get; set; }
 
         [CascadingParameter] private BlazoredModalInstance BlazoredModal { get; set; } = default!;
@@ -50,12 +57,14 @@ namespace LabPreTest.Frontend.Pages.Orders
             await LoadTemporalOrdersAsync();
             await LoadMediciansAsync();
             await LoadPatientsAsync();
+            await LoadTestAsync();
+            await LoadTestConditions();
             SetButtonStatus();
             SetSelectorStatus();
         }
         private async Task<int?> FindPatient()
         {
-            if (!string.IsNullOrWhiteSpace(PatientDocumentValue)) 
+            if (!string.IsNullOrWhiteSpace(PatientDocumentValue))
             {
                 SelectedPatient = Patients.FirstOrDefault(p => p.DocumentId.ToString() == PatientDocumentValue);
                 if (SelectedPatient == null)
@@ -77,7 +86,6 @@ namespace LabPreTest.Frontend.Pages.Orders
                     return null;
                 }
             }
-
             return SelectedPatient?.Id;
         }
 
@@ -106,7 +114,6 @@ namespace LabPreTest.Frontend.Pages.Orders
             }
             return SelectedMedic?.Id;
         }
-
         private async Task CloseModalAsync()
         {
             wasClose = true;
@@ -125,6 +132,20 @@ namespace LabPreTest.Frontend.Pages.Orders
             return responseHttp.Response;
         }
 
+        private async Task ClearTemporalOrder() 
+        {
+            TemporalOrders = await LoadListAsync<TemporalOrder>(ApiRoutes.TemporalOrdersMyRoute);
+            var responseHttp = await Repository.DeleteAsync<TemporalOrder>($"/api/temporalorders/1");
+            if (responseHttp.Error)
+            {
+                if (responseHttp.HttpResponseMessage.StatusCode != HttpStatusCode.NotFound)
+                {
+                    var message = await responseHttp.GetErrorMessageAsync();
+                    await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                    return;
+                }
+            }
+        }
         private async Task LoadTemporalOrdersAsync()
         {
             try
@@ -136,7 +157,6 @@ namespace LabPreTest.Frontend.Pages.Orders
             {
                 await SweetAlertService.FireAsync("Error", ex.Message, SweetAlertIcon.Error);
             }
-
             SetButtonStatus();
             SetSelectorStatus();
         }
@@ -250,6 +270,15 @@ namespace LabPreTest.Frontend.Pages.Orders
                 await SweetAlertService.FireAsync("Error", errorMessage, SweetAlertIcon.Error);
             }
             NavigationManager.NavigateTo(PagesRoutes.Orders);
+        }
+
+        private async Task LoadTestAsync()
+        {
+            tests = await LoadListAsync<Test>(ApiRoutes.TestFullRoute);
+        }
+        private async Task LoadTestConditions()
+        {
+            conditions = await LoadListAsync<PreanalyticCondition>(ApiRoutes.TestFullRoute);
         }
 
         private void ShowCreateMedicModal()

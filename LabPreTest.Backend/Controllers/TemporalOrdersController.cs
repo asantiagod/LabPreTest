@@ -1,4 +1,5 @@
-﻿using LabPreTest.Backend.UnitOfWork.Interfaces;
+﻿using LabPreTest.Backend.UnitOfWork.Implementations;
+using LabPreTest.Backend.UnitOfWork.Interfaces;
 using LabPreTest.Shared.DTO;
 using LabPreTest.Shared.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -30,8 +31,7 @@ namespace LabPreTest.Backend.Controllers
             return BadRequest();
         }
 
-        [
-        HttpGet("my")]
+        [HttpGet("my")]
         public override async Task<IActionResult> GetAsync()
         {
             var action = await _temporalOrdersUnitOfWork.GetAsync(User.Identity!.Name!);

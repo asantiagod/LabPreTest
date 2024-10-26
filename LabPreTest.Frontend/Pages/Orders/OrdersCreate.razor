@@ -9,19 +9,13 @@
 }
 else
 {
-    <div class="mb-3">
-        <button class="btn btn-primary" @onclick="ProcessOrder">Guardar Cambios</button>
-        <button class="btn btn-success" @onclick="Return">Regresar</button>
-    </div>
-    <div class="mb-3">
-        <label>Numero de exámenes: @NumberOfTests</label>
-    </div>
+
     <div class="mb-3">
         <label>Paciente:</label>
         <div>
             <div class="mb-3">
                 <label>Ingrese el documento del paciente:</label>
-                <input type="number" class="form-control" @bind="PatientDocumentValue" placeholder="Ingrese documento a buscar..." />
+                <input type="number" class="form-control" @bind="PatientDocumentValue" placeholder="Ingrese documento del médico a buscar..." />
             </div>
                 <div class="mb-3">
                 <button class="btn btn-primary" @onclick="FindPatient">Buscar Paciente</button>
@@ -38,10 +32,10 @@ else
         <div>
             <div class="mb-3">
                 <label>Ingrese el documento del medico:</label>
-                <input type="number" class="form-control" @bind="MedicDocumentValue" placeholder="Ingrese documento a buscar..." />
+                <input type="number" class="form-control" @bind="MedicDocumentValue" placeholder="Ingrese documento del paciente a buscar..." />
             </div>
             <div class="mb-3">
-                <button class="btn btn-primary" @onclick="SearchMedic">buscar medico</button>
+                <button class="btn btn-primary" @onclick="SearchMedic">Buscar médico</button>
             </div>
             @if (SelectedMedic != null)
             {
@@ -51,24 +45,31 @@ else
     </div>
 
     <div class="mb-3">
-        <button class="btn btn-primary" disabled=@IsAddButtonDisabled @onclick=@(()=>ShowAddTestModal())>Agregar Examen</button>
+        <button class="btn btn-primary" disabled=@IsAddButtonDisabled @onclick=@(()=>ShowAddTestModal())>Agregar Exámen</button>
     </div>
     <div class="mb-3">
-        <table class="table table-striped">
-            <thead>
-            <th>ID</th>
-            <th>Nombre</th>
-            </thead>
+
+        <table class="table table-borderless w-100" >
             <tbody>
-                @foreach (var to in TemporalOrders)
+                @if (TemporalOrders.Count()>0)
                 {
-                    <tr>
-                        <td>@to.TestId</td>
-                        <td>@to.Test!.Name</td>
-                    </tr>
+                    @foreach (var to in TemporalOrders)
+                    {
+                        var correspondingTest = tests.FirstOrDefault(t => t.Id == to.TestId);
+                        <tr>
+                            <td>
+                                <LabPreTest.Frontend.Pages.Tests.TestShowOrder Id="@to.TestId"></LabPreTest.Frontend.Pages.Tests.TestShowOrder>
+                            </td>
+                        </tr>
+                    }
+                    
                 }
+
             </tbody>
         </table>
-        <!--<ValidationMessage For="@(() => Model.TestIds)" />-->
+        <div class="mb-3">
+            <label>Numero de exámenes: @NumberOfTests</label>
+        </div>
+        <button class="btn btn-primary" disabled=@IsAddButtonDisabled @onclick=@(()=>CreateAsync())>Crear orden</button>
     </div>
 }
