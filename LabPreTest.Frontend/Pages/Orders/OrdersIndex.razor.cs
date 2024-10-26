@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace LabPreTest.Frontend.Pages.Orders
 {
-    [Authorize(Roles = FrontendStrings.UserString)]
+    //[Authorize(Roles = FrontendStrings.UserString)]
     public partial class OrdersIndex
     {
         private int currentPage = 1;

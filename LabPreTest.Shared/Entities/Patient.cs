@@ -16,9 +16,7 @@ namespace LabPreTest.Shared.Entities
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
         public string Name { get; set; } = null!;
-
-        [DataType(DataType.Date)]
-        public string? BirthDay { get; set; }
+        public DateTime BirthDay { get ; set ; }
 
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         [DataType(DataType.PhoneNumber)]

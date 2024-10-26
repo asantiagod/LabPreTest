@@ -35,6 +35,7 @@ namespace LabPreTest.Backend.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAsync([FromQuery] PagingDTO pagination)
         {
             var action = await _ordersUnitOfWork.GetAsync(User.Identity!.Name!, pagination);
