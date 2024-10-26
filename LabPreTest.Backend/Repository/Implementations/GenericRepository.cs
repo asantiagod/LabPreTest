@@ -118,5 +118,18 @@ namespace LabPreTest.Backend.Repository.Implementations
         {
             return ActionResponse<T>.BuildFailed(ex.Message);
         }
+
+        protected async Task<ActionResponse<DTO>> SaveContextChangesAsync<DTO>(DTO result)
+        {
+            try
+            {
+                await _context.SaveChangesAsync();
+                return ActionResponse<DTO>.BuildSuccessful(result);
+            }
+            catch (Exception ex)
+            {
+                return ActionResponse<DTO>.BuildFailed(ex.Message);
+            }
+        }
     }
 }

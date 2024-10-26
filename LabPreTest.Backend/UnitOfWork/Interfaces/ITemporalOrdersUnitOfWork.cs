@@ -10,6 +10,8 @@ namespace LabPreTest.Backend.UnitOfWork.Interfaces
 
         Task<ActionResponse<TemporalOrdersDTO>> AddFullAsync(string email, TemporalOrdersDTO temporalOrderDTO);
 
+        Task<ActionResponse<TemporalOrdersDTO>> UpdateAsync(string email, TemporalOrdersDTO temporalOrderDTO);
+
         Task<ActionResponse<IEnumerable<TemporalOrder>>> GetAsync(string email);
 
         Task<ActionResponse<int>> GetCountAsync(string email);

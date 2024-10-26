@@ -1,5 +1,4 @@
-﻿using Azure.Storage.Blobs.Models;
-using LabPreTest.Backend.UnitOfWork.Interfaces;
+﻿using LabPreTest.Backend.UnitOfWork.Interfaces;
 using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Enums;
 using LabPreTest.Shared.Messages;
@@ -12,15 +11,25 @@ namespace LabPreTest.Backend.Helpers
         private readonly IUsersUnitOfWork _usersUnitOfWork;
         private readonly ITemporalOrdersUnitOfWork _temporalOrdersUnitOfWork;
         private readonly IOrdersUnitOfWork _ordersUnitOfWork;
+        private readonly ITestUnitOfWork _testUnitOfWork;
+        private readonly IMedicianUnitOfWork _medicianUnitOfWork;
+        private readonly IPatientUnitOfWork _patientUnitOfWork;
 
         public OrdersHelper(IUsersUnitOfWork usersUnitOfWork,
                             ITemporalOrdersUnitOfWork temporalOrdersUnitOfWork,
-                            IOrdersUnitOfWork ordersUnitOfWork)
+                            IOrdersUnitOfWork ordersUnitOfWork,
+                            ITestUnitOfWork testUnitOfWork,
+                            IMedicianUnitOfWork medicianUnitOfWork,
+                            IPatientUnitOfWork patientUnitOfWork)
         {
             _usersUnitOfWork = usersUnitOfWork;
             _temporalOrdersUnitOfWork = temporalOrdersUnitOfWork;
             _ordersUnitOfWork = ordersUnitOfWork;
+            _testUnitOfWork = testUnitOfWork;
+            _medicianUnitOfWork = medicianUnitOfWork;
+            _patientUnitOfWork = patientUnitOfWork;
         }
+
         public async Task<ActionResponse<bool>> ProcessOrderAsync(string email)
         {
             var user = await _usersUnitOfWork.GetUserAsync(email);
@@ -28,12 +37,12 @@ namespace LabPreTest.Backend.Helpers
                 return ActionResponse<bool>.BuildFailed(BackendMessages.UserNotFoundMessage);
 
             var actionTemporalOrders = await _temporalOrdersUnitOfWork.GetAsync(email);
-            if(!actionTemporalOrders.WasSuccess ||
+            if (!actionTemporalOrders.WasSuccess ||
                 actionTemporalOrders.Result == null)
                 return ActionResponse<bool>.BuildFailed(BackendMessages.OrderDetailNotFoundMessage);
 
             var temporalOrders = actionTemporalOrders.Result as List<TemporalOrder>;
-            if(temporalOrders!.Count == 0)
+            if (temporalOrders!.Count == 0)
                 return ActionResponse<bool>.BuildFailed(BackendMessages.OrderDetailNotFoundMessage);
 
             var order = new Order
@@ -44,19 +53,29 @@ namespace LabPreTest.Backend.Helpers
                 Details = new List<OrderDetail>()
             };
 
-            foreach(var orderDetail in temporalOrders)
+            foreach (var orderDetail in temporalOrders)
             {
+                var testResponse = await _testUnitOfWork.GetAsync(orderDetail.TestId);
+                var medicResponse = await _medicianUnitOfWork.GetAsync(orderDetail.MedicId);
+                var patientResponse = await _patientUnitOfWork.GetAsync(orderDetail.PatientId);
+
+                if (!testResponse.WasSuccess || !medicResponse.WasSuccess || !patientResponse.WasSuccess)
+                    return ActionResponse<bool>.BuildFailed(MessageStrings.DbRecordNotFoundMessage);
+
                 order.Details.Add(new OrderDetail
                 {
-                    Test = orderDetail.Test,
-                    Medic = orderDetail.Medic,
-                    Patient = orderDetail.Patient
+                    Test = testResponse.Result,
+                    Medic = medicResponse.Result,
+                    Patient = patientResponse.Result,
                 });
-                
-                await _temporalOrdersUnitOfWork.DeleteAsync(orderDetail!.Id);
             }
-            
-            await _ordersUnitOfWork.AddAsync(order);
+
+            var response = await _ordersUnitOfWork.AddAsync(order);
+            if (!response.WasSuccess)
+                return ActionResponse<bool>.BuildFailed(response.Message!);
+
+            foreach (var orderDetail in temporalOrders)
+                await _temporalOrdersUnitOfWork.DeleteAsync(orderDetail!.Id);
 
             return ActionResponse<bool>.BuildSuccessful(true);
         }

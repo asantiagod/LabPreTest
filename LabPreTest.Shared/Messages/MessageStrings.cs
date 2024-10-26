@@ -6,13 +6,14 @@
         public const string DbParameterNotFoundMessage = "Parametro no encontrado";
         public const string DbRecordNotFoundMessage = "Registro no encontrado.";
         public const string DbDeleteErrorMessage = "No se puede eliminar ya que tiene registros asociados.";
-        
+
         public const string DbCountryNotFoundMessage = "El país no existe.";
-        public const string DbSectionNotFoundMessage= "La sección no existe.";
+        public const string DbSectionNotFoundMessage = "La sección no existe.";
         public const string DbStateNotFoundMessage = "El estado no existe.";
         public const string DbCityNotFoundMessage = "La ciudad no existe.";
         public const string DbMedicianNotFoundMessage = "El médico no existe.";
         public const string DbTestNotFoundMessage = "El exámen no existe.";
         public const string DbTestTubeNotFoundMessage = "El tipo de recipiente no existe.";
+        public const string UserDoesNotHavePermissions = "No tienes permisos para realizar esta acción.";
     }
 }
