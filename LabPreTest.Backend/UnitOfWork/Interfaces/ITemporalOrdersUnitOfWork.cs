@@ -9,11 +9,14 @@ namespace LabPreTest.Backend.UnitOfWork.Interfaces
         Task<ActionResponse<TemporalOrder>> DeleteAsync(int id);
 
         Task<ActionResponse<TemporalOrdersDTO>> AddFullAsync(string email, TemporalOrdersDTO temporalOrderDTO);
+        
+        Task<ActionResponse<bool>> DeleteAllAsync(string email);
 
         Task<ActionResponse<TemporalOrdersDTO>> UpdateAsync(string email, TemporalOrdersDTO temporalOrderDTO);
 
         Task<ActionResponse<IEnumerable<TemporalOrder>>> GetAsync(string email);
 
         Task<ActionResponse<int>> GetCountAsync(string email);
+
     }
 }

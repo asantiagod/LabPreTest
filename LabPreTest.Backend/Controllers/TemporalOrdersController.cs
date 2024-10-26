@@ -1,4 +1,5 @@
 ﻿using LabPreTest.Backend.UnitOfWork.Interfaces;
+using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.DTO;
 using LabPreTest.Shared.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -51,8 +52,7 @@ namespace LabPreTest.Backend.Controllers
             return BadRequest(action.Message);
         }
 
-        [
-        HttpGet("count")]
+        [HttpGet("count")]
         public async Task<IActionResult> GetCountAsync()
         {
             var action = await _temporalOrdersUnitOfWork.GetCountAsync(User.Identity!.Name!);
@@ -62,5 +62,15 @@ namespace LabPreTest.Backend.Controllers
             }
             return BadRequest(action.Message);
         }
+
+        [HttpDelete(ApiRoutes.Full)]
+        public async Task<IActionResult> DeleteAll()
+        {
+            var action = await _temporalOrdersUnitOfWork.DeleteAllAsync(User.Identity!.Name!);
+            if(action.WasSuccess)
+                return Ok();
+            return BadRequest(action.Message);
+        }
+
     }
 }

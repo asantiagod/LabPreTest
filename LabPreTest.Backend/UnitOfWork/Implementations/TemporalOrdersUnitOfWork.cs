@@ -17,6 +17,8 @@ namespace LabPreTest.Backend.UnitOfWork.Implementations
 
         public Task<ActionResponse<TemporalOrdersDTO>> AddFullAsync(string email, TemporalOrdersDTO temporalOrderDTO) => _temporalOrdersRepository.AddFullAsync(email, temporalOrderDTO);
 
+        public Task<ActionResponse<bool>> DeleteAllAsync(string email) => _temporalOrdersRepository.DeleteAllAsync(email);
+
         public Task<ActionResponse<IEnumerable<TemporalOrder>>> GetAsync(string email) => _temporalOrdersRepository.GetAsync(email);
 
         public Task<ActionResponse<int>> GetCountAsync(string email) => _temporalOrdersRepository.GetCountAsync(email);

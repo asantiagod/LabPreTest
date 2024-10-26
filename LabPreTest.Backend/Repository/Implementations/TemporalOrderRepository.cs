@@ -94,5 +94,17 @@ namespace LabPreTest.Backend.Repository.Implementations
                 Patient = patient
             });
         }
+
+        public async Task<ActionResponse<bool>> DeleteAllAsync(string email)
+        {
+            var toList = await _context.TemporalOrders
+                .Where(to => to.User!.Email == email)
+                .ToListAsync();
+
+            foreach(var to in toList)
+                _context.TemporalOrders.Remove(to);
+
+            return await SaveContextChangesAsync(true);
+        }
     }
 }
