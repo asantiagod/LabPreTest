@@ -22,11 +22,16 @@
                 {
                     int rowCount = Model.Conditions.Count();
                     bool firstRowRendered = false;
+                    bool rowForId = false;
 
                     @foreach (var t in Model.Conditions)
                     {
                         <tr>
-                            <td>@t.TestId</td>
+                            @if (!rowForId)
+                            {
+                                <td rowspan="@rowCount" class="text-center align-middle fs-4">@Model.TestID</td>
+                                rowForId = true;
+                            }
                             <td>@t.Condition.Name</td>
                             <td>@t.Condition.Description</td>
 

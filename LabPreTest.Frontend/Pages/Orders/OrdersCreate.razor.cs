@@ -85,6 +85,8 @@ namespace LabPreTest.Frontend.Pages.Orders
                     }
                     return null;
                 }
+                StateHasChanged();
+                SetButtonStatus();
             }
             return SelectedPatient?.Id;
         }
@@ -111,7 +113,10 @@ namespace LabPreTest.Frontend.Pages.Orders
                     }
                     return null;
                 }
+                StateHasChanged();
+                SetButtonStatus();
             }
+
             return SelectedMedic?.Id;
         }
         private async Task CloseModalAsync()
@@ -213,17 +218,16 @@ namespace LabPreTest.Frontend.Pages.Orders
 
         private void SetButtonStatus()
         {
-            if (FindPatient() != null && SearchMedic() != null)
+            if (SelectedMedic != null && SelectedPatient != null)
                 IsAddButtonDisabled = false;
-            else
-                IsAddButtonDisabled = true;
+            else IsAddButtonDisabled = true; 
         }
 
         private void SetSelectorStatus()
         {
-            // avoid changes of medician or patient if there are a pending order
-            if (TemporalOrders != null && TemporalOrders.Any())
-                IsSelectorDisabled = true;
+            if (SelectedMedic != null && SelectedPatient != null)
+                IsSelectorDisabled = false;
+            else IsSelectorDisabled = true;
         }
 
         private async void ShowAddTestModal()

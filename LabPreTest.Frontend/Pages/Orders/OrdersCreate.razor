@@ -9,40 +9,43 @@
 }
 else
 {
-
-    <div class="mb-3">
-        <label>Paciente:</label>
-        <div>
-            <div class="mb-3">
-                <label>Ingrese el documento del paciente:</label>
-                <input type="number" class="form-control" @bind="PatientDocumentValue" placeholder="Ingrese documento del médico a buscar..." />
-            </div>
-                <div class="mb-3">
+    <table class="table table-borderless w-100" >
+        <tbody>
+        <tr>
+            <td>
+                <input type="number" class="form-control" @bind="PatientDocumentValue" placeholder="Ingrese documento del paciente a buscar..." />
+            </td>
+            <td>
                 <button class="btn btn-primary" @onclick="FindPatient">Buscar Paciente</button>
-            </div>
-            @if (SelectedPatient != null)
-            {
-                <LabPreTest.Frontend.Pages.Patients.PatientEditOrder Id="@SelectedPatient.Id"></LabPreTest.Frontend.Pages.Patients.PatientEditOrder>
-            }
-        </div>
-    </div>
-
-    <div class="mb-3">
-        <label>Medico:</label>
-        <div>
-            <div class="mb-3">
-                <label>Ingrese el documento del medico:</label>
-                <input type="number" class="form-control" @bind="MedicDocumentValue" placeholder="Ingrese documento del paciente a buscar..." />
-            </div>
-            <div class="mb-3">
+            </td>
+            </tr>
+        <tr>
+            <td colspan="2">
+                @if (SelectedPatient != null)
+                {
+                        <LabPreTest.Frontend.Pages.Patients.PatientEditOrder Id="@SelectedPatient.Id"></LabPreTest.Frontend.Pages.Patients.PatientEditOrder>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="number" class="form-control" @bind="MedicDocumentValue" placeholder="Ingrese documento del medico a buscar..." />
+            </td>
+            <td>
                 <button class="btn btn-primary" @onclick="SearchMedic">Buscar médico</button>
-            </div>
-            @if (SelectedMedic != null)
-            {
-                <LabPreTest.Frontend.Pages.Medician.MedicOrderEdit_ Id="@SelectedMedic.Id"></LabPreTest.Frontend.Pages.Medician.MedicOrderEdit_>
-            }
-        </div>
-    </div>
+
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                @if (SelectedMedic != null)
+                {
+                    <LabPreTest.Frontend.Pages.Medician.MedicOrderEdit_ Id="@SelectedMedic.Id"></LabPreTest.Frontend.Pages.Medician.MedicOrderEdit_>
+                }
+            </td>
+        </tr>
+        </tbody>
+        </table>
 
     <div class="mb-3">
         <button class="btn btn-primary" disabled=@IsAddButtonDisabled @onclick=@(()=>ShowAddTestModal())>Agregar Exámen</button>
