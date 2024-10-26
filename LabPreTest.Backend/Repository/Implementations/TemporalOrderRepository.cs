@@ -41,13 +41,13 @@ namespace LabPreTest.Backend.Repository.Implementations
             if (!actionResponse.WasSuccess)
                 return ActionResponse<TemporalOrdersDTO>.BuildFailed(actionResponse.Message!);
 
-            var tO = actionResponse.Result!;
-            tempOrder.User = tO.User;
-            tempOrder.Test = tO.Test;
-            tempOrder.Medic = tO.Medic;
-            tempOrder.Patient = tO.Patient;
+            var to = actionResponse.Result!;
+            tempOrder.User = to.User;
+            tempOrder.Test = to.Test;
+            tempOrder.Medic = to.Medic;
+            tempOrder.Patient = to.Patient;
             _context.Update(tempOrder);
-            
+
             return await SaveContextChangesAsync(temporalOrderDTO);
         }
 
@@ -93,20 +93,6 @@ namespace LabPreTest.Backend.Repository.Implementations
                 Medic = medician,
                 Patient = patient
             });
-        }
-
-        //TODO: erase after test
-        private new async Task<ActionResponse<T>> SaveContextChangesAsync<T>(T result)
-        {
-            try
-            {
-                await _context.SaveChangesAsync();
-                return ActionResponse<T>.BuildSuccessful(result);
-            }
-            catch (Exception ex)
-            {
-                return ActionResponse<T>.BuildFailed(ex.Message);
-            }
         }
     }
 }
