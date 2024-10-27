@@ -29,7 +29,6 @@ namespace LabPreTest.Frontend.Pages
 
         private Test? test;
         public List<Test>? Tests { get; set; }
-
         protected override async Task OnInitializedAsync()
         {
             await SelectedRedordsNumberAsync("10");
@@ -97,6 +96,7 @@ namespace LabPreTest.Frontend.Pages
             {
                 var message = await responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                Console.WriteLine(message);
                 return false;
             }
 

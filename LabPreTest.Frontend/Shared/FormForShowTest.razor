@@ -31,8 +31,8 @@
                     @foreach (var t in Model.Conditions)
                     {
                         <tr>
-                            <td>@t.Condition.Name</td>
-                            <td>@t.Condition.Description</td>
+                            <td>@t.TestConditionNumber</td>
+                            <td>@t.Description</td>
 
                             @if (!firstRowRendered)
                             {
