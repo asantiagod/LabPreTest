@@ -22,16 +22,16 @@ namespace LabPreTest.Frontend.Pages.Orders
     public partial class OrdersCreate
     {
         private List<TemporalOrder>? TemporalOrders { get; set; }
-        private Medic? Medician { get; set; }
+        private List<Medic>? Medicians { get; set; }
         private int MedicValue { get; set; }
-        private Patient? Patient { get; set; }
+        private List<Patient>? Patients { get; set; }
         private int PatientValue { get; set; }
         private string? PatientDocumentValue { get; set; }
         private string? MedicDocumentValue { get; set; }
 
         private Patient? patient;
 
-        private List<PreanalyticCondition>? conditions; 
+        private List<PreanalyticCondition>? conditions;
 
         private List<Test>? tests;
 
@@ -42,7 +42,7 @@ namespace LabPreTest.Frontend.Pages.Orders
         private Patient? SelectedPatient { get; set; }
         private Medic? SelectedMedic { get; set; }
 
-        private Test? SelectedTest { get; set; }    
+        private Test? SelectedTest { get; set; }
         private bool PatientFound { get; set; }
 
         [CascadingParameter] private BlazoredModalInstance BlazoredModal { get; set; } = default!;
@@ -137,7 +137,7 @@ namespace LabPreTest.Frontend.Pages.Orders
             return responseHttp.Response;
         }
 
-        private async Task ClearTemporalOrder() 
+        private async Task ClearTemporalOrder()
         {
             TemporalOrders = await LoadListAsync<TemporalOrder>(ApiRoutes.TemporalOrdersMyRoute);
             var responseHttp = await Repository.DeleteAsync<TemporalOrder>($"/api/temporalorders/1");
@@ -156,15 +156,7 @@ namespace LabPreTest.Frontend.Pages.Orders
             try
             {
                 TemporalOrders = await LoadListAsync<TemporalOrder>(ApiRoutes.TemporalOrdersMyRoute);
-                if (TemporalOrders!.Any())
-                {
-                    NumberOfTests = TemporalOrders!.Count;
-                    var fto = TemporalOrders.First();
-                    Medician = fto.Medic;
-                    MedicValue = fto.MedicId;
-                    Patient = fto.Patient;
-                    PatientValue = fto.PatientId;
-                }
+                NumberOfTests = TemporalOrders!.Count;
             }
             catch (Exception ex)
             {
@@ -174,11 +166,61 @@ namespace LabPreTest.Frontend.Pages.Orders
             SetSelectorStatus();
         }
 
+        private async Task LoadMediciansAsync()
+        {
+            Medicians = await LoadListAsync<Medic>(ApiRoutes.MedicianFullRoute);
+            if (TemporalOrders != null && TemporalOrders.Any())
+                MedicValue = TemporalOrders.First().MedicId;
+            SetButtonStatus();
+        }
+
+        private async Task LoadPatientsAsync()
+        {
+            Patients = await LoadListAsync<Patient>(ApiRoutes.PatientsFullRoute);
+            if (TemporalOrders != null && TemporalOrders.Any())
+                PatientValue = TemporalOrders.First().PatientId;
+            SetButtonStatus();
+        }
+
+        private async Task CreateAsync()
+        {
+            var responseHttp = await Repository.PostAsync(ApiRoutes.OrdersRoute,
+                                                          new OrderDTO { Status = OrderStatus.Idle });
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return;
+            }
+
+            Return();
+            var toast = SweetAlertService.Mixin(new SweetAlertOptions
+            {
+                Toast = true,
+                Position = SweetAlertPosition.BottomEnd,
+                ShowConfirmButton = true,
+                Timer = 3000
+            });
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordCreatedMessage);
+        }
+
+        private void PatientChanged(ChangeEventArgs e)
+        {
+            PatientValue = Convert.ToInt32(e.Value!);
+            SetButtonStatus();
+        }
+
+        private void MedicChanged(ChangeEventArgs e)
+        {
+            MedicValue = Convert.ToInt32(e.Value!);
+            SetButtonStatus();
+        }
+
         private void SetButtonStatus()
         {
             if (SelectedMedic != null && SelectedPatient != null)
                 IsAddButtonDisabled = false;
-            else IsAddButtonDisabled = true; 
+            else IsAddButtonDisabled = true;
         }
 
         private void SetSelectorStatus()
@@ -214,41 +256,6 @@ namespace LabPreTest.Frontend.Pages.Orders
                 await LoadTemporalOrdersAsync();
                 StateHasChanged();
             }
-        }
-
-        private async void ShowFindPatientModal()
-        {
-            var modalMessage = ModalService.Show<LookingForPatient>();
-            var result = await modalMessage.Result;
-
-            if (result.Confirmed && result.Data != null)
-            {
-                Patient = (Patient)result.Data;
-                PatientValue = Patient.Id;
-                SetButtonStatus();
-                StateHasChanged();
-            }
-        }
-
-        private async void ShowFindMedicianModal()
-        {
-            var modalMessage = ModalService.Show<LookingForMedician>();
-            var result = await modalMessage.Result;
-
-            if (result.Confirmed && result.Data != null)
-            {
-                Medician = (Medic)result.Data;
-                MedicValue = Medician.Id;
-                SetButtonStatus();
-                StateHasChanged();
-            }
-        }
-
-        private void ShowEditModal(int testId)
-        {
-            var parameter = new ModalParameters()
-                .Add(nameof(OrdersShowTestDetails.Id), testId);
-            ModalService.Show<OrdersShowTestDetails>(parameter);
         }
 
         private void Return()
