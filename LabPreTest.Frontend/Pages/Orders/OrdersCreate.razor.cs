@@ -102,6 +102,7 @@ namespace LabPreTest.Frontend.Pages.Orders
                     {
                         SelectedPatient = responseHttp.Response;
                         StateHasChanged();
+                        SetButtonStatus();
                     }
                 }
                 else
@@ -157,6 +158,7 @@ namespace LabPreTest.Frontend.Pages.Orders
                     {
                         SelectedMedic = responseHttp.Response;
                         StateHasChanged();
+                        SetButtonStatus();
                     }
                 }
                 else
@@ -254,9 +256,8 @@ namespace LabPreTest.Frontend.Pages.Orders
 
         private void SetButtonStatus()
         {
-            if (SelectedMedic != null && SelectedPatient != null)
-                IsAddButtonDisabled = false;
-            else IsAddButtonDisabled = true;
+            IsAddButtonDisabled = !(SelectedMedic != null && SelectedPatient != null);
+            StateHasChanged();
         }
 
         private void SetSelectorStatus()
