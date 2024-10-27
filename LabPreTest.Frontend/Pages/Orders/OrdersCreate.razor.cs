@@ -60,62 +60,115 @@ namespace LabPreTest.Frontend.Pages.Orders
             SetButtonStatus();
             SetSelectorStatus();
         }
-        private async Task<int?> FindPatient()
+
+        protected async Task SearchPatient()
         {
             if (!string.IsNullOrWhiteSpace(PatientDocumentValue))
             {
-                SelectedPatient = Patients.FirstOrDefault(p => p.DocumentId.ToString() == PatientDocumentValue);
-                if (SelectedPatient == null)
+                if (int.TryParse(PatientDocumentValue, out int documentId))
                 {
-                    var result = await SweetAlertService.FireAsync(new SweetAlertOptions
-                    {
-                        Title = "Búsqueda de paciente",
-                        Text = "Paciente no encontrado. ¿Deseas crear un nuevo paciente?",
-                        Icon = SweetAlertIcon.Error,
-                        ShowCancelButton = true,
-                        ConfirmButtonText = "Sí",
-                        CancelButtonText = "No"
-                    });
+                    var responseHttp = await Repository.GetAsync<Patient>($"/api/Patients/document/{documentId}");
 
-                    if (result.IsConfirmed)
+                    if (responseHttp.Error)
                     {
-                        ShowCreatePatientModal();
+                        if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+                        {
+                            var result = await SweetAlertService.FireAsync(new SweetAlertOptions
+                            {
+                                Title = "Búsqueda de paciente",
+                                Text = "Paciente no encontrado. ¿Deseas crear un nuevo paciente?",
+                                Icon = SweetAlertIcon.Error,
+                                ShowCancelButton = true,
+                                ConfirmButtonText = "Sí",
+                                CancelButtonText = "No"
+                            });
+
+                            if (result.IsConfirmed)
+                            {
+                                ShowCreatePatientModal();
+                            }
+                        }
+                        else
+                        {
+                            await SweetAlertService.FireAsync(new SweetAlertOptions
+                            {
+                                Title = "Error",
+                                Text = "Ocurrió un error al buscar el paciente. Por favor, intente nuevamente.",
+                                Icon = SweetAlertIcon.Error
+                            });
+                        }
                     }
-                    return null;
+                    else
+                    {
+                        SelectedPatient = responseHttp.Response;
+                        StateHasChanged();
+                    }
                 }
-                StateHasChanged();
-                SetButtonStatus();
+                else
+                {
+                    await SweetAlertService.FireAsync(new SweetAlertOptions
+                    {
+                        Title = "Error",
+                        Text = "Documento del paciente inválido.",
+                        Icon = SweetAlertIcon.Error
+                    });
+                }
             }
-            return SelectedPatient?.Id;
         }
 
-        private async Task<int?> SearchMedic()
+        protected async Task SearchMedic()
         {
             if (!string.IsNullOrWhiteSpace(MedicDocumentValue))
             {
-                SelectedMedic = Medicians.FirstOrDefault(x => x.DocumentId.ToString() == MedicDocumentValue);
-                if (SelectedMedic == null)
+                if (int.TryParse(MedicDocumentValue, out int documentId))
                 {
-                    var result = await SweetAlertService.FireAsync(new SweetAlertOptions
-                    {
-                        Title = "Busqueda de medico",
-                        Text = "Médico no encontrado. ¿Deseas crear un nuevo médico?",
-                        Icon = SweetAlertIcon.Error,
-                        ShowCancelButton = true,
-                        ConfirmButtonText = "Sí",
-                        CancelButtonText = "No"
-                    });
-                    if (result.IsConfirmed)
-                    {
-                        ShowCreateMedicModal();
-                    }
-                    return null;
-                }
-                StateHasChanged();
-                SetButtonStatus();
-            }
+                    var responseHttp = await Repository.GetAsync<Medic>($"/api/Medics/document/{documentId}");
 
-            return SelectedMedic?.Id;
+                    if (responseHttp.Error)
+                    {
+                        if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+                        {
+                            var result = await SweetAlertService.FireAsync(new SweetAlertOptions
+                            {
+                                Title = "Búsqueda de paciente",
+                                Text = "Medico no encontrado. ¿Deseas crear un nuevo Medico?",
+                                Icon = SweetAlertIcon.Error,
+                                ShowCancelButton = true,
+                                ConfirmButtonText = "Sí",
+                                CancelButtonText = "No"
+                            });
+
+                            if (result.IsConfirmed)
+                            {
+                                ShowCreatePatientModal();
+                            }
+                        }
+                        else
+                        {
+                            await SweetAlertService.FireAsync(new SweetAlertOptions
+                            {
+                                Title = "Error",
+                                Text = "Ocurrió un error al buscar el paciente. Por favor, intente nuevamente.",
+                                Icon = SweetAlertIcon.Error
+                            });
+                        }
+                    }
+                    else
+                    {
+                        SelectedMedic = responseHttp.Response;
+                        StateHasChanged();
+                    }
+                }
+                else
+                {
+                    await SweetAlertService.FireAsync(new SweetAlertOptions
+                    {
+                        Title = "Error",
+                        Text = "Documento del paciente inválido.",
+                        Icon = SweetAlertIcon.Error
+                    });
+                }
+            }
         }
         private async Task CloseModalAsync()
         {

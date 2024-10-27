@@ -16,7 +16,7 @@ else
                 <input type="number" class="form-control" @bind="PatientDocumentValue" placeholder="Ingrese documento del paciente a buscar..." />
             </td>
             <td>
-                <button class="btn btn-primary" @onclick="FindPatient">Buscar Paciente</button>
+                    <button class="btn btn-primary" @onclick="async () => await SearchPatient()">Buscar Paciente</button>
             </td>
             </tr>
         <tr>
