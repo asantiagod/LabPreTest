@@ -36,6 +36,12 @@ namespace LabPreTest.Backend.Data
             modelBuilder.Entity<Patient>().HasIndex(x => x.Email).IsUnique();
             modelBuilder.Entity<Patient>().HasIndex(x => x.DocumentId).IsUnique();
             modelBuilder.Entity<Patient>().HasIndex(x => x.UserName).IsUnique();
+            modelBuilder.Entity<Patient>(entity =>
+            {
+                entity.Property(e => e.BirthDay)
+                      .HasColumnType("date") 
+                      .IsRequired(); 
+            });
             modelBuilder.Entity<PreanalyticCondition>().HasIndex(x => x.Name).IsUnique();
             modelBuilder.Entity<Medic>().HasIndex(x => x.Email).IsUnique();
             modelBuilder.Entity<Medic>().HasIndex(x => x.DocumentId).IsUnique();
