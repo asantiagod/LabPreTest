@@ -24,6 +24,7 @@ namespace LabPreTest.Backend.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAsync(int id)
         {
             var response = await _ordersUnitOfWork.GetAsync(id);

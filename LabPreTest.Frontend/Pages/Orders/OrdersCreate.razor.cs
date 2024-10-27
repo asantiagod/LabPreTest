@@ -55,8 +55,6 @@ namespace LabPreTest.Frontend.Pages.Orders
         protected override async Task OnInitializedAsync()
         {
             await LoadTemporalOrdersAsync();
-            await LoadMediciansAsync();
-            await LoadPatientsAsync();
             await LoadTestAsync();
             await LoadTestConditions();
             SetButtonStatus();
@@ -166,21 +164,6 @@ namespace LabPreTest.Frontend.Pages.Orders
             SetSelectorStatus();
         }
 
-        private async Task LoadMediciansAsync()
-        {
-            Medicians = await LoadListAsync<Medic>(ApiRoutes.MedicianFullRoute);
-            if (TemporalOrders != null && TemporalOrders.Any())
-                MedicValue = TemporalOrders.First().MedicId;
-            SetButtonStatus();
-        }
-
-        private async Task LoadPatientsAsync()
-        {
-            Patients = await LoadListAsync<Patient>(ApiRoutes.PatientsFullRoute);
-            if (TemporalOrders != null && TemporalOrders.Any())
-                PatientValue = TemporalOrders.First().PatientId;
-            SetButtonStatus();
-        }
 
         private async Task CreateAsync()
         {
