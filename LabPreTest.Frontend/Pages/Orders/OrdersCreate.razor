@@ -1,0 +1,78 @@
+﻿@page "/orders/create"
+
+<h3>Crear Orden</h3>
+
+
+@if (TemporalOrders is null)
+{
+    <Loading />
+}
+else
+{
+    <table class="table table-borderless w-100" >
+        <tbody>
+        <tr>
+            <td>
+                <input type="number" class="form-control" @bind="PatientDocumentValue" placeholder="Ingrese documento del paciente a buscar..." />
+            </td>
+            <td>
+                <button class="btn btn-primary" @onclick="FindPatient">Buscar Paciente</button>
+            </td>
+            </tr>
+        <tr>
+            <td colspan="2">
+                @if (SelectedPatient != null)
+                {
+                        <LabPreTest.Frontend.Pages.Patients.PatientEditOrder Id="@SelectedPatient.Id"></LabPreTest.Frontend.Pages.Patients.PatientEditOrder>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="number" class="form-control" @bind="MedicDocumentValue" placeholder="Ingrese documento del medico a buscar..." />
+            </td>
+            <td>
+                <button class="btn btn-primary" @onclick="SearchMedic">Buscar médico</button>
+
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                @if (SelectedMedic != null)
+                {
+                    <LabPreTest.Frontend.Pages.Medician.MedicOrderEdit_ Id="@SelectedMedic.Id"></LabPreTest.Frontend.Pages.Medician.MedicOrderEdit_>
+                }
+            </td>
+        </tr>
+        </tbody>
+        </table>
+
+    <div class="mb-3">
+        <button class="btn btn-primary" disabled=@IsAddButtonDisabled @onclick=@(()=>ShowAddTestModal())>Agregar Exámen</button>
+    </div>
+    <div class="mb-3">
+
+        <table class="table table-borderless w-100" >
+            <tbody>
+                @if (TemporalOrders.Count()>0)
+                {
+                    @foreach (var to in TemporalOrders)
+                    {
+                        var correspondingTest = tests.FirstOrDefault(t => t.Id == to.TestId);
+                        <tr>
+                            <td>
+                                <LabPreTest.Frontend.Pages.Tests.TestShowOrder Id="@to.TestId"></LabPreTest.Frontend.Pages.Tests.TestShowOrder>
+                            </td>
+                        </tr>
+                    }
+                    
+                }
+
+            </tbody>
+        </table>
+        <div class="mb-3">
+            <label>Numero de exámenes: @NumberOfTests</label>
+        </div>
+        <button class="btn btn-primary" disabled=@IsAddButtonDisabled @onclick=@(()=>CreateAsync())>Crear orden</button>
+    </div>
+}
