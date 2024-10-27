@@ -20,8 +20,8 @@ namespace LabPreTest.Frontend.Shared
             var authenticationState = await AuthenticationStateTask;
             var claims = authenticationState.User.Claims.ToList();
             var photoClaim = claims.FirstOrDefault(x => x.Type == "Photo");
-            
-            if(photoClaim is not null)
+
+            if (photoClaim is not null)
             {
                 photoUser = photoClaim.Value;
             }
@@ -31,6 +31,11 @@ namespace LabPreTest.Frontend.Shared
         void ShowModal()
         {
             Modal.Show<Login>();
+        }
+
+        void ShowLogoutModal()
+        {
+            Modal.Show<Logout>();
         }
 
     }

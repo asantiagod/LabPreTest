@@ -1,0 +1,5 @@
+﻿@page "/patients/orders/create"
+
+<h3>Crear Paciente</h3>
+
+<FormForUser @ref="patientForm" Label="Paciente:" Model="patient" OnValidSubmit="CreateAsync" ReturnAction="Return" />

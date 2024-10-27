@@ -1,3 +1,24 @@
-﻿@page "/Logout"
+﻿﻿
+@* @page "/Logout" *@
+<div class="row">
+    <div class="col-12">
+            <div class="card bg-light">
+                <div class="card-header justify-content-center">
 
-<p>Cerrando sesión...</p>
+                    <div><i class="oi oi-account-login" /> ¿Está seguro de cerrar sesión? </div>
+                    <div class="card-body justify-content-center">
+                        <div>
+                            <button class="btn btn-sm mx-1 btn-primary float-lg-start" @onclick=@(() => LogoutAsync())> Si </button>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm mx-1 btn-danger float-lg-end" @onclick=@(() => CloseModalAsync())> Cancelar </button>
+                        </div>
+
+                    </div>
+   
+
+                </div>
+            </div>
+    </div>
+</div>
+

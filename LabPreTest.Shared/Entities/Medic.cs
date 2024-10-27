@@ -18,7 +18,7 @@ namespace LabPreTest.Shared.Entities
         public string Name { get; set; } = null!;
 
         [DataType(DataType.Date)]
-        public string? BirthDay { get; set; }
+        public DateTime BirthDay { get ; set; }
 
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         [DataType(DataType.PhoneNumber)]
@@ -37,5 +37,6 @@ namespace LabPreTest.Shared.Entities
         public ICollection<TemporalOrder>? TemporalOrders { get; set; }
 
         public ICollection<OrderDetail>? Details { get; set; }
+        
     }
 }

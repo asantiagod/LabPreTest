@@ -1,4 +1,5 @@
-﻿using LabPreTest.Backend.UnitOfWork.Interfaces;
+﻿using LabPreTest.Backend.UnitOfWork.Implementations;
+using LabPreTest.Backend.UnitOfWork.Interfaces;
 using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.DTO;
 using LabPreTest.Shared.Entities;
@@ -10,7 +11,7 @@ namespace LabPreTest.Backend.Controllers
 {
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Route("api/[controller]", Order = -10)]
+    [Route("api/[controller]")]
     public class TemporalOrdersController : GenericController<TemporalOrder>
     {
         private readonly ITemporalOrdersUnitOfWork _temporalOrdersUnitOfWork;

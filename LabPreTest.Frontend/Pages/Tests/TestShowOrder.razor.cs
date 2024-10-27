@@ -1,25 +1,23 @@
-﻿using Blazored.Modal;
-using Blazored.Modal.Services;
-using CurrieTechnologies.Razor.SweetAlert2;
+﻿using CurrieTechnologies.Razor.SweetAlert2;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Frontend.Shared;
 using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.Entities;
+using LabPreTest.Shared.Messages;
 using LabPreTest.Shared.PagesRoutes;
 using Microsoft.AspNetCore.Components;
 using System.Net;
 
-namespace LabPreTest.Frontend.Pages.Orders
+namespace LabPreTest.Frontend.Pages.Tests
 {
-    public partial class OrdersShowTestDetails
+    public partial class TestShowOrder
     {
         private Test? test;
-        private FormForShowTest<Test>? testForm;
+        private FormForShowTestOrder<Test>? testForm;
 
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
-        [CascadingParameter] private BlazoredModalInstance BlazoredModal { get; set; } = default!;
 
         [EditorRequired, Parameter] public int Id { get; set; }
 
@@ -43,9 +41,9 @@ namespace LabPreTest.Frontend.Pages.Orders
                 test = responseHttp.Response;
             }
         }
-        private async void Return()
+        private void Return()
         {
-            await BlazoredModal.CloseAsync(ModalResult.Ok());
+            NavigationManager.NavigateTo("/orders/create");
         }
     }
 }

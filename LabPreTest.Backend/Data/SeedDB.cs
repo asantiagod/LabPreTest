@@ -4,6 +4,7 @@ using LabPreTest.Backend.UnitOfWork.Interfaces;
 using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Enums;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using System.Runtime.InteropServices;
 
 namespace LabPreTest.Backend.Data
@@ -52,7 +53,7 @@ namespace LabPreTest.Backend.Data
             await CheckUserAsync("222222",
                     "Second",
                     "User",
-                    "second.user@yopmail.com",
+                    "v",
                     "2222222222",
                     "second street of second city",
                     UserType.User);
@@ -302,7 +303,7 @@ namespace LabPreTest.Backend.Data
                     _context.Medicians.Add(new Medic
                     {
                         Address = $"Testing Address {i}",
-                        BirthDay = "02/02/1997",
+                        BirthDay = DateTime.ParseExact("02/02/1997", "MM/dd/yyyy", CultureInfo.InvariantCulture),
                         Cellphone = rnd.Next().ToString(),
                         Name = $"MedicianName {i}",
                         Email = $"{rnd.Next()}@gmail.com",
@@ -324,7 +325,7 @@ namespace LabPreTest.Backend.Data
                     _context.Patients.Add(new Patient
                     {
                         Address = $"Testing Address {i}",
-                        BirthDay = $"02/02/{1990 + i}", // between 1990 and 2003
+                        BirthDay = DateTime.ParseExact("02/02/1997", "MM/dd/yyyy", CultureInfo.InvariantCulture),
                         Cellphone = rnd.Next().ToString(),
                         Name = $"PatientName {i}",
                         Email = $"{rnd.Next()}@yopmail.com",

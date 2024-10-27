@@ -24,6 +24,7 @@ namespace LabPreTest.Backend.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAsync(int id)
         {
             var response = await _ordersUnitOfWork.GetAsync(id);
@@ -35,6 +36,7 @@ namespace LabPreTest.Backend.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAsync([FromQuery] PagingDTO pagination)
         {
             var action = await _ordersUnitOfWork.GetAsync(User.Identity!.Name!, pagination);

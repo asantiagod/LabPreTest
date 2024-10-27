@@ -12,11 +12,11 @@ using System.Net;
 namespace LabPreTest.Frontend.Pages.Patients
 {
     [Authorize(Roles = FrontendStrings.UserString)]
-    public partial class PatientEdit
+    public partial class PatientEditOrder
     {
         private Patient? patient;
 
-        private FormForUser<Patient>? patientForm;
+        private FormForUserOrder<Patient>? patientForm;
 
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
@@ -69,7 +69,7 @@ namespace LabPreTest.Frontend.Pages.Patients
         private void Return()
         {
             patientForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo(PagesRoutes.Patients);
+            NavigationManager.NavigateTo("/orders/create");
         }
     }
 }
