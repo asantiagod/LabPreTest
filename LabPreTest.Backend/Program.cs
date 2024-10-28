@@ -58,6 +58,7 @@ builder.Services.AddSwaggerGen(c =>
         });
 });
 
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=LocalConnection"));
 builder.Services.AddTransient<SeedDB>();
 builder.Services.AddScoped<IFileStorage, FileStorage>();

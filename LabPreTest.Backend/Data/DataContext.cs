@@ -1,4 +1,5 @@
 ﻿using LabPreTest.Shared.Entities;
+using LabPreTest.Shared.Enums;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,9 +7,12 @@ namespace LabPreTest.Backend.Data
 {
     public class DataContext : IdentityDbContext<User>
     {
-        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public DataContext(DbContextOptions<DataContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
         {
             Database.SetCommandTimeout(600);
+            _httpContextAccessor = httpContextAccessor;
         }
 
         // for each database entity you need create a DbSet
@@ -20,7 +24,7 @@ namespace LabPreTest.Backend.Data
         public DbSet<Medic> Medicians { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
-        public DbSet<OrderDetail> OrderAudits { get; set; }
+        public DbSet<OrderAudit> OrderAudits { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<PreanalyticCondition> PreanalyticConditions { get; set; }
         public DbSet<TemporalOrder> TemporalOrders { get; set; }
@@ -59,23 +63,53 @@ namespace LabPreTest.Backend.Data
             }
         }
 
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            ApplyAuditInfo();
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+
         public override int SaveChanges()
         {
+            ApplyAuditInfo();
+            return base.SaveChanges();
+        }
+
+        private void ApplyAuditInfo()
+        {
+            //var userName = _httpContextAccessor.HttpContext?.User?.Identity?.Name;
+            var user = _httpContextAccessor.HttpContext?.User;
+
             var audits = new List<OrderAudit>();
+
+            // catch all changes related to Orders
             foreach (var entry in ChangeTracker.Entries<Order>())
             {
+                // TODO: Throw an exception
+                if (user == null || user.Identity == null || user.Identity.Name == null || !user.Identity.IsAuthenticated)
+                    return;
+
                 if (entry.State == EntityState.Modified || entry.State == EntityState.Added || entry.State == EntityState.Deleted)
                 {
-                    var audit = new OrderAudit
+                    ChangeType changeType = entry.State == EntityState.Modified ? ChangeType.Update :
+                                            entry.State == EntityState.Deleted ? ChangeType.Delete :
+                                            ChangeType.Insert;
+
+                    audits.Add(new OrderAudit
                     {
                         OrderId = entry.Entity.Id,
-                        ChangeType = Shared.Enums.ChangeType.
+                        ChangeType = changeType,
                         ChangeDate = DateTime.UtcNow,
-                    }
+                        ChangeBy = user.Identity.Name,
+                        OldValues = "null",
+                        NewValues = "null"
+                    }) ;
+                    
                 }
             }
 
-            return base.SaveChanges();
+            // Add information related to changes to Orders
+            OrderAudits.AddRange(audits);
         }
     }
 }
