@@ -1,5 +1,6 @@
 ﻿using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Enums;
+using LabPreTest.Shared.Messages;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -65,14 +66,20 @@ namespace LabPreTest.Backend.Data
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            ApplyAuditInfo();
-            return await base.SaveChangesAsync(cancellationToken);
+            var transaction = await Database.BeginTransactionAsync(cancellationToken);
+            await ApplyAuditInfoAsync(cancellationToken);
+            var r = await base.SaveChangesAsync(cancellationToken);
+            await transaction.CommitAsync(cancellationToken);
+            return r;
         }
 
         public override int SaveChanges()
         {
+            var transaction = Database.BeginTransaction();
             ApplyAuditInfo();
-            return base.SaveChanges();
+            var r = base.SaveChanges();
+            transaction.Commit();
+            return r;
         }
 
         private void ApplyAuditInfo()
@@ -95,6 +102,9 @@ namespace LabPreTest.Backend.Data
                                             entry.State == EntityState.Deleted ? ChangeType.Delete :
                                             ChangeType.Insert;
 
+                    if (entry.State == EntityState.Added)
+                        base.SaveChanges();
+                    
                     audits.Add(new OrderAudit
                     {
                         OrderId = entry.Entity.Id,
@@ -103,8 +113,45 @@ namespace LabPreTest.Backend.Data
                         ChangeBy = user.Identity.Name,
                         OldValues = "null",
                         NewValues = "null"
-                    }) ;
-                    
+                    });
+                }
+            }
+
+            // Add information related to changes to Orders
+            OrderAudits.AddRange(audits);
+        }
+
+        private async Task ApplyAuditInfoAsync(CancellationToken cancellationToken)
+        {
+            //var userName = _httpContextAccessor.HttpContext?.User?.Identity?.Name;
+            var user = _httpContextAccessor.HttpContext?.User;
+
+            var audits = new List<OrderAudit>();
+
+            // catch all changes related to Orders
+            foreach (var entry in ChangeTracker.Entries<Order>())
+            {
+                if (user == null || user.Identity == null || user.Identity.Name == null || !user.Identity.IsAuthenticated)
+                    throw new UnauthorizedAccessException(MessageStrings.UserDoesNotHavePermissions);
+
+                if (entry.State == EntityState.Modified || entry.State == EntityState.Added || entry.State == EntityState.Deleted)
+                {
+                    ChangeType changeType = entry.State == EntityState.Modified ? ChangeType.Update :
+                                            entry.State == EntityState.Deleted ? ChangeType.Delete :
+                                            ChangeType.Insert;
+
+                    if (entry.State == EntityState.Added)
+                        await base.SaveChangesAsync(cancellationToken);
+
+                    audits.Add(new OrderAudit
+                    {
+                        OrderId = entry.Entity.Id,
+                        ChangeType = changeType,
+                        ChangeDate = DateTime.UtcNow,
+                        ChangeBy = user.Identity.Name,
+                        OldValues = "null",
+                        NewValues = "null"
+                    });
                 }
             }
 
