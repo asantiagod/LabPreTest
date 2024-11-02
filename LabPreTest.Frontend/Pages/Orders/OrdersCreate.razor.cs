@@ -276,7 +276,7 @@ namespace LabPreTest.Frontend.Pages.Orders
             {
                 Test test = (Test)result.Data;
                 var responseHttp = await Repository
-                        .PostAsync<TemporalOrdersDTO>(ApiRoutes.TemporalOrdersFullRoute,
+                        .PostAsync<TemporalOrdersDTO>($"/api/temporalorders/dto",
                                                       new TemporalOrdersDTO
                                                       {
                                                           TestId = test.Id,
