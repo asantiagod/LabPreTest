@@ -10,7 +10,8 @@ namespace LabPreTest.Backend.Data
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public DataContext(DbContextOptions<DataContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
+        public DataContext(DbContextOptions<DataContext> options,
+            IHttpContextAccessor httpContextAccessor) : base(options)
         {
             Database.SetCommandTimeout(600);
             _httpContextAccessor = httpContextAccessor;
@@ -104,7 +105,7 @@ namespace LabPreTest.Backend.Data
 
                     if (entry.State == EntityState.Added)
                         base.SaveChanges();
-                    
+
                     audits.Add(new OrderAudit
                     {
                         OrderId = entry.Entity.Id,

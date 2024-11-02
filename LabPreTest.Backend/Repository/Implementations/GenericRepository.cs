@@ -22,19 +22,7 @@ namespace LabPreTest.Backend.Repository.Implementations
         public virtual async Task<ActionResponse<T>> AddAsync(T entity)
         {
             _context.Add(entity);
-            try
-            {
-                await _context.SaveChangesAsync();
-                return ActionResponse<T>.BuildSuccessful(entity);
-            }
-            catch (DbUpdateException)
-            {
-                return DbUpdateExceptionActionResponse();
-            }
-            catch (Exception ex)
-            {
-                return ExceptionActionResponse(ex);
-            }
+            return await SaveContextChangesAsync(entity);
         }
 
         public virtual async Task<ActionResponse<T>> DeleteAsync(int id)
@@ -94,19 +82,7 @@ namespace LabPreTest.Backend.Repository.Implementations
         public virtual async Task<ActionResponse<T>> UpdateAsync(T entity)
         {
             _context.Update(entity);
-            try
-            {
-                await _context.SaveChangesAsync();
-                return ActionResponse<T>.BuildSuccessful(entity);
-            }
-            catch (DbUpdateException)
-            {
-                return DbUpdateExceptionActionResponse();
-            }
-            catch (Exception exception)
-            {
-                return ExceptionActionResponse(exception);
-            }
+            return await SaveContextChangesAsync(entity);
         }
 
         protected ActionResponse<T> DbUpdateExceptionActionResponse()
@@ -125,6 +101,10 @@ namespace LabPreTest.Backend.Repository.Implementations
             {
                 await _context.SaveChangesAsync();
                 return ActionResponse<DTO>.BuildSuccessful(result);
+            }
+            catch(DbUpdateException)
+            {
+                return ActionResponse<DTO>.BuildFailed(MessageStrings.DbUpdateExceptionMessage);
             }
             catch (Exception ex)
             {

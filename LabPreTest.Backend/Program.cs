@@ -69,6 +69,9 @@ builder.Services.AddScoped<IMailHelper, MailHelper>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
 
+builder.Services.AddScoped(typeof(IGenericAuditRepository<>), typeof(GenericAuditRepository<>));
+builder.Services.AddScoped(typeof(IGenericAuditUnitOfWork<>), typeof(GenericAuditUnitOfWork<>));
+
 builder.Services.AddScoped<ICitiesRepository, CitiesRepository>();
 builder.Services.AddScoped<ICitiesUnitOfWork, CitiesUnitOfWork>();
 
@@ -153,6 +156,7 @@ void SeedData(WebApplication app)
         service!.SeedAsync().Wait();
     }
 }
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
