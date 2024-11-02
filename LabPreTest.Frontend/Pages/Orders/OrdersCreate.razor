@@ -32,7 +32,7 @@ else
                 <input type="number" class="form-control" @bind="MedicDocumentValue" placeholder="Ingrese documento del medico a buscar..." />
             </td>
             <td>
-                <button class="btn btn-primary" @onclick="SearchMedic">Buscar médico</button>
+                    <button class="btn btn-primary" @onclick="async () => await SearchMedic()">Buscar médico</button>
 
             </td>
         </tr>

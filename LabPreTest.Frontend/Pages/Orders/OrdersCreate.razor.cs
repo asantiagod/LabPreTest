@@ -141,7 +141,7 @@ namespace LabPreTest.Frontend.Pages.Orders
 
                             if (result.IsConfirmed)
                             {
-                                ShowCreatePatientModal();
+                                ShowCreateMedicModal();
                             }
                         }
                         else
