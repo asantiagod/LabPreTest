@@ -1,11 +1,12 @@
 ﻿using LabPreTest.Backend.Repository.Interfaces;
 using LabPreTest.Backend.UnitOfWork.Interfaces;
 using LabPreTest.Shared.DTO;
+using LabPreTest.Shared.Interfaces;
 using LabPreTest.Shared.Responses;
 
 namespace LabPreTest.Backend.UnitOfWork.Implementations
 {
-    public class GenericAuditUnitOfWork<T> : IGenericAuditUnitOfWork<T> where T : class
+    public class GenericAuditUnitOfWork<T> : IGenericAuditUnitOfWork<T> where T : class, IAuditRecord
     {
         private readonly IGenericAuditRepository<T> _repository;
 

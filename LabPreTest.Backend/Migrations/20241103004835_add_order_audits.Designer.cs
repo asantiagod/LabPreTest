@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabPreTest.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241028015913_add_order_audits")]
+    [Migration("20241103004835_add_order_audits")]
     partial class add_order_audits
     {
         /// <inheritdoc />

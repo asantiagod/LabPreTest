@@ -1,12 +1,17 @@
 ﻿using LabPreTest.Shared.Enums;
 using LabPreTest.Shared.Interfaces;
+using System.Text.Json.Serialization;
 
 namespace LabPreTest.Shared.Entities
 {
-    public class OrderAudit : IEntityWithId
+    public class OrderAudit : IAuditRecord
     {
         public int Id { get; set; }
         public int OrderId { get; set; }
+
+        [JsonIgnore]
+        public int EntityId => OrderId;
+
         public ChangeType ChangeType { get; set; }
         public DateTime ChangeDate { get; set; }
         public string ChangeBy { get; set; } = null!;
