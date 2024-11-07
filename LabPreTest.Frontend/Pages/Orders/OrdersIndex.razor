@@ -1,63 +1,81 @@
 ﻿@page "/orders"
 
-<h3> Ordenes </h3>
+<h3 class="mb-4">Órdenes</h3>
 
+<!-- Botón para Crear/Editar Orden -->
 <div class="mb-3">
     <a class="btn btn-primary" href="/orders/create">Crear/Editar Orden</a>
 </div>
 
-<div>
+<!-- Campo de búsqueda de orden -->
+<div class="mb-3">
     <input type="number" class="form-control" @bind="orderValue" placeholder="Ingrese documento del paciente a buscar..." />
 </div>
 
-<div>
+<!-- Botón para buscar orden -->
+<div class="mb-3">
     <button class="btn btn-primary" @onclick="async () => await SearchOrder()">Buscar orden</button>
 </div>
 
-
-
-<table class="table table-striped">
+<!-- Tabla de detalles de la orden -->
+<table class="table table-striped mt-4">
     <thead>
-    <th>Numero de orden</th>
-    <th style="width:180px"></th>
+        <tr>
+            <th>Numero de Orden</th>
+            <th style="width:180px">Acciones</th>
+        </tr>
     </thead>
     <tbody>
         @if (orderValue == null)
         {
-            <h1>NO HAY ORDEN SELECCIONADA</h1>        
+            <tr>
+                <td colspan="2" class="text-center">
+                    <h4>No hay orden seleccionada</h4>
+                </td>
+            </tr>
         }
-        @if (orderValue != null && SelectedOrder!=null)
+        @if (orderValue != null && SelectedOrder != null)
         {
             <tr>
-                <td>@SelectedOrder.Id</td>
+                <td colspan="2" class="text-center"><h1>Orden número: @SelectedOrder.Id</h1></td>
             </tr>
 
-            <thead>Medico</thead>
             <tr>
-                <td>
+                <td colspan="2" class="text-center">
+                    <strong>Medico</strong>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
                     <LabPreTest.Frontend.Pages.Medician.MedicEdit Id=medicId></LabPreTest.Frontend.Pages.Medician.MedicEdit>
                 </td>
             </tr>
-            <thead>Paciente</thead>
+
             <tr>
-                <td>
+                <td colspan="2" class="text-center">
+                    <strong>Paciente</strong>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
                     <LabPreTest.Frontend.Pages.Patients.PatientEdit Id=patientId></LabPreTest.Frontend.Pages.Patients.PatientEdit>
                 </td>
             </tr>
 
+            <tr>
+                <td colspan="2" class="text-center">
+                    <strong>Detalles de la Orden</strong>
+                </td>
+            </tr>
 
-                @foreach (var orderDetails in SelectedOrder.Details)
-                {
-                    <tr>
-                        <td>
-                            <LabPreTest.Frontend.Pages.Tests.TestShowOrder Id=orderDetails.TestId></LabPreTest.Frontend.Pages.Tests.TestShowOrder>
-                        </td>
-
-                    </tr>
-
-                }
-
-
+            @foreach (var orderDetails in SelectedOrder.Details)
+            {
+                <tr>
+                    <td colspan="2" class="text-center">
+                        <LabPreTest.Frontend.Pages.Tests.TestShowOrder Id=orderDetails.TestId></LabPreTest.Frontend.Pages.Tests.TestShowOrder>
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>
