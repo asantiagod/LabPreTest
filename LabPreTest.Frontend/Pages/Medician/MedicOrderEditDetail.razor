@@ -1,0 +1,11 @@
+﻿@page "/orders/medicians/orderShow/{Id:int}"
+
+@if (medic is null)
+{
+    <Loading />
+}
+else
+{
+    <FormForUserOrderDetail @ref="medicFormOrder" Label="Medico:" Model="medic" OnValidSubmit="EditAsync" ReturnAction="Return" />
+}
+

@@ -1,0 +1,11 @@
+﻿@page "/patients/order/patientDetails/{Id:int}"
+
+
+@if (patient is null)
+{
+    <Loading />
+}
+else
+{
+    <FormForUserOrderDetail @ref="patientForm" Label="Paciente:" Model="patient" OnValidSubmit="EditAsync" ReturnAction="Return" />
+}
