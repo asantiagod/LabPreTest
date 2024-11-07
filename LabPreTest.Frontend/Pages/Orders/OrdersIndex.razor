@@ -6,35 +6,58 @@
     <a class="btn btn-primary" href="/orders/create">Crear/Editar Orden</a>
 </div>
 
-<GenericList MyList="orders">
-    <Body>
-        <Pagination CurrentPage="currentPage"
-                    TotalPages="totalPages"
-                    SelectedPage="SelectedPageAsync"
-                    SelectedRedordsNumber="SelectedRedordsNumberAsync" />
-        <!--<Filter PlaceHolder="Buscar medico..." Callback=@FilterCallback />-->
+<div>
+    <input type="number" class="form-control" @bind="orderValue" placeholder="Ingrese documento del paciente a buscar..." />
+</div>
+
+<div>
+    <button class="btn btn-primary" @onclick="async () => await SearchOrder()">Buscar orden</button>
+</div>
 
 
-        <table class="table table-striped">
-            <thead>
-            <th>Id</th>
-            <th>Nombre del paciente</th>
-            <th>Nombre del medico</th>
-            <th style="width:180px"></th>
-            </thead>
-            <tbody>
-                @foreach (var order in orders!)
+
+<table class="table table-striped">
+    <thead>
+    <th>Numero de orden</th>
+    <th style="width:180px"></th>
+    </thead>
+    <tbody>
+        @if (orderValue == null)
+        {
+            <h1>NO HAY ORDEN SELECCIONADA</h1>        
+        }
+        @if (orderValue != null && SelectedOrder!=null)
+        {
+            <tr>
+                <td>@SelectedOrder.Id</td>
+            </tr>
+
+            <thead>Medico</thead>
+            <tr>
+                <td>
+                    <LabPreTest.Frontend.Pages.Medician.MedicEdit Id=medicId></LabPreTest.Frontend.Pages.Medician.MedicEdit>
+                </td>
+            </tr>
+            <thead>Paciente</thead>
+            <tr>
+                <td>
+                    <LabPreTest.Frontend.Pages.Patients.PatientEdit Id=patientId></LabPreTest.Frontend.Pages.Patients.PatientEdit>
+                </td>
+            </tr>
+
+
+                @foreach (var orderDetails in SelectedOrder.Details)
                 {
                     <tr>
-                        <td>@order.Id</td>
-                        <td>@order.Details!.First().Patient!.Name</td>
-                        <td>@order.Details!.First().Medic!.Name</td>
                         <td>
-                            <!--<a href="/orders/edit/@order.Id" class="btn btn-info">Detalles</a>-->
+                            <LabPreTest.Frontend.Pages.Tests.TestShowOrder Id=orderDetails.TestId></LabPreTest.Frontend.Pages.Tests.TestShowOrder>
                         </td>
+
                     </tr>
+
                 }
-            </tbody>
-        </table>
-    </Body>
-</GenericList>
+
+
+        }
+    </tbody>
+</table>
