@@ -12,6 +12,7 @@ namespace LabPreTest.Frontend.Pages.Auth
     public partial class Login
     {
         private LoginDTO loginDTO = new();
+
         private bool wasClose;
 
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
@@ -20,6 +21,8 @@ namespace LabPreTest.Frontend.Pages.Auth
         [Inject] private ILoginService LoginService { get; set; } = null!;
         [CascadingParameter] private BlazoredModalInstance BlazoredModal { get; set; } = default!;
         [CascadingParameter] private IModalService modal { get; set; } = null!;
+
+        [Parameter] public EventCallback<bool> OnConfirm { get; set; }
 
         private async Task CloseModalAsync()
         {
@@ -46,6 +49,7 @@ namespace LabPreTest.Frontend.Pages.Auth
             NavigationManager.NavigateTo("/");
         }
 
+   
         private void ShowModal()
         {
             modal.Show<RecoverPassword>();

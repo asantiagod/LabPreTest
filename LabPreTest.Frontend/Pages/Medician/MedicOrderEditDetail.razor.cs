@@ -1,22 +1,19 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Frontend.Shared;
-using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Messages;
-using LabPreTest.Shared.PagesRoutes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System.Net;
 
-namespace LabPreTest.Frontend.Pages.Patients
+namespace LabPreTest.Frontend.Pages.Medician
 {
     [Authorize(Roles = FrontendStrings.UserString)]
-    public partial class PatientEdit
+    public partial class MedicOrderEditDetail
     {
-        private Patient? patient;
-
-        private FormForUser<Patient>? patientForm;
+        private Medic? medic;
+        private FormForUserOrderDetail<Medic>? medicFormOrder;
 
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
@@ -26,12 +23,12 @@ namespace LabPreTest.Frontend.Pages.Patients
 
         protected override async Task OnParametersSetAsync()
         {
-            var responseHttp = await Repository.GetAsync<Patient>(ApiRoutes.PatientsRoute + $"/{Id}");
+            var responseHttp = await Repository.GetAsync<Medic>($"/api/Medics/{Id}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo(PagesRoutes.Patients);
+                    NavigationManager.NavigateTo("/medicians");
                 }
                 else
                 {
@@ -41,13 +38,13 @@ namespace LabPreTest.Frontend.Pages.Patients
             }
             else
             {
-                patient = responseHttp.Response;
+                medic = responseHttp.Response;
             }
         }
 
         private async Task EditAsync()
         {
-            var responseHttp = await Repository.PutAsync(ApiRoutes.PatientsRoute, patient);
+            var responseHttp = await Repository.PutAsync("/api/Medics", medic);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -63,13 +60,13 @@ namespace LabPreTest.Frontend.Pages.Patients
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordChangedMessage);
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Cambios guardados con éxito.");
         }
 
         private void Return()
         {
-            patientForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo(PagesRoutes.Patients);
+            medicFormOrder!.FormPostedSuccessfully = true;
+            NavigationManager.NavigateTo("/orders/create");
         }
     }
 }

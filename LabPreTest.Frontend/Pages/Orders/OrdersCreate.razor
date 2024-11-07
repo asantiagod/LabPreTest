@@ -2,147 +2,82 @@
 
 <h3>Crear Orden</h3>
 
+
 @if (TemporalOrders is null)
 {
     <Loading />
 }
 else
 {
+    <table class="table table-borderless w-100" >
+        <tbody>
+        <tr>
+            <td>
+                <input type="number" class="form-control" @bind="PatientDocumentValue" placeholder="Ingrese documento del paciente a buscar..." />
+            </td>
+            <td>
+                    <button class="btn btn-primary" @onclick="async () => await SearchPatient()">Buscar Paciente</button>
+            </td>
+            </tr>
+        <tr>
+            <td colspan="2">
+                @if (SelectedPatient != null)
+                {
+                        <LabPreTest.Frontend.Pages.Patients.PatientEditOrder Id="@SelectedPatient.Id"></LabPreTest.Frontend.Pages.Patients.PatientEditOrder>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="number" class="form-control" @bind="MedicDocumentValue" placeholder="Ingrese documento del medico a buscar..." />
+            </td>
+            <td>
+                    <button class="btn btn-primary" @onclick="async () => await SearchMedic()">Buscar médico</button>
+
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                @if (SelectedMedic != null)
+                {
+                    <LabPreTest.Frontend.Pages.Medician.MedicOrderEdit_ Id="@SelectedMedic.Id"></LabPreTest.Frontend.Pages.Medician.MedicOrderEdit_>
+                }
+            </td>
+        </tr>
+        </tbody>
+        </table>
+
     <div class="mb-3">
-        <button class="btn btn-primary" @onclick="ProcessOrder">Crear</button>
-        <button class="btn btn-success" @onclick="Return">Regresar</button>
+        <button class="btn btn-primary" disabled=@IsAddButtonDisabled @onclick=@(()=>ShowAddTestModal())>Agregar Exámen</button>
     </div>
     <div class="mb-3">
-        <label>Numero de exámenes: @NumberOfTests</label>
-    </div>
-    <div class="mb-3">
-        <table class="table table-striped">
-            <thead>
-            <th style="width:180px;">
-                <div>
-                    Paciente
-                </div>
-            </th>
-            <th style="max-width:300px; width:100%;">
-                <div>
-                    @if(IsEditable)
+
+        <table class="table table-borderless w-100" >
+            <tbody>
+                @if (IsAddButtonDisabled != true)
+                {
+                    @if (TemporalOrders.Count() > 0)
                     {
-                        <button class="btn btn-success" disabled=@IsSelectorDisabled @onclick=@(()=>ShowFindPatientModal())>Buscar</button>
-                    }
-                </div>
-            </th>
-            </thead>
-            <tbody>
-                @if (Patient is not null)
-                {
-                    <tr>
-                        <td><label>Nombre:</label></td>
-                        <td><input type="text" value="@Patient.Name" disabled /></td>
-                    </tr>
-                    <tr>
-                        <td><label>Documento:</label></td>
-                        <td><input type="text" value="@Patient.DocumentId" disabled /></td>
-                    </tr>
-                    <tr>
-                        <td><label>Documento:</label></td>
-                        <td><input type="text" value="@Patient.DocumentId" disabled /></td>
-                    </tr>
-                    <tr>
-                        <td><label>Fecha de nacimiento:</label></td>
-                        <td><input type="text" value="@Patient.BirthDay" disabled /></td>
-                    </tr>
-                    <tr>
-                        <td><label>Teléfono:</label></td>
-                        <td><input type="text" value="@Patient.Cellphone" disabled /></td>
-                    </tr>
-                    <tr>
-                        <td><label>Dirección:</label></td>
-                        <td><input type="text" value="@Patient.Address" disabled /></td>
-                    </tr>
-                    <tr>
-                        <td><label>Correo Electrónico:</label></td>
-                        <td><input type="text" value="@Patient.Email" disabled /></td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-
-    <div class="mb-3">
-        <table class="table table-striped">
-            <thead>
-            <th style="width:180px;">
-                <div>
-                    Médico
-                </div>
-            </th>
-            <th style="max-width:300px; width:100%;">
-                <div>
-                        @if (IsEditable)
+                        @foreach (var to in TemporalOrders)
                         {
-                        <button class="btn btn-success" disabled=@IsSelectorDisabled @onclick=@(()=>ShowFindMedicianModal())>Buscar</button>
+                            var correspondingTest = tests.FirstOrDefault(t => t.Id == to.TestId);
+                            <tr>
+                                <td>
+                                    <LabPreTest.Frontend.Pages.Tests.TestShowOrder Id="@to.TestId"></LabPreTest.Frontend.Pages.Tests.TestShowOrder>
+                                </td>
+                            </tr>
                         }
-                </div>
-            </th>
-            </thead>
-            <tbody>
-                @if (Medician is not null)
-                {
-                    <tr>
-                        <td><label>Nombre:</label></td>
-                        <td><input type="text" value="@Medician.Name" disabled="true" /></td>
-                    </tr>
-                    <tr>
-                        <td><label>Documento:</label></td>
-                        <td><input type="text" value="@Medician.DocumentId" disabled="true" /></td>
-                    </tr>
-                    <tr>
-                        <td><label>Fecha de nacimiento:</label></td>
-                        <td><input type="text" value="@Medician.BirthDay" disabled /></td>
-                    </tr>
-                    <tr>
-                        <td><label>Teléfono:</label></td>
-                        <td><input type="text" value="@Medician.Cellphone" disabled /></td>
-                    </tr>
-                    <tr>
-                        <td><label>Dirección:</label></td>
-                        <td><input type="text" value="@Medician.Address" disabled /></td>
-                    </tr>
-                    <tr>
-                        <td><label>Correo Electrónico:</label></td>
-                        <td><input type="text" value="@Medician.Email" disabled /></td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
 
-    @if (IsEditable)
-    {
-        <div class="mb-3">
-            <button class="btn btn-primary" disabled=@IsAddButtonDisabled @onclick=@(()=>ShowAddTestModal())>Agregar Examen</button>
-        </div>
-    }
-    <div class="mb-3">
-        <table class="table table-striped">
-            <thead>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th style="width:180px"></th>
-            </thead>
-            <tbody>
-                @foreach (var to in TemporalOrders)
-                {
-                    <tr>
-                        <td>@to.TestId</td>
-                        <td>@to.Test!.Name</td>
-                        <td>
-                            <a @onclick=@(()=>ShowEditModal(@to.Test.Id)) class="btn btn-warning"><i class="bi bi-info-circle" /> Detalles</a>
-                        </td>
-                    </tr>
+                    }
                 }
+                    
+
+
             </tbody>
         </table>
-        <!--<ValidationMessage For="@(() => Model.TestIds)" />-->
+        <div class="mb-3">
+            <label>Numero de exámenes: @NumberOfTests</label>
+        </div>
+        <button class="btn btn-primary" disabled=@IsAddButtonDisabled @onclick=@(()=>CreateAsync())>Crear orden</button>
     </div>
 }

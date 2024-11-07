@@ -6,11 +6,9 @@
             <DataAnnotationsValidator />
 
             <div class="card bg-light">
-                <div class="card-header justify-content-center">
+                <div class="card-header d-flex justify-content-center">
                     <span>
-                        <i class="oi oi-account-login" /> Iniciar Sesión
-                        <button class="btn btn-sm btn-primary float-end" @onclick=@(() => LoginAsync())><i class="bi bi-box-arrow-in-right" /> Iniciar Sesión</button>
-                        <button class="btn btn-sm mx-1 btn-danger float-end" @onclick=@(() => CloseModalAsync())><i class="bi bi-x-circle-fill" /> Cancelar</button>
+                        <i class="oi oi-account-login" /> Ingreso al LIS
                     </span>
                 </div>
                 <div class="card-body">
@@ -27,6 +25,10 @@
                             <InputText type="password" class="form-control" @bind-Value="@loginDTO.Password" />
                             <ValidationMessage For="@(() => loginDTO.Password)" />
                         </div>
+                    </div>
+                    <div class="d-flex justify-content-evenly">
+                        <button class="btn btn-sm btn-primary" @onclick=@(() => LoginAsync())>Iniciar sesión</button>
+                        <button class="btn btn-sm btn-danger" @onclick=@(() => CloseModalAsync())>Cancelar</button>
                     </div>
                 </div>
                 <div class="card-footer">

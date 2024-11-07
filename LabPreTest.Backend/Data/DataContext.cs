@@ -43,15 +43,28 @@ namespace LabPreTest.Backend.Data
             modelBuilder.Entity<Patient>().HasIndex(x => x.Email).IsUnique();
             modelBuilder.Entity<Patient>().HasIndex(x => x.DocumentId).IsUnique();
             modelBuilder.Entity<Patient>().HasIndex(x => x.UserName).IsUnique();
+            modelBuilder.Entity<Patient>(entity =>
+            {
+                entity.Property(e => e.BirthDay)
+                      .HasColumnType("date") 
+                      .IsRequired(); 
+            });
             modelBuilder.Entity<PreanalyticCondition>().HasIndex(x => x.Name).IsUnique();
             modelBuilder.Entity<Medic>().HasIndex(x => x.Email).IsUnique();
             modelBuilder.Entity<Medic>().HasIndex(x => x.DocumentId).IsUnique();
             modelBuilder.Entity<Medic>().HasIndex(x => x.UserName).IsUnique();
+            modelBuilder.Entity<Medic>(entity =>
+            {
+                entity.Property(e => e.BirthDay)
+                      .HasColumnType("date")
+                      .IsRequired();
+            });
             modelBuilder.Entity<Test>().HasIndex(x => x.TestID).IsUnique();
             modelBuilder.Entity<TestTube>().HasIndex(x => x.Name).IsUnique();
             modelBuilder.Entity<Order>().HasIndex(x => x.Id).IsUnique();
             modelBuilder.Entity<OrderAudit>().HasIndex(x => x.Id).IsUnique();
             modelBuilder.Entity<SectionImage>().HasIndex(x => x.Id).IsUnique();
+            modelBuilder.Entity<TemporalOrder>().HasIndex(x => x.TestId).IsUnique();
 
             DisableCascadingDelete(modelBuilder);
         }

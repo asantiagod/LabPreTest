@@ -1,16 +1,11 @@
-﻿using Blazored.Modal.Services;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
-using LabPreTest.Frontend.Repositories;
-using LabPreTest.Shared.DTO;
-using Microsoft.AspNetCore.Components;
-using LabPreTest.Shared.Entities;
-using LabPreTest.Shared.ApiRoutes;
-using LabPreTest.Shared.PagesRoutes;
-using System.Net;
-using Blazored.Modal;
 using LabPreTest.Frontend.Pages.Tests;
-using LabPreTest.Shared.Messages;
-
+using LabPreTest.Frontend.Repositories;
+using LabPreTest.Shared.ApiRoutes;
+using LabPreTest.Shared.Entities;
+using Microsoft.AspNetCore.Components;
 
 namespace LabPreTest.Frontend.Pages
 {
@@ -33,7 +28,6 @@ namespace LabPreTest.Frontend.Pages
         protected override async Task OnInitializedAsync()
         {
             await SelectedRedordsNumberAsync("10");
-            await LoadAsync();
         }
 
         private async Task SelectedPageAsync(int page)
@@ -97,6 +91,7 @@ namespace LabPreTest.Frontend.Pages
             {
                 var message = await responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                Console.WriteLine(message);
                 return false;
             }
 
@@ -123,8 +118,5 @@ namespace LabPreTest.Frontend.Pages
                 .Add(nameof(TestShow.Id), testId);
             ModalService.Show<TestShow>(parameter);
         }
-
     }
-
 }
-

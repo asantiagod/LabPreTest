@@ -15,103 +15,72 @@ namespace LabPreTest.Frontend.Pages.Orders
     {
         private int currentPage = 1;
         private int totalPages;
-
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
+        private int? orderValue { get; set; }
 
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string RecordNumberQueryString { get; set; } = string.Empty;
+        private Patient? SelectedPatient { get; set; }
+        public List<OrderDetail>? ordersDetails { get; set; }
 
-        public List<Order>? orders { get; set; }
+        private int medicId;
+        private int patientId;
+        private Order? SelectedOrder;
 
-        protected override async Task OnInitializedAsync()
+
+        protected async Task SearchOrder()
         {
-            await SelectedRedordsNumberAsync("10");
-            await LoadAsync();
-        }
 
-        private async Task SelectedPageAsync(int page)
-        {
-            currentPage = page;
-            await LoadAsync(page);
-        }
-
-        private async Task SelectedRedordsNumberAsync(string recordsNumber)
-        {
-            RecordNumberQueryString = $"RecordsNumber={recordsNumber}";
-            await LoadAsync();
-        }
-
-        private async Task LoadAsync(int page = 1)
-        {
-            if (!String.IsNullOrWhiteSpace(Page))
-                page = Convert.ToInt32(Page);
-
-            bool ok = await LoadListAsync(page);
-            if (ok)
-                await LoadTotalPagesAsync();
-        }
-
-        private async Task LoadTotalPagesAsync()
-        {
-            if (RecordNumberQueryString.ToLower().Contains("full"))
+            if (orderValue != null)
             {
-                totalPages = 1;
-                return;
+                var responseHttp = await Repository.GetAsync<Order>($"/api/orders/{orderValue}");
+
+                if (responseHttp.Error)
+                {
+                    if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        var result = await SweetAlertService.FireAsync(new SweetAlertOptions
+                        {
+                            Title = "Orden no encontrada",
+                            Icon = SweetAlertIcon.Error,
+                            ShowCancelButton = true,
+                            ConfirmButtonText = "Aceptar",
+                        });
+                    }
+                    else
+                    {
+                        await SweetAlertService.FireAsync(new SweetAlertOptions
+                        {
+                            Title = "Error",
+                            Text = "Ocurrió un error al buscar el paciente. Por favor, intente nuevamente.",
+                            Icon = SweetAlertIcon.Error
+                        });
+                    }
+                }
+                else
+                {
+                    SelectedOrder = responseHttp.Response;
+                    ordersDetails = SelectedOrder.Details.ToList();
+                    medicId = ordersDetails.FirstOrDefault().MedicId;
+                    patientId = ordersDetails.FirstOrDefault().PatientId;
+                    StateHasChanged();
+                }
             }
-
-            var url = ApiRoutes.OrdersRoute + "/" + ApiRoutes.TotalPages;
-            url += $"?{RecordNumberQueryString}";
-            if (!string.IsNullOrWhiteSpace(Filter))
-                url += $"&filter={Filter}";
-
-            var responseHttp = await Repository.GetAsync<int>(url);
-            if (responseHttp.Error)
-            {
-                var message = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-                return;
-            }
-            totalPages = responseHttp.Response;
-        }
-
-        private async Task<bool> LoadListAsync(int page)
-        {
-            var url = ApiRoutes.OrdersRoute;
-            if (RecordNumberQueryString.ToLower().Contains("full"))
-                url += $"/{ApiRoutes.Full}";
             else
-                url += $"?page={page}&{RecordNumberQueryString}";
-
-            if (!string.IsNullOrWhiteSpace(Filter))
-                url += $"&filter={Filter}";
-
-            var responseHttp = await Repository.GetAsync<List<Order>>(url);
-            if (responseHttp.Error)
             {
-                var message = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-                return false;
+                await SweetAlertService.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Error",
+                    Text = "Documento del paciente inválido.",
+                    Icon = SweetAlertIcon.Error
+                });
             }
-
-            orders = responseHttp.Response;
-            return true;
+            
         }
 
-        private async Task FilterCallback(string filter)
-        {
-            Filter = filter;
-            await ApplyFilterAsync();
-            StateHasChanged();
-        }
 
-        private async Task ApplyFilterAsync()
-        {
-            int page = 1;
-            await SelectedPageAsync(page);
-        }
-        
     }
 }

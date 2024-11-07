@@ -1,28 +1,25 @@
-﻿using CurrieTechnologies.Razor.SweetAlert2;
+﻿using Blazored.Modal.Services;
+using CurrieTechnologies.Razor.SweetAlert2;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Frontend.Shared;
-using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.Entities;
-using LabPreTest.Shared.Messages;
-using LabPreTest.Shared.PagesRoutes;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 
-namespace LabPreTest.Frontend.Pages.Patients
+namespace LabPreTest.Frontend.Pages.Medician
 {
-    [Authorize(Roles = FrontendStrings.UserString)]
-    public partial class PatientCreate
+    public partial class MedicOrderCreate
     {
-        private Patient patient = new();
+        private Medic medic = new();
 
-        private FormForUser<Patient>? patientForm;
+        private FormForUser<Medic>? medicForm;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
+        [CascadingParameter] private IModalService ModalService { get; set; } = null!;
 
         private async Task CreateAsync()
         {
-            var responseHttp = await Repository.PostAsync(ApiRoutes.PatientsRoute, patient);
+            var responseHttp = await Repository.PostAsync("/api/Medics", medic);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -30,7 +27,7 @@ namespace LabPreTest.Frontend.Pages.Patients
                 return;
             }
 
-            Return();
+            ReturnToOrder();
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,
@@ -38,13 +35,17 @@ namespace LabPreTest.Frontend.Pages.Patients
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordCreatedMessage);
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro creado con éxito.");
         }
 
-        private void Return()
+        private void ReturnToOrder()
         {
-            patientForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo("/patients");
+            medicForm!.FormPostedSuccessfully = true;
+            NavigationManager.NavigateTo("/orders/create");
+        }
+        private void ShowCreateModal()
+        {
+            ModalService.Show<MedicOrderCreate>();
         }
     }
 }

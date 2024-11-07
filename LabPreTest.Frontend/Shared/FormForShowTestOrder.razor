@@ -1,21 +1,16 @@
 ﻿@typeparam TModel where TModel : ITestEntity
 
-<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
-
-<EditForm EditContext="editContext" >
-    <DataAnnotationsValidator />
-    <div class="mb-3 d-flex flex-column align-items-center">
-        <label><h1>Detalles del exámen</h1></label>
-    </div>
+<MudForm>
     <div class="mb-3 d-flex flex-column align-items-center">
         <table class="table table-bordered table-striped w-75">
             <thead class="text-center">
                 <tr>
-                    <td colspan="4">
+                    <td colspan="5">
                     <InputText class="form-control" @bind-Value="@Model.Name" disabled />
                     </td>
                 </tr>
                 <tr>
+                    <th>Código interno del exámen</th>
                     <th>Condición preanalítica</th>
                     <th>Descripción</th>
                     <th>Tipo de recipiente</th>
@@ -27,11 +22,17 @@
                 {
                     int rowCount = Model.Conditions.Count();
                     bool firstRowRendered = false;
+                    bool rowForId = false;
 
                     @foreach (var t in Model.Conditions)
                     {
                         <tr>
-                            <td>@t.TestConditionNumber</td>
+                            @if (!rowForId)
+                            {
+                                <td rowspan="@rowCount" class="text-center align-middle fs-4">@Model.TestID</td>
+                                rowForId = true;
+                            }
+                            <td>@t.Name</td>
                             <td>@t.Description</td>
 
                             @if (!firstRowRendered)
@@ -57,9 +58,6 @@
             text-align: center;
         }
     </style>
-    <div class="d-flex flex-column align-items-center">
-        <button class="btn btn-success " @onclick="ReturnAction">Regresar</button>
-    </div>
 
-</EditForm>
+</MudForm>
 
