@@ -194,8 +194,6 @@ namespace LabPreTest.Backend.Data
 
             foreach (var navigation in entry.Navigations)
             {
-                //if (!navigation.IsModified)
-                //continue;
                 if (navigation.CurrentValue is ICollection<OrderDetail> collection)
                 {
                     List<object> collectionList = [];
@@ -204,11 +202,9 @@ namespace LabPreTest.Backend.Data
                         collectionList.Add(item);
                         Console.WriteLine(item.ToString());
                     }
-                    //navDic.Add(navigation.Metadata.Name, collectionList);
                     objDic.Add(navigation.Metadata.Name, collectionList);
                 }
                 else
-                    //navDic.Add(navigation.Metadata.Name, navigation.CurrentValue);
                     objDic.Add(navigation.Metadata.Name, navigation.CurrentValue);
             }
             
