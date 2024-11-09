@@ -1,0 +1,55 @@
+﻿@typeparam TModel where TModel : IUserEntity
+
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
+
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="mb-3 align-items-center">
+        <table class="table table-bordered table-striped w-100">
+            <thead>
+                <tr>
+                    <th>Información del @Label.ToLower()</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Número de documento </td>
+                    <td>
+                        <InputText class="form-control" @bind-Value="@Model.DocumentId" disabled/>
+                        <ValidationMessage For="@(() => Model.DocumentId)" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="Nombre">Nombre </label>
+                    </td>
+                    <td>
+                        <InputText class="form-control" @bind-Value="@Model.Name" disabled />
+                        <ValidationMessage For="@(() => Model.Name)" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="FNacimiento">Fecha de nacimiento </label>
+                    </td>
+                    <td>
+                        <InputDate class="form-control" @bind-Value="@Model.BirthDay" disabled />
+                        <ValidationMessage For="@(() => Model.BirthDay)" />
+                    </td>
+                </tr>
+
+
+            </tbody>
+        </table>
+    </div>
+    <style>
+  
+        .table td, .table th {
+            white-space: nowrap;
+
+        }
+            .table td:first-child {
+                width: 250px;
+            }
+    </style>
+</EditForm>

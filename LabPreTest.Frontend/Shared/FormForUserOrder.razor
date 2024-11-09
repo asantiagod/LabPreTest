@@ -1,0 +1,94 @@
+﻿@typeparam TModel where TModel : IUserEntity
+
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
+
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="mb-3 align-items-center">
+        <table class="table table-bordered table-striped w-100">
+            <thead>
+                <tr>
+                    <th>Detalles del @Label.ToLower()</th>
+                    <th></th> 
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Ingrese el documento:</td>
+                    <td>
+                        <InputText class="form-control" @bind-Value="@Model.DocumentId" />
+                        <ValidationMessage For="@(() => Model.DocumentId)" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="Nombre">Ingrese el nombre:</label>
+                    </td>
+                    <td>
+                        <InputText class="form-control" @bind-Value="@Model.Name" />
+                        <ValidationMessage For="@(() => Model.Name)" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="FNacimiento">Ingrese la fecha de nacimiento:</label>
+                    </td>
+                    <td>
+                        <InputDate class="form-control" @bind-Value="@Model.BirthDay" />
+                        <ValidationMessage For="@(() => Model.BirthDay)" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="Celular">Ingrese el número de celular</label>
+                    </td>
+                    <td>
+                        <InputText class="form-control" @bind-Value="@Model.Cellphone" />
+                        <ValidationMessage For="@(() => Model.Cellphone)" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="Direccion">Ingrese la dirección de residencia</label>
+                    </td>
+                    <td>
+                        <InputText class="form-control" @bind-Value="@Model.Address" />
+                        <ValidationMessage For="@(() => Model.Address)" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="Email">Ingrese el correo electrónico</label>
+                    </td>
+                    <td>
+                        <InputText class="form-control" @bind-Value="@Model.Email" />
+                        <ValidationMessage For="@(() => Model.Email)" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="UserName">Ingrese el nombre de usuario</label>
+                    </td>
+                    <td>
+                        <InputText class="form-control" @bind-Value="@Model.UserName" />
+                        <ValidationMessage For="@(() => Model.UserName)" />
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+    <div class="mb-3 d-flex flex-column align-items-center">
+    <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+    </div>
+    <style>
+  
+        .table td, .table th {
+            white-space: nowrap;
+
+        }
+            .table td:first-child {
+                width: 250px;
+            }
+    </style>
+</EditForm>

@@ -2,35 +2,64 @@
 
 <NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
 
-<div class="mb-3">
-    <label>@Label</label>
-    <div class="mb-3">
-        <label for="Nombre">Nombre del exámen</label>
-        <InputText class="form-control" @bind-Value="@Model.Name" disabled />
+<EditForm EditContext="editContext" >
+    <DataAnnotationsValidator />
+    <div class="mb-3 d-flex flex-column align-items-center">
+        <label><h1>Detalles del exámen</h1></label>
     </div>
-    <div class="mb-3">
-        <label>Sección:</label>
-        <InputText class="form-control" @bind-Value="@Model.Section.Name" disabled />
-    </div>
-    <div class="mb-3">
-        <label>Condiciones preanalíticas:</label>
-        <tr>
-            <th>Condición preanalítica</th>
-            <th>Descripción</th>
-        </tr>
+    <div class="mb-3 d-flex flex-column align-items-center">
+        <table class="table table-bordered table-striped w-75">
+            <thead class="text-center">
+                <tr>
+                    <td colspan="4">
+                    <InputText class="form-control" @bind-Value="@Model.Name" disabled />
+                    </td>
+                </tr>
+                <tr>
+                    <th>Condición preanalítica</th>
+                    <th>Descripción</th>
+                    <th>Tipo de recipiente</th>
+                    <th>Sección</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Conditions != null && Model.Conditions.Any())
+                {
+                    int rowCount = Model.Conditions.Count();
+                    bool firstRowRendered = false;
 
-        @foreach (var t in Model.Conditions)
-        {
-            <tr>
-                <td class="">@t.Name</td>
-                <td>@t.Description</td>
-            </tr>
+                    @foreach (var t in Model.Conditions)
+                    {
+                        <tr>
+                            <td>@t.TestConditionNumber</td>
+                            <td>@t.Description</td>
+
+                            @if (!firstRowRendered)
+                            {
+                                <td rowspan="@rowCount">@Model.TestTube.Name</td>
+                                <td rowspan="@rowCount">@Model.Section.Name</td>
+                                firstRowRendered = true;
+                            }
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+    <style>
+        th, td {
+            padding: 10px 20px;
         }
+
+        .form-control {
+            text-align: center;
+        }
+    </style>
+    <div class="d-flex flex-column align-items-center">
+        <button class="btn btn-success " @onclick="ReturnAction">Regresar</button>
     </div>
-    <div class="mb-3">
-        <label>Tipo de recipiente  </label>
-        <InputText class="form-control" @bind-Value="@Model.TestTube.Name" disabled />
-    </div>
-</div>
-<button class="btn btn-success align-self-center" @onclick="ReturnAction">Regresar</button>
+
+</EditForm>
 

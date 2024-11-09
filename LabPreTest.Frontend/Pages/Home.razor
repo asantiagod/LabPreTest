@@ -1,10 +1,8 @@
 ﻿@page "/"
 
-<h3>Catálogo de exámenes LabPreTest</h3>
-
 <GenericList MyList="Tests">
     <Body>
-
+        <h1 class="me-auto">Catálogo de examenes</h1>
         @if (Tests is null)
         {
             <Loading />
@@ -22,12 +20,18 @@
                             <div class="text-center zoom">
                                 <style ="height:150px; max-width:200px;" class="text-center" alt=@test.Name />
                             </div>
-                                <div class="text-center zoom">
-                                    <img src="@test.Section.SectionImages.FirstOrDefault().Image" style="height:150px; max-width:200px;" class="text-center" alt=@test.Section.Name />
-                                </div>
+                                @if(test.Section!= null && !string.IsNullOrEmpty(test.Section.MainImage))
+                                {
+                                    <div class="text-center zoom">
+                                        <img src="@test.Section.MainImage" style="height:150px; max-width:200px;" class="text-center" alt=@test.Section.Name />
+                                    </div>
+                                }
                             <div class="card-body">
                                 <h5 class="card-title text-navy">Nombre: @test.Name</h5>
-                                <p class="card-text smfnt">Sección: @test.Section.Name</p>
+                                @if(test.Section != null)
+                                {
+                                    <p class="card-text smfnt">Sección: @test.Section.Name</p>
+                                }
                             </div>
                             <div class="card-footer text-center">
                                     <a @onclick=@(()=>ShowEditModal(test.Id)) class="btn btn-warning"><i class="bi bi-info-circle" /> Detalles</a>

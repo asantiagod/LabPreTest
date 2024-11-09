@@ -44,7 +44,7 @@ namespace LabPreTest.Frontend.Pages.Patients
         private void Return()
         {
             patientForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo(PagesRoutes.Patients);
+            NavigationManager.NavigateTo("/patients");
         }
     }
 }

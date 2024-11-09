@@ -1,4 +1,4 @@
-﻿@*@page "/tests/show/{Id:int}"*@
+﻿@page "/tests/show/{Id:int}"
 
 @if (test is null)
 {
@@ -9,5 +9,6 @@ else
     <FormForShowTest @ref="testForm"
                  Label="Examen:"
                  Model="test"
+                 OnValidSubmit="Return"
                  ReturnAction="Return" />
 }

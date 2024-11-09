@@ -1,4 +1,6 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿<!-- TODO: erase -->
+<AuthorizeView Roles="Admin,User">
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">LabPreTest Menu</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -6,17 +8,16 @@
         </button>
     </div>
 </div>
+<div class="nav-item px-3">
+    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+        <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Catálogo de pruebas
+    </NavLink>
+</div>
 
+</AuthorizeView>
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-
-        <!-- TODO: erase -->
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Inicio
-            </NavLink>
-        </div>
-
+    !<nav class="flex-column">
+        <AuthLinks />
         <AuthorizeView Roles="Admin">
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="/countries">
@@ -35,7 +36,7 @@
             </div>
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="/sections">
-                    <span class="bi bi-map-fill-nav-menu" aria-hidden="true"></span> Secciones
+                    <span class="bi justify-left" aria-hidden="true"></span> Secciones
                 </NavLink>
             </div>
         </AuthorizeView>

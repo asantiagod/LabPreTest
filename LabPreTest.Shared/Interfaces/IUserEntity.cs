@@ -10,7 +10,7 @@ namespace LabPreTest.Shared.Interfaces
     {
         string DocumentId { get; set; } 
         string Name { get; set; }
-        string BirthDay { get; set; }
+        DateTime BirthDay { get; set; }
         string Cellphone { get; set; }
         string Address { get; set; }
         string Email { get; set; } 

@@ -1,9 +1,9 @@
 ﻿using LabPreTest.Backend.Helpers;
-using LabPreTest.Backend.Migrations;
 using LabPreTest.Backend.UnitOfWork.Interfaces;
 using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Enums;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using System.Runtime.InteropServices;
 
 namespace LabPreTest.Backend.Data
@@ -48,13 +48,6 @@ namespace LabPreTest.Backend.Data
                     "first.user@yopmail.com",
                     "1111111111",
                     "first street of first city",
-                    UserType.User);
-            await CheckUserAsync("222222",
-                    "Second",
-                    "User",
-                    "second.user@yopmail.com",
-                    "2222222222",
-                    "second street of second city",
                     UserType.User);
         }
 
@@ -125,19 +118,19 @@ namespace LabPreTest.Backend.Data
                     Name = "Ayuno",
                     Description = "No ingerir alimentos durante 8 horas.",
                 });
-                
+
                 _context.PreanalyticConditions.Add(new PreanalyticCondition
                 {
                     Name = "Nada",
                     Description = "No existe ninguna restricción.",
                 });
-                
+
                 _context.PreanalyticConditions.Add(new PreanalyticCondition
                 {
                     Name = "Supresión",
                     Description = "Supresión de medicamentos.",
                 });
-                
+
                 _context.PreanalyticConditions.Add(new PreanalyticCondition
                 {
                     Name = "Especial",
@@ -199,6 +192,7 @@ namespace LabPreTest.Backend.Data
             }
             await _context.SaveChangesAsync();
         }
+
         private async Task CheckSectionAsync()
         {
             if (!_context.Section.Any())
@@ -212,10 +206,9 @@ namespace LabPreTest.Backend.Data
 
                 //await AddSectionAsync("Hematología1", new List<string>() { "hematology1.png" });
                 await _context.SaveChangesAsync();
-
             }
-
         }
+
         private async Task AddSectionAsync(string name, List<string> images)
         {
             Section section = new()
@@ -241,6 +234,12 @@ namespace LabPreTest.Backend.Data
             }
 
             _context.Section.Add(section);
+        }
+
+        private async Task CheckCountriesAsync()
+        {
+            if (!_context.Countries.Any())
+                await SeedDBCountryHelper.SetCountriesSeed(_context);
         }
 
         private async Task CheckTestAsync()
@@ -294,465 +293,68 @@ namespace LabPreTest.Backend.Data
 
         private async Task CheckMediciansAsync()
         {
-            Random rnd = new Random((int)DateTime.Now.Ticks);
             if (!_context.Medicians.Any())
             {
-                for (int i = 0; i <= 13; i++)
-                {
-                    _context.Medicians.Add(new Medic
-                    {
-                        Address = $"Testing Address {i}",
-                        BirthDay = "02/02/1997",
-                        Cellphone = rnd.Next().ToString(),
-                        Name = $"MedicianName {i}",
-                        Email = $"{rnd.Next()}@gmail.com",
-                        UserName = $"FirstUser{i}",
-                        DocumentId = $"{rnd.Next()}"
-                    });
-                }
+                AddMedic("9988776655", "Valentina Salazar", "1994-02-14", "3112345678", "Calle 100 #20-30, Bogotá", "valentina.s@yopmail.com", "valensal94");
+                AddMedic("8877665544", "Fernando Morales", "1980-09-08", "3123456789", "Carrera 8 #35-50, Cali", "fernando.m@yopmail.com", "fermor80");
+                AddMedic("7766554433", "Daniela López", "1996-12-25", "3134567890", "Avenida 15 #25-80, Medellín", "daniela.l@yopmail.com", "dani.lopez96");
+                AddMedic("6655443322", "Jorge Castillo", "1989-03-14", "3145678901", "Calle 50 #18-22, Cartagena", "jorge.c@yopmail.com", "jorgecas89");
+                AddMedic("5544332211", "Isabella Nieto", "1992-07-30", "3156789012", "Carrera 12 #22-40, Barranquilla", "isabella.n@yopmail.com", "isabellan92");
+                AddMedic("4433221100", "Rafael Ortiz", "1987-10-21", "3167890123", "Calle 44 #10-60, Bogotá", "rafael.o@yopmail.com", "rafaelort87");
+                AddMedic("3322110099", "Paola Hernández", "1983-11-05", "3178901234", "Carrera 6 #18-35, Cali", "paola.h@yopmail.com", "paolah83");
+                AddMedic("2211009988", "Andrés Suárez", "1995-04-11", "3189012345", "Avenida 6 #30-50, Bucaramanga", "andres.s@yopmail.com", "andresua95");
+                AddMedic("1100998877", "Carolina Duarte", "1990-01-20", "3190123456", "Calle 13 #25-20, Manizales", "carolina.d@yopmail.com", "carodu90");
+                AddMedic("0099887766", "Camilo Vargas", "1984-05-27", "3201234567", "Carrera 10 #40-25, Medellín", "camilo.v@yopmail.com", "camiv84");
+
+                await _context.SaveChangesAsync();
             }
-            await _context.SaveChangesAsync();
         }
 
         private async Task CheckPatientsAsync()
         {
-            Random rnd = new Random((int)DateTime.Now.Ticks);
             if (!_context.Patients.Any())
             {
-                for (int i = 0; i <= 13; i++)
-                {
-                    _context.Patients.Add(new Patient
-                    {
-                        Address = $"Testing Address {i}",
-                        BirthDay = $"02/02/{1990 + i}", // between 1990 and 2003
-                        Cellphone = rnd.Next().ToString(),
-                        Name = $"PatientName {i}",
-                        Email = $"{rnd.Next()}@yopmail.com",
-                        UserName = $"PatientUserName{i}",
-                        DocumentId = $"{rnd.Next()}"
-                    });
-                }
+                AddPatient("1023456789", "Ana Gómez", "1990-04-15", "3001234567", "Calle 10 #12-34, Bogotá", "ana.gomez@yopmail.com", "ana_gomez90");
+                AddPatient("1122334455", "Juan Pérez", "1985-06-20", "3012345678", "Carrera 15 #45-67, Cali", "juan.perez@yopmail.com", "juanperez85");
+                AddPatient("1234567890", "María Rodríguez", "1993-08-10", "3023456789", "Avenida 30 #10-20, Medellín", "maria.rod@yopmail.com", "mariarod93");
+                AddPatient("2233445566", "Carlos Sánchez", "1978-01-25", "3034567890", "Calle 25 #5-10, Bogotá", "carlos.s@yopmail.com", "carlos78");
+                AddPatient("3344556677", "Laura Ramírez", "1995-09-05", "3045678901", "Carrera 7 #45-89, Barranquilla", "laura.r@yopmail.com", "laurara95");
+                AddPatient("4455667788", "Pedro González", "1992-11-15", "3056789012", "Avenida 5 #20-15, Cartagena", "pedro.g@yopmail.com", "pedrogonz92");
+                AddPatient("5566778899", "Sofía Martínez", "1988-07-22", "3067890123", "Calle 8 #60-90, Medellín", "sofia.m@yopmail.com", "sofiamart88");
+                AddPatient("6677889900", "Diego Castro", "1983-12-02", "3078901234", "Carrera 12 #30-40, Cali", "diego.c@yopmail.com", "diegocastro83");
+                AddPatient("7788990011", "Luisa Fernández", "1997-03-30", "3089012345", "Calle 50 #10-15, Bucaramanga", "luisa.f@yopmail.com", "luisafern97");
+                AddPatient("8899001122", "Andrés Ramírez", "1991-05-18", "3090123456", "Carrera 9 #55-23, Manizales", "andres.r@yopmail.com", "andresram91");
+
+                await _context.SaveChangesAsync();
             }
-            await _context.SaveChangesAsync();
         }
 
-        private async Task CheckCountriesAsync()
+        private void AddPatient(string id_document, string name, string birth_date, string cell_number, string address, string email, string username)
         {
-            if (!_context.Countries.Any())
+            _context.Patients.Add(new Patient
             {
-                _context.Countries.Add(new Country
-                {
-                    Name = "Colombia",
-                    States =
-                    [
-                        new State()
-                        {
-                            Name = "Antioquia",
-                            Cities = [
-                                new() { Name = "Abejorral" },
-                                new() { Name = "Abriaquí" },
-                                new() { Name = "Alejandría" },
-                                new() { Name = "Amagá" },
-                                new() { Name = "Amalfi" },
-                                new() { Name = "Andes" },
-                                new() { Name = "Barbosa" },
-                                new() { Name = "Betania" },
-                                new() { Name = "Betulia" },
-                                new() { Name = "Briceño" },
-                                new() { Name = "Medellín" },
-                                new() { Name = "Itagüí" },
-                                new() { Name = "Envigado" },
-                                new() { Name = "Bello" },
-                                new() { Name = "Rionegro" },
-                                new() { Name = "Marinilla" },
-                            ]
-                        },
-                        new State()
-                        {
-                            Name = "Bogotá",
-                            Cities = [
-                                new() { Name = "Usaquen" },
-                                new() { Name = "Champinero" },
-                                new() { Name = "Santa fe" },
-                                new() { Name = "Useme" },
-                                new() { Name = "Bosa" },
-                            ]
-                        },
-                        new State()
-                        {
-                            Name = "Caldas",
-                            Cities = [
-                                new(){Name = "Aguadas"},
-                                new(){Name = "Anserma"},
-                                new(){Name = "Aranzazu"},
-                                new(){Name = "Belalcázar"},
-                                new(){Name = "Chinchiná"},
-                                new(){Name = "Filadelfia"},
-                                new(){Name = "La Dorada"},
-                                new(){Name = "La Merced"},
-                                new(){Name = "Manizales"},
-                                new(){Name = "Manzanares"},
-                            ]
-                        },
-                        new State()
-                        {
-                            Name = "Caquetá",
-                            Cities = [
-                                new() { Name = "Albania"},
-                                new() { Name = "Belén de los Andaquíes"},
-                                new() { Name = "Cartagena de Chairá"},
-                                new() { Name = "Curillo"},
-                                new() { Name = "El Doncello"},
-                                new() { Name = "El Paujil"},
-                                new() { Name = "Florencia"},
-                                new() { Name = "La Montañita"},
-                                new() { Name = "Milán"},
-                                new() { Name = "Puerto Rico"},
-                                new() { Name = "San José del Fragua"},
-                            ]
-                        },
-                    ]
-                });
-                _context.Countries.Add(new Country
-                {
-                    Name = "Estados Unidos",
-                    States =
-                    [
-                        new State()
-                        {
-                            Name = "Florida",
-                            Cities = [
-                                new() { Name = "Orlando" },
-                                new() { Name = "Miami" },
-                                new() { Name = "Tampa" },
-                                new() { Name = "Fort Lauderdale" },
-                                new() { Name = "Key West" },
-                            ]
-                        },
-                        new State()
-                        {
-                            Name = "Texas",
-                            Cities = [
-                                new() { Name = "Houston" },
-                                new() { Name = "San Antonio" },
-                                new() { Name = "Dallas" },
-                                new() { Name = "Austin" },
-                                new() { Name = "El Paso" },
-                            ]
-                        },
-                    ]
-                });
-                _context.Countries.Add(new Country
-                {
-                    Name = "Venezuela",
-                    States =
-                    [
-                        new State()
-                        {
-                            Name = "Maracaibo",
-                            Cities = [
-                                new() { Name = "Ciudad ven1" },
-                                new() { Name = "Ciudad ven2" },
-                                new() { Name = "Ciudad ven3" },
-                                new() { Name = "Ciudad ven4 " },
-                                new() { Name = "Ciudad ven5" },
-                            ]
-                        },
-                        new State()
-                        {
-                            Name = "Amazonas",
-                            Cities = [
-                                new() { Name = "Ciudad ven6" },
-                                new() { Name = "Ciudad ven7" },
-                                new() { Name = "Ciudad ven8" },
-                                new() { Name = "Ciudad ven9" },
-                                new() { Name = "El Ciudad ven10" },
-                            ]
-                        },
-                    ]
-                });
-                _context.Countries.Add(new Country
-                {
-                    Name = "Argentina",
-                    States =
-            [
-                new State()
-                        {
-                            Name = "Patagonia",
-                            Cities = [
-                                new() { Name = "Ciudad Argentina 1" },
-                                new() { Name = "Ciudad Argentina 2" },
-                                new() { Name = "Ciudad Argentina 3" },
-                                new() { Name = "Ciudad Argentina 4" },
-                                new() { Name = "Ciudad Argentina 5" },
-                            ]
-                        },
-                        new State()
-                        {
-                            Name = "Tierra del fuego",
-                            Cities = [
-                                new() { Name = "Ciudad Argentina 6" },
-                                new() { Name = "Ciudad Argentina 7" },
-                                new() { Name = "Ciudad Argentina 8" },
-                                new() { Name = "Ciudad Argentina 9" },
-                                new() { Name = "Ciudad Argentina 10" },
-                            ]
-                        },
-                        new State()
-                        {
-                            Name = "Chaco",
-                            Cities = [
-                                new() { Name = "Aviá Terai"},
-                                new() { Name = "Barranqueras"},
-                                new() { Name = "Basail"},
-                                new() { Name = "Colonia Benítez"},
-                                new() { Name = "Concepción del Bermejo"},
-                                new() { Name = "Corzuela"},
-                                new() { Name = "Departamento del Maipú"},
-                                new() { Name = "Departamento de Libertad"},
-                                new() { Name = "Fontana"},
-                                new() { Name = "Gancedo"},
-                                new() { Name = "Hermoso Campo"},
-                                new() { Name = "La Tigra"},
-                                new() { Name = "Lapachito"},
-                            ]
-                        },
-                    ]
-                });
-                _context.Countries.Add(new Country
-                {
-                    Name = "España",
-                    States =
-            [
-                new State()
-                        {
-                            Name = "Valencia",
-                            Cities = [
-                                new() { Name = "Ciudad española 1" },
-                                new() { Name = "Ciudad española 2" },
-                                new() { Name = "Ciudad española 3" },
-                                new() { Name = "Ciudad española 4" },
-                                new() { Name = "Ciudad española 5" },
-                            ]
-                        },
-                        new State()
-                        {
-                            Name = "Galicia",
-                            Cities = [
-                                new() { Name = "Ciudad española 6" },
-                                new() { Name = "Ciudad española 7" },
-                                new() { Name = "Ciudad española 8" },
-                                new() { Name = "Ciudad española 9" },
-                                new() { Name = "Ciudad española 10" },
-                            ]
-                        },
-                    ]
-                });
-                _context.Countries.Add(new Country
-                {
-                    Name = "Alemania",
-                    States =
-            [
-                new State()
-                        {
-                            Name = "Baviera",
-                            Cities = [
-                                new() { Name = "Ciudad alemana 1" },
-                                new() { Name = "Ciudad alemana 2" },
-                                new() { Name = "Ciudad alemana 3" },
-                                new() { Name = "Ciudad alemana 4" },
-                                new() { Name = "Ciudad alemana 5" },
-                            ]
-                        },
-                        new State()
-                        {
-                            Name = "Sajonia",
-                            Cities = [
-                                new() { Name = "Ciudad alemana 6" },
-                                new() { Name = "Ciudad alemana 7" },
-                                new() { Name = "Ciudad alemana 8" },
-                                new() { Name = "Ciudad alemana 9" },
-                                new() { Name = "Ciudad alemana 10" },
-                            ]
-                        },
-                    ]
-                });
-                _context.Countries.Add(new Country
-                {
-                    Name = "Rusia",
-                    States =
-            [
-                new State()
-                        {
-                            Name = "Yakutia",
-                            Cities = [
-                                new() { Name = "Ciudad rusa 1" },
-                                new() { Name = "Ciudad rusa 2" },
-                                new() { Name = "Ciudad rusa 3" },
-                                new() { Name = "Ciudad rusa 4" },
-                                new() { Name = "Ciudad rusa 5" },
-                            ]
-                        },
-                        new State()
-                        {
-                            Name = "Kamchatka",
-                            Cities = [
-                                new() { Name = "Ciudad rusa 6" },
-                                new() { Name = "Ciudad rusa 7" },
-                                new() { Name = "Ciudad rusa 8" },
-                                new() { Name = "Ciudad rusa 9" },
-                                new() { Name = "Ciudad rusa 10" },
-                            ]
-                        },
-                    ]
-                });
-                _context.Countries.Add(new Country
-                {
-                    Name = "Australia",
-                    States =
-            [
-                new State()
-                        {
-                            Name = "Queensland",
-                            Cities = [
-                                new() { Name = "Ciudad Australiana 1" },
-                                new() { Name = "Ciudad Australiana 2" },
-                                new() { Name = "Ciudad Australiana 3" },
-                                new() { Name = "Ciudad Australiana 4" },
-                                new() { Name = "Ciudad Australiana 5" },
-                            ]
-                        },
-                        new State()
-                        {
-                            Name = "New South Wales",
-                            Cities = [
-                                new() { Name = "Ciudad Australiana 6" },
-                                new() { Name = "Ciudad Australiana 7" },
-                                new() { Name = "Ciudad Australiana 8" },
-                                new() { Name = "Ciudad Australiana 9" },
-                                new() { Name = "Ciudad Australiana 10" },
-                            ]
-                        },
-                    ]
-                });
-                _context.Countries.Add(new Country
-                {
-                    Name = "Mexico",
-                    States =
-            [
-                new State()
-                        {
-                            Name = "Chihuahua",
-                            Cities = [
-                                new() { Name = "Ciudad mexicana 1" },
-                                new() { Name = "Ciudad mexicana 2" },
-                                new() { Name = "Ciudad mexicana 3" },
-                                new() { Name = "Ciudad mexicana 4" },
-                                new() { Name = "Ciudad mexicana 5" },
-                            ]
-                        },
-                        new State()
-                        {
-                            Name = "Nuevo León",
-                            Cities = [
-                                new() { Name = "Ciudad mexicana 6"},
-                                new() { Name = "Ciudad mexicana 7" },
-                                new() { Name = "Ciudad mexicana 8" },
-                                new() { Name = "Ciudad mexicana 9" },
-                                new() { Name = "Ciudad mexicana 10" },
-                            ]
-                        },
-                    ]
-                });
-                _context.Countries.Add(new Country
-                {
-                    Name = "Francia",
-                    States =
-                 [
-                     new State()
-                        {
-                            Name = "Normandia",
-                            Cities = [
-                                new() { Name = "Ciudad francesa 1"},
-                                new() { Name = "Ciudad francesa 2" },
-                                new() { Name = "Ciudad francesa 3" },
-                                new() { Name = "Ciudad francesa 4" },
-                                new() { Name = "Ciudad francesa 5" },
-                            ]
-                        },
-                        new State()
-                        {
-                            Name = "Betrana",
-                            Cities = [
-                                new() { Name = "Ciudad francesa 6"},
-                                new() { Name = "Ciudad francesa 7" },
-                                new() { Name = "Ciudad francesa 8" },
-                                new() { Name = "Ciudad francesa 9" },
-                                new() { Name = "Ciudad francesa 10" },
-                            ]
-                        },
-                    ]
-                });
-                _context.Countries.Add(new Country
-                {
-                    Name = "Italia",
-                    States =
-                 [
-                     new State()
-                        {
-                            Name = "Piemonte",
-                            Cities = [
-                                new() { Name = "Ciudad italiana 1"},
-                                new() { Name = "Ciudad italiana 2" },
-                                new() { Name = "Ciudad italiana 3" },
-                                new() { Name = "Ciudad italiana 4" },
-                                new() { Name = "Ciudad italiana 5" },
-                            ]
-                        },
-                        new State()
-                        {
-                            Name = "Toscana",
-                            Cities = [
-                                new() { Name = "Ciudad italiana 6"},
-                                new() { Name = "Ciudad italiana 7" },
-                                new() { Name = "Ciudad italiana 8" },
-                                new() { Name = "Ciudad italiana 9" },
-                                new() { Name = "Ciudad italiana 10" },
-                            ]
-                        },
-                    ]
-                });
-                _context.Countries.Add(new Country
-                {
-                    Name = "Ecuador",
-                    States =
-                    [
-                new State()
-                        {
-                            Name = "Esmeralda",
-                            Cities = [
-                                new() { Name = "Ciudad ecuatoriana 1" },
-                                new() { Name = "Ciudad ecuatoriana 2" },
-                                new() { Name = "Ciudad ecuatoriana 3" },
-                                new() { Name = "Ciudad ecuatoriana 4" },
-                                new() { Name = "Ciudad ecuatoriana 5" },
-                            ]
-                        },
-                        new State()
-                        {
-                            Name = "Pichincha",
-                            Cities = [
-                                new() { Name = "Ciudad ecuatoriana 6" },
-                                new() { Name = "Ciudad ecuatoriana 7" },
-                                new() { Name = "Ciudad ecuatoriana 8" },
-                                new() { Name = "Ciudad ecuatoriana 9" },
-                                new() { Name = "Ciudad ecuatoriana 10" },
-                            ]
-                        },
-                    ]
-                });
-            }
-            await _context.SaveChangesAsync();
+                DocumentId = id_document,
+                Name = name,
+                BirthDay = DateTime.ParseExact(birth_date, "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                Cellphone = cell_number,
+                Address = address,
+                Email = email,
+                UserName = username
+            });
+        }
+
+        private void AddMedic(string id_document, string name, string birth_date, string cell_number, string address, string email, string username)
+        {
+            _context.Medicians.Add(new Medic
+            {
+                DocumentId = id_document,
+                Name = name,
+                BirthDay = DateTime.ParseExact(birth_date, "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                Cellphone = cell_number,
+                Address = address,
+                Email = email,
+                UserName = username
+            });
         }
     }
 }

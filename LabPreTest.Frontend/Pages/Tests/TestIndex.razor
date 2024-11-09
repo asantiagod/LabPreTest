@@ -18,28 +18,34 @@
                 <tr>
                     <th>Id del examen</th>
                     <th>Nombre del examen</th>
-                    <th>Recipiente</th>
-                    <th>Seccion</th>
-                    <th>Condiciones</th>
                     <th style="width:180px"></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var test in Tests!)
+                @if (Tests == null)
                 {
                     <tr>
-                        <td>@test.TestID</td>
-                        <td>@test.Name</td>
-                        <td>@test.TestTube.Name</td>
-                        <td>@test.Section.Name</td>
-                        <td>@test.Conditions</td>
-
                         <td>
-                            <a class="btn btn-warning" @onclick=@(()=>ShowEditModal(test.Id))>Editar</a>
-                            <button @onclick=@(() => DeleteAsync(test)) class="btn btn-danger">Borrar</button>
+                            No hay registros para mostrar
                         </td>
                     </tr>
                 }
+                else
+                {
+                    @foreach (var test in Tests)
+                    {
+                        <tr>
+                            <td>@test.TestID</td>
+                            <td>@test.Name</td>
+
+                            <td>
+                                <a class="btn btn-warning" @onclick=@(()=>ShowEditModal(test.Id))>Editar</a>
+                                <button @onclick=@(() => DeleteAsync(test)) class="btn btn-danger">Borrar</button>
+                            </td>
+                        </tr>
+                    }
+                }
+
             </tbody>
         </table>
     </Body>

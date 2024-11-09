@@ -79,8 +79,8 @@ namespace LabPreTest.Backend.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("BirthDay")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("BirthDay")
+                        .HasColumnType("date");
 
                     b.Property<string>("Cellphone")
                         .HasMaxLength(100)
@@ -147,6 +147,43 @@ namespace LabPreTest.Backend.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("LabPreTest.Shared.Entities.OrderAudit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ChangeBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ChangeDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ChangeType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NewValues")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OldValues")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.ToTable("OrderAudits");
+                });
+
             modelBuilder.Entity("LabPreTest.Shared.Entities.OrderDetail", b =>
                 {
                     b.Property<int>("Id")
@@ -195,9 +232,8 @@ namespace LabPreTest.Backend.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("BirthDay")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("BirthDay")
+                        .HasColumnType("date");
 
                     b.Property<string>("Cellphone")
                         .HasMaxLength(100)
@@ -356,7 +392,8 @@ namespace LabPreTest.Backend.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.HasIndex("TestId");
+                    b.HasIndex("TestId")
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 

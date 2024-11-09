@@ -1,0 +1,14 @@
+﻿@page "/orders/show/{Id:int}"
+
+@if (test is null)
+{
+    <Loading />
+}
+else
+{
+    <FormForShowTestOrder @ref="testForm"
+                 Label="Examen:"
+                 Model="test"
+                 OnValidSubmit="Return"
+                 ReturnAction="Return" />
+}
