@@ -38,10 +38,6 @@ namespace LabPreTest.Backend.Repository.Implementations
                 await _context.SaveChangesAsync();
                 return ActionResponse<T>.BuildSuccessful(row);
             }
-            catch (DbUpdateException)
-            {
-                return DbUpdateExceptionActionResponse();
-            }
             catch
             {
                 return ActionResponse<T>.BuildFailed(MessageStrings.DbDeleteErrorMessage);

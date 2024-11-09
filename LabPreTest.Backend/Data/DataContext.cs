@@ -3,6 +3,9 @@ using LabPreTest.Shared.Enums;
 using LabPreTest.Shared.Messages;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace LabPreTest.Backend.Data
 {
@@ -46,8 +49,8 @@ namespace LabPreTest.Backend.Data
             modelBuilder.Entity<Patient>(entity =>
             {
                 entity.Property(e => e.BirthDay)
-                      .HasColumnType("date") 
-                      .IsRequired(); 
+                      .HasColumnType("date")
+                      .IsRequired();
             });
             modelBuilder.Entity<PreanalyticCondition>().HasIndex(x => x.Name).IsUnique();
             modelBuilder.Entity<Medic>().HasIndex(x => x.Email).IsUnique();
@@ -154,8 +157,12 @@ namespace LabPreTest.Backend.Data
                                             entry.State == EntityState.Deleted ? ChangeType.Delete :
                                             ChangeType.Insert;
 
+                    var oldValues = GetOldValues(entry);
+
                     if (entry.State == EntityState.Added)
                         await base.SaveChangesAsync(cancellationToken);
+
+                    var newValues = GetNewValues(entry);
 
                     audits.Add(new OrderAudit
                     {
@@ -163,14 +170,55 @@ namespace LabPreTest.Backend.Data
                         ChangeType = changeType,
                         ChangeDate = DateTime.UtcNow,
                         ChangeBy = user.Identity.Name,
-                        OldValues = "null",
-                        NewValues = "null"
+                        OldValues = oldValues,
+                        NewValues = newValues
                     });
                 }
             }
 
             // Add information related to changes to Orders
             OrderAudits.AddRange(audits);
+        }
+
+        private static string GetOldValues<T>(EntityEntry<T> entry) where T : class
+        {
+            // TODO
+            return string.Empty;
+        }
+
+        private static string GetNewValues<T>(EntityEntry<T> entry) where T : class
+        {
+            var objDic = new Dictionary<string, object?>();
+            foreach (var property in entry.Properties)
+                objDic.Add(property.Metadata.Name, property.CurrentValue);
+
+            foreach (var navigation in entry.Navigations)
+            {
+                //if (!navigation.IsModified)
+                //continue;
+                if (navigation.CurrentValue is ICollection<OrderDetail> collection)
+                {
+                    List<object> collectionList = [];
+                    foreach (var item in collection)
+                    {
+                        collectionList.Add(item);
+                        Console.WriteLine(item.ToString());
+                    }
+                    //navDic.Add(navigation.Metadata.Name, collectionList);
+                    objDic.Add(navigation.Metadata.Name, collectionList);
+                }
+                else
+                    //navDic.Add(navigation.Metadata.Name, navigation.CurrentValue);
+                    objDic.Add(navigation.Metadata.Name, navigation.CurrentValue);
+            }
+            
+            var options = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+            };
+
+            string json = JsonSerializer.Serialize(objDic, options);
+            return json;
         }
     }
 }
