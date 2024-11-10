@@ -28,11 +28,11 @@
                     int rowCount = Model.Conditions.Count();
                     bool firstRowRendered = false;
 
-                    @foreach (var t in Model.Conditions)
+                    @foreach (var pc in Model.Conditions)
                     {
                         <tr>
-                            <td>@t.TestConditionNumber</td>
-                            <td>@t.Description</td>
+                            <td>@pc.Name</td>
+                            <td>@pc.Description</td>
 
                             @if (!firstRowRendered)
                             {

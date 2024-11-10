@@ -26,7 +26,14 @@
                 {
                     @foreach (var s in Sections)
                     {
-                        <option value="@s.Id">@s.Name</option>
+                        if(s.Id == Model.SectionId)
+                        {
+                            <option value="@s.Id" selected>@s.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@s.Id">@s.Name</option>
+                        }
                     }
                 }
             </select>
@@ -40,18 +47,26 @@
                 {
                     @foreach (var t in TestTubes)
                     {
-                        <option value="@t.Id">@t.Name</option>
+                        if (t.Id == Model.TestTubeId)
+                        {
+                            <option value="@t.Id" selected>@t.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@t.Id">@t.Name</option>
+                        }
+
                     }
                 }
             </select>
         </div>
         
-        <!--TODO: Add Condition-->
-        
         <div class="mb-3">
+            <label>Condiciones preanalítica</label>
             <table class="table table-striped">
                 <thead>
                     <th>ID</th>
+                    <th>Nombre</th>
                 </thead>
                 <tbody>
                     @if (Model.Conditions != null)
@@ -60,6 +75,7 @@
                         {
                             <tr>
                                 <td>@condition.Id</td>
+                                <td>@condition.Name</td>
                             </tr>
                         }
                     }
