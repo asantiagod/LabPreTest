@@ -6,7 +6,7 @@
             <thead class="text-center">
                 <tr>
                     <td colspan="5">
-                    <InputText class="form-control" @bind-Value="@Model.Name" disabled />
+                        <InputText class="form-control" @bind-Value="@Model.Name" disabled style="background-color: #FFFFFF;" />
                     </td>
                 </tr>
                 <tr>
@@ -29,7 +29,7 @@
                         <tr>
                             @if (!rowForId)
                             {
-                                <td rowspan="@rowCount" class="text-center align-middle fs-4">@Model.TestID</td>
+                                <td rowspan="@rowCount" class="text-center align-middle fs-1">@Model.TestID</td>
                                 rowForId = true;
                             }
                             <td>@t.Name</td>
