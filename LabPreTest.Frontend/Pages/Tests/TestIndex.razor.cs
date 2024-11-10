@@ -1,14 +1,13 @@
-﻿using System.Net;
-using Blazored.Modal;
+﻿using Blazored.Modal;
 using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Messages;
-using LabPreTest.Shared.PagesRoutes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using System.Net;
 
 namespace LabPreTest.Frontend.Pages.Tests
 {
@@ -32,7 +31,7 @@ namespace LabPreTest.Frontend.Pages.Tests
         protected override async Task OnInitializedAsync()
         {
             await SelectedRedordsNumberAsync("10");
-            await LoadAsync();
+            //await LoadAsync();
         }
 
         private async Task SelectedPageAsync(int page)
@@ -100,6 +99,28 @@ namespace LabPreTest.Frontend.Pages.Tests
             }
 
             Tests = responseHttp.Response;
+            return await LoadTestRelatedEntitiesAsync();
+        }
+
+        private async Task<bool> LoadTestRelatedEntitiesAsync()
+        {
+            foreach (var t in Tests!)
+            {
+                var testTubeResponse = await Repository.GetAsync<TestTube>($"{ApiRoutes.TestTubeRoute}/{t.TestTubeId}");
+                var sectionResponse = await Repository.GetAsync<Section>($"{ApiRoutes.SectionRoute}/{t.SectionId}");
+                if (testTubeResponse.Error || sectionResponse.Error)
+                {
+                    string? message;
+                    if (testTubeResponse.Error)
+                        message = await testTubeResponse.GetErrorMessageAsync();
+                    else
+                        message = await sectionResponse.GetErrorMessageAsync();
+                    await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                    return false;
+                }
+                t.TestTube = testTubeResponse.Response!;
+                t.Section = sectionResponse.Response!;
+            }
             return true;
         }
 
@@ -163,7 +184,7 @@ namespace LabPreTest.Frontend.Pages.Tests
                 .Add(nameof(TestEdit.Id), testId);
             ModalService.Show<TestEdit>(parameter);
         }
-        
+
         private void ShowCreateModal()
         {
             ModalService.Show<TestsCreate>();
