@@ -59,6 +59,7 @@ namespace LabPreTest.Frontend.Pages.Orders
             await LoadTestConditions();
             SetButtonStatus();
             SetSelectorStatus();
+            await ClearTemporalOrder();
         }
 
         protected async Task SearchPatient()
@@ -193,7 +194,7 @@ namespace LabPreTest.Frontend.Pages.Orders
         private async Task ClearTemporalOrder()
         {
             TemporalOrders = await LoadListAsync<TemporalOrder>(ApiRoutes.TemporalOrdersMyRoute);
-            var responseHttp = await Repository.DeleteAsync<TemporalOrder>($"/api/temporalorders/1");
+            var responseHttp = await Repository.DeleteAsync<TemporalOrder>($"/api/temporalorders/full");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode != HttpStatusCode.NotFound)
@@ -230,6 +231,7 @@ namespace LabPreTest.Frontend.Pages.Orders
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
+            
 
             Return();
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
@@ -239,7 +241,7 @@ namespace LabPreTest.Frontend.Pages.Orders
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordCreatedMessage);
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: $"Numero de orden creada: {responseHttp.Response}");
         }
 
         private void PatientChanged(ChangeEventArgs e)

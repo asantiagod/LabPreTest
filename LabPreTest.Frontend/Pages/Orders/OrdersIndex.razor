@@ -22,7 +22,7 @@
         @if (orderValue == null)
         {
             <tr>
-                <td colspan="2" class="text-center">
+                <td colspan="3" class="text-center">
                     <h4>No hay orden seleccionada</h4>
                 </td>
             </tr>
@@ -30,41 +30,53 @@
         @if (orderValue != null && SelectedOrder != null)
         {
             <tr>
-                <td colspan="2" class="text-center"><h1>Orden número: @SelectedOrder.Id</h1></td>
+                <td colspan="3" class="text-center"><h1>Orden número: @SelectedOrder.Id</h1></td>
             </tr>
 
             <tr>
-                <td colspan="2" class="text-center">
+                <td colspan="3" class="text-center">
                     <strong>Medico</strong>
                 </td>
             </tr>
             <tr>
-                <td colspan="2">
+                <td colspan="3">
                     <LabPreTest.Frontend.Pages.Medician.MedicOrderEditDetail Id=medicId></LabPreTest.Frontend.Pages.Medician.MedicOrderEditDetail>
                 </td>
             </tr>
 
             <tr>
-                <td colspan="2" class="text-center">
+                <td colspan="3" class="text-center">
                     <strong>Paciente</strong>
                 </td>
             </tr>
             <tr>
-                <td colspan="2">
+                <td colspan="3">
                     <LabPreTest.Frontend.Pages.Patients.PatientOrderEditDetail Id=patientId></LabPreTest.Frontend.Pages.Patients.PatientOrderEditDetail>
                 </td>
             </tr>
 
             <tr>
-                <td colspan="2" class="text-center">
+                <td colspan="3" class="text-center">
                     <strong>Exámenes de la orden</strong>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="text-center">
+                    <strong>Código del exámen</strong>
+                </td>
+                <td class="text-center">
+                    <strong>Nombre del exámen</strong>
+                </td>
+                <td class="text-center">
+                    <strong>Sección</strong>
                 </td>
             </tr>
 
             @foreach (var orderDetails in SelectedOrder.Details!)
             {
                 <tr>
-                    <td colspan="2" class="text-center">
+                    <td colspan="3" class="text-center">
                         <LabPreTest.Frontend.Pages.Tests.TestShowOrder Id=orderDetails.TestId></LabPreTest.Frontend.Pages.Tests.TestShowOrder>
                     </td>
                 </tr>

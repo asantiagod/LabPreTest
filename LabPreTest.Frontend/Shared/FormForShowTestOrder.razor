@@ -1,27 +1,11 @@
 ﻿@typeparam TModel where TModel : ITestEntity
 
 <MudForm>
-    <div class="mb-3 d-flex flex-column align-items-center">
-        <table class="table table-bordered table-striped w-75">
-            <thead class="text-center">
-                <tr>
-                    <td colspan="5">
-                        <InputText class="form-control" @bind-Value="@Model.Name" disabled style="background-color: #FFFFFF;" />
-                    </td>
-                </tr>
-                <tr>
-                    <th>Código interno del exámen</th>
-                    <th>Condición preanalítica</th>
-                    <th>Descripción</th>
-                    <th>Tipo de recipiente</th>
-                    <th>Sección</th>
-                </tr>
-            </thead>
+    <div class="align-items-center">
+        <table class="table table-bordered table-striped w-100">
             <tbody>
                 @if (Model.Conditions != null && Model.Conditions.Any())
                 {
-                    int rowCount = Model.Conditions.Count();
-                    bool firstRowRendered = false;
                     bool rowForId = false;
 
                     @foreach (var t in Model.Conditions)
@@ -29,17 +13,10 @@
                         <tr>
                             @if (!rowForId)
                             {
-                                <td rowspan="@rowCount" class="text-center align-middle fs-1">@Model.TestID</td>
+                                <td class="text-center align-middle fs-2" style=" width: 200px;">@Model.TestID</td>
+                                <td class="text-center align-middle fs-2" style=" width: 1000px;">@Model.Name</td>
+                                <td class="text-center align-middle fs-2">@Model.Section.Name</td>
                                 rowForId = true;
-                            }
-                            <td>@t.Name</td>
-                            <td>@t.Description</td>
-
-                            @if (!firstRowRendered)
-                            {
-                                <td rowspan="@rowCount">@Model.TestTube.Name</td>
-                                <td rowspan="@rowCount">@Model.Section.Name</td>
-                                firstRowRendered = true;
                             }
                         </tr>
                     }
