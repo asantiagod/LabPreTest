@@ -58,10 +58,97 @@
         </table>
         @if (orderValue != null && SelectedOrder != null)
         {
-
-            @foreach (var orderDetails in SelectedOrder.Details!)
+            @if (preanaliticalConditions.Count() == 0)
             {
+                <h1>No hay restricciones para esta orden</h1>
+            }
+            else
+            {
+                <table class="table table-secondary">
+                     <th>
+                        CONDICIONES PREANALITICAS A CUMPLIR
+                    </th>
+                @foreach (var preanalitical in preanaliticalConditions)
+                {
+                    @foreach (var preanaliticalValue in preanalitical)
+                    {
+                    <tr>
+                        <td>
+                            - @preanaliticalValue.Value
+                                    
+                        </td>
+                    </tr>
+                    }
+
+                }
+                </table>
+
+            }
+            @if(testTubes.Count() == 0)
+            {
+                    <h1>No hay tipos de recipientes definidos para esta orden</h1>
+            }
+            else
+            {
+                <table class="table table-bordered table-striped w-100">
+                    <th>
+                       Tubos a tomar
+                    </th>
+                    @foreach (var testube in testTubes)
+                    {
+                        @foreach (var tube in testube)
+                        {
+                                <tr>
+                                    @if (tube.Value.Contains("Lila"))
+                                    {
+                                        <td style="padding: 10px; background-color:blueviolet">
+                                            -
+                                        </td>
+                                        <td style="padding: 10px; ">
+                                            - @tube.Value
+                                        </td>
+                                    }
+                                    @if (tube.Value.Contains("Verde"))
+                                    {
+                                        <td style="padding: 10px; background-color:green">
+                                            -
+                                        </td>
+                                        <td style="padding: 10px; ">
+                                            - @tube.Value
+                                        </td>
+                                    }
+                                    @if (tube.Value.Contains("Dorada"))
+                                    {
+                                        <td style="padding: 10px; background-color:yellow">
+                                            -
+                                        </td>
+                                        <td style="padding: 10px; ">
+                                            - @tube.Value
+                                        </td>
+                                    }
+                                    @if (tube.Value.Contains("Azul"))
+                                    {
+                                        <td style="padding: 10px; background-color:blue">
+                                            -
+                                        </td>
+                                        <td style="padding: 10px; ">
+                                            - @tube.Value
+                                        </td>
+                                    }
+                            </tr>
+                        }
+
+                    }
+                </table>
+            }
+            <button class="btn btn-warning" @onclick="ToggleContent">@(showContent ? "Ocultar informacion detallada" : "Mostrar informacion detallada")</button>
+            @if (showContent)
+            {
+                @foreach (var orderDetails in SelectedOrder.Details!)
+                {
                     <LabPreTest.Frontend.Pages.Tests.TestShowOrderCreate Id=orderDetails.TestId></LabPreTest.Frontend.Pages.Tests.TestShowOrderCreate>
+                }
+
             }
         }
 
