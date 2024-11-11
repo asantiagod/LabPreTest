@@ -13,7 +13,7 @@ else
         <tbody>
         <tr>
             <td>
-                <input type="number" class="form-control" @bind="PatientDocumentValue" placeholder="Ingrese documento del paciente a buscar..." />
+                <input class="form-control" @bind="PatientDocumentValue" placeholder="Ingrese documento del paciente a buscar..." />
             </td>
             <td>
                     <button class="btn btn-primary" @onclick="async () => await SearchPatient()">Buscar Paciente</button>

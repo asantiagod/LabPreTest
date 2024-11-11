@@ -66,7 +66,7 @@ namespace LabPreTest.Frontend.Pages.Orders
         {
             if (!string.IsNullOrWhiteSpace(PatientDocumentValue))
             {
-                if (int.TryParse(PatientDocumentValue, out int documentId))
+                if (long.TryParse(PatientDocumentValue, out long documentId))
                 {
                     var responseHttp = await Repository.GetAsync<Patient>($"/api/Patients/document/{documentId}");
 
@@ -94,7 +94,7 @@ namespace LabPreTest.Frontend.Pages.Orders
                             await SweetAlertService.FireAsync(new SweetAlertOptions
                             {
                                 Title = "Error",
-                                Text = "Ocurrió un error al buscar el paciente. Por favor, intente nuevamente.",
+                                Text = $"Ocurrió un error al buscar el paciente. Por favor, intente nuevamente.",
                                 Icon = SweetAlertIcon.Error
                             });
                         }
@@ -111,7 +111,7 @@ namespace LabPreTest.Frontend.Pages.Orders
                     await SweetAlertService.FireAsync(new SweetAlertOptions
                     {
                         Title = "Error",
-                        Text = "Documento del paciente inválido.",
+                        Text = $"Documento del paciente inválido.",
                         Icon = SweetAlertIcon.Error
                     });
                 }
@@ -122,9 +122,9 @@ namespace LabPreTest.Frontend.Pages.Orders
         {
             if (!string.IsNullOrWhiteSpace(MedicDocumentValue))
             {
-                if (int.TryParse(MedicDocumentValue, out int documentId))
+                if (long.TryParse(MedicDocumentValue, out long documentIdMedic))
                 {
-                    var responseHttp = await Repository.GetAsync<Medic>($"/api/Medics/document/{documentId}");
+                    var responseHttp = await Repository.GetAsync<Medic>($"/api/Medics/document/{documentIdMedic}");
 
                     if (responseHttp.Error)
                     {
@@ -167,7 +167,7 @@ namespace LabPreTest.Frontend.Pages.Orders
                     await SweetAlertService.FireAsync(new SweetAlertOptions
                     {
                         Title = "Error",
-                        Text = "Documento del paciente inválido.",
+                        Text = "Documento del medico inválido.",
                         Icon = SweetAlertIcon.Error
                     });
                 }
@@ -241,7 +241,7 @@ namespace LabPreTest.Frontend.Pages.Orders
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: $"Numero de orden creada: {responseHttp.Response}");
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: $"Numero de orden creada: {responseHttp.Response.ToString()}");
         }
 
         private void PatientChanged(ChangeEventArgs e)
