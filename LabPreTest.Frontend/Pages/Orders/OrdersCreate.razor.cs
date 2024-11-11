@@ -15,6 +15,7 @@ using LabPreTest.Shared.PagesRoutes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System.Net;
+using System.Net.Http.Json;
 
 namespace LabPreTest.Frontend.Pages.Orders
 {
@@ -41,6 +42,8 @@ namespace LabPreTest.Frontend.Pages.Orders
         private bool IsSelectorDisabled { get; set; } = false;
         private Patient? SelectedPatient { get; set; }
         private Medic? SelectedMedic { get; set; }
+
+        private Order? CreatedOrder { get; set; }
 
         private Test? SelectedTest { get; set; }
         private bool PatientFound { get; set; }
@@ -231,17 +234,23 @@ namespace LabPreTest.Frontend.Pages.Orders
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
-            
-
-            Return();
-            var toast = SweetAlertService.Mixin(new SweetAlertOptions
+            if (responseHttp.HttpResponseMessage.IsSuccessStatusCode)
             {
-                Toast = true,
-                Position = SweetAlertPosition.BottomEnd,
-                ShowConfirmButton = true,
-                Timer = 3000
-            });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: $"Numero de orden creada: {responseHttp.Response.ToString()}");
+                var toast = SweetAlertService.Mixin(new SweetAlertOptions
+                {
+                    Toast = true,
+                    Position = SweetAlertPosition.BottomEnd,
+                    ShowConfirmButton = true,
+                    Timer = 3000000
+                });
+
+                var orderData = await responseHttp.HttpResponseMessage.Content.ReadFromJsonAsync<OrderDTO>();
+
+                await toast.FireAsync(icon: SweetAlertIcon.Success, message: $"Numero de orden creada: {orderData.Id}");
+
+                Return();
+            }
+
         }
 
         private void PatientChanged(ChangeEventArgs e)
