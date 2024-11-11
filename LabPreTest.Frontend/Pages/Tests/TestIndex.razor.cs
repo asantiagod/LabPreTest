@@ -141,8 +141,8 @@ namespace LabPreTest.Frontend.Pages.Tests
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
-                Title = "Confirmation",
-                Text = $"Are you sure you want to delete the country: {test.Name}?",
+                Title = "Confirmación",
+                Text = $"¿Está seguro que desea eliminar el exámen: {test.Name}?",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
             });

@@ -3,9 +3,11 @@ using LabPreTest.Frontend.Repositories;
 using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Interfaces;
+using LabPreTest.Shared.Messages;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Routing;
+using MudBlazor.Interfaces;
 
 namespace LabPreTest.Frontend.Shared
 {
@@ -17,6 +19,7 @@ namespace LabPreTest.Frontend.Shared
         private List<PreanalyticCondition>? PreanalyticConditions;
 
         //variables to controll some UI variables
+        private int ConditionDefaultValue;
         private int SectionDefaultValue;
 
         private int TestTubeDefaultValue;
@@ -33,6 +36,11 @@ namespace LabPreTest.Frontend.Shared
         protected override async Task OnInitializedAsync()
         {
             editContext = new(Model);
+            await LoadAsync();
+        }
+
+        private async Task LoadAsync()
+        {
             await LoadSectionsAsync();
             await LoadTestTubesAsync();
         }
@@ -61,12 +69,16 @@ namespace LabPreTest.Frontend.Shared
             //if(Sections != null && Medics.Firs)
         }
 
-        //TODO
-        //private async Task LoadPreanalyticConditionsAsync()
-        //{
-        //    PreanalyticConditions = await LoadListAsync<PreanalyticCondition>(ApiRoutes.);
-        //    //if(Sections != null && Medics.Firs)
-        //}
+        private async Task DeleteAsync(PreanalyticCondition condition)
+        {
+            Model.Conditions!.Remove(condition);
+            StateHasChanged();
+        }
+
+        private void ConditionChanged(ChangeEventArgs e)
+        {
+
+        }
 
         private void SectionChanged(ChangeEventArgs e)
         {
