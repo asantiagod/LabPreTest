@@ -4,6 +4,7 @@ using LabPreTest.Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabPreTest.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241103004835_add_order_audits")]
+    partial class add_order_audits
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,8 +82,8 @@ namespace LabPreTest.Backend.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<DateTime>("BirthDay")
-                        .HasColumnType("date");
+                    b.Property<string>("BirthDay")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Cellphone")
                         .HasMaxLength(100)
@@ -232,8 +235,9 @@ namespace LabPreTest.Backend.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<DateTime>("BirthDay")
-                        .HasColumnType("date");
+                    b.Property<string>("BirthDay")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Cellphone")
                         .HasMaxLength(100)
@@ -392,8 +396,7 @@ namespace LabPreTest.Backend.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.HasIndex("TestId")
-                        .IsUnique();
+                    b.HasIndex("TestId");
 
                     b.HasIndex("UserId");
 

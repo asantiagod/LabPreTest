@@ -1,9 +1,10 @@
-﻿using LabPreTest.Shared.Responses;
+﻿using LabPreTest.Shared.Entities;
+using LabPreTest.Shared.Responses;
 
 namespace LabPreTest.Backend.Helpers
 {
     public interface IOrdersHelper
     {
-        Task<ActionResponse<bool>> ProcessOrderAsync(string email);
+        Task<ActionResponse<Order>> ProcessOrderAsync(string email);
     }
 }
