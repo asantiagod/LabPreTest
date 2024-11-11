@@ -61,11 +61,11 @@ namespace LabPreTest.Backend.Controllers
         [HttpPost]
         public async Task<IActionResult> PostAsync()
         {
-            var response = await _ordersHelper.ProcessOrderAsync(User.Identity!.Name!);
-            if (response.WasSuccess)
-                return NoContent();
+            var action = await _ordersHelper.ProcessOrderAsync(User.Identity!.Name!);
+            if (action.WasSuccess)
+                return Ok(action.Result);
 
-            return BadRequest(response.Message);
+            return BadRequest(action.Message);
         }
 
         [HttpPut("details/{id}")]
