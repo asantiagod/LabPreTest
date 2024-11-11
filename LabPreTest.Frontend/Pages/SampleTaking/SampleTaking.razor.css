@@ -1,0 +1,39 @@
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 10vh;
+}
+
+.header, .footer {
+    background-color: #000000;
+    color: #f0f0f0;
+    text-align: center;
+}
+
+.content-container {
+    display: flex;
+    flex: 1;
+    padding: 10px;
+}
+
+.content-container-exams {
+    display: flex;
+    flex-direction:column;
+    flex: 1;
+    padding: 10px;
+}
+
+.left-section, .right-section {
+    padding: 20px;
+}
+
+.left-section {
+    flex: 1;
+    background-color: #f0f0f0;
+}
+
+.right-section {
+    background-color: #e0e0e0;
+    text-align: center;
+}
