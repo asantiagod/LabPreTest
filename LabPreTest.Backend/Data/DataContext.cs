@@ -207,10 +207,11 @@ namespace LabPreTest.Backend.Data
                 else
                     objDic.Add(navigation.Metadata.Name, navigation.CurrentValue);
             }
-            
+
             var options = new JsonSerializerOptions
             {
                 ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
             };
 
             string json = JsonSerializer.Serialize(objDic, options);

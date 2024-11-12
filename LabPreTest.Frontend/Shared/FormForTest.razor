@@ -21,12 +21,19 @@
         <div class="mb-3">
             <label>Sección:</label>
             <select class="form-select" @onchange="SectionChanged" value="@SectionDefaultValue">
-                <option value="0">--Seleccione la Sección--</option>
+                <option value="0" hidden disabled>--Seleccione la Sección--</option>
                 @if (Sections is not null)
                 {
                     @foreach (var s in Sections)
                     {
-                        <option value="@s.Id">@s.Name</option>
+                        if(s.Id == Model.SectionId)
+                        {
+                            <option value="@s.Id" selected>@s.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@s.Id">@s.Name</option>
+                        }
                     }
                 }
             </select>
@@ -35,23 +42,43 @@
         <div class="mb-3">
             <label>Tipo de Recipiente:</label>
             <select class="form-select" @onchange="TestTubeChanged" value="@TestTubeDefaultValue">
-                <option value="0">--Seleccione tipo de recipiente--</option>
+                <option value="0" hidden disabled>--Seleccione tipo de recipiente--</option>
                 @if (TestTubes is not null)
                 {
                     @foreach (var t in TestTubes)
                     {
-                        <option value="@t.Id">@t.Name</option>
+                        if (t.Id == Model.TestTubeId)
+                        {
+                            <option value="@t.Id" selected>@t.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@t.Id">@t.Name</option>
+                        }
+
                     }
                 }
             </select>
         </div>
         
-        <!--TODO: Add Condition-->
-        
         <div class="mb-3">
+            <label>Condiciones preanalíticas</label>
+            <select class="form-select" @onchange="ConditionChanged">
+                <option value="0" hidden disabled selected>--Seleccione una condición preanalítica--</option>
+                @if (PreanalyticConditions is not null)
+                {
+                    @foreach (var c in PreanalyticConditions)
+                    {
+                        <option value="@c.Id">@c.Name</option>
+                    }
+                }
+            </select>
+            <button class="btn btn-primary" type="button" onclick=@(() => AddCondition())>Agregar</button>
             <table class="table table-striped">
                 <thead>
                     <th>ID</th>
+                    <th>Nombre</th>
+                    <th></th>
                 </thead>
                 <tbody>
                     @if (Model.Conditions != null)
@@ -60,6 +87,8 @@
                         {
                             <tr>
                                 <td>@condition.Id</td>
+                                <td>@condition.Name</td>
+                                <td><button onclick=@(() => DeleteAsync(condition)) class="btn btn-danger">Borrar</button></td>
                             </tr>
                         }
                     }

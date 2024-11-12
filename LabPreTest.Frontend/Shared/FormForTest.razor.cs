@@ -3,9 +3,11 @@ using LabPreTest.Frontend.Repositories;
 using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Interfaces;
+using LabPreTest.Shared.Messages;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Routing;
+using MudBlazor.Interfaces;
 
 namespace LabPreTest.Frontend.Shared
 {
@@ -15,8 +17,11 @@ namespace LabPreTest.Frontend.Shared
         private List<Section>? Sections;
         private List<TestTube>? TestTubes;
         private List<PreanalyticCondition>? PreanalyticConditions;
+        private int conditionIdTobeAdded;
 
         //variables to controll some UI variables
+        private int ConditionDefaultValue;
+
         private int SectionDefaultValue;
 
         private int TestTubeDefaultValue;
@@ -33,6 +38,12 @@ namespace LabPreTest.Frontend.Shared
         protected override async Task OnInitializedAsync()
         {
             editContext = new(Model);
+            await LoadAsync();
+        }
+
+        private async Task LoadAsync()
+        {
+            await LoadPreanalyticConditionsAsync();
             await LoadSectionsAsync();
             await LoadTestTubesAsync();
         }
@@ -49,24 +60,49 @@ namespace LabPreTest.Frontend.Shared
             return responseHttp.Response;
         }
 
+        private async Task LoadPreanalyticConditionsAsync()
+        {
+            PreanalyticConditions = await LoadListAsync<PreanalyticCondition>(ApiRoutes.PreanalyticConditionsFullRoute);
+        }
+
         private async Task LoadSectionsAsync()
         {
             Sections = await LoadListAsync<Section>(ApiRoutes.SectionRoute);
-            //if(Sections != null && Medics.Firs)
         }
 
         private async Task LoadTestTubesAsync()
         {
             TestTubes = await LoadListAsync<TestTube>(ApiRoutes.TestTubeRoute);
-            //if(Sections != null && Medics.Firs)
         }
 
-        //TODO
-        //private async Task LoadPreanalyticConditionsAsync()
-        //{
-        //    PreanalyticConditions = await LoadListAsync<PreanalyticCondition>(ApiRoutes.);
-        //    //if(Sections != null && Medics.Firs)
-        //}
+        private async Task DeleteAsync(PreanalyticCondition condition)
+        {
+            Model.Conditions!.Remove(condition);
+            StateHasChanged();
+        }
+
+        private void ConditionChanged(ChangeEventArgs e)
+        {
+            conditionIdTobeAdded = Convert.ToInt32(e.Value!);
+        }
+
+        private void AddCondition()
+        {
+            if (PreanalyticConditions == null)
+                return;
+            
+            var condition = PreanalyticConditions.FirstOrDefault(c => c.Id == conditionIdTobeAdded);
+            if (condition == null)
+                return;
+
+            if (Model.Conditions == null)
+                Model.Conditions = [];
+
+            if (Model.Conditions.FirstOrDefault(c => c.Id == condition.Id) != null)
+                return;
+
+            Model.Conditions.Add(condition);
+        }
 
         private void SectionChanged(ChangeEventArgs e)
         {
