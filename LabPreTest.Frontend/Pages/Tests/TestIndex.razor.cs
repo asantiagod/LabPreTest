@@ -188,6 +188,7 @@ namespace LabPreTest.Frontend.Pages.Tests
         private void ShowCreateModal()
         {
             ModalService.Show<TestsCreate>();
+            StateHasChanged();
         }
     }
 }

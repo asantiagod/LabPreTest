@@ -65,7 +65,6 @@
             <label>Condiciones preanalíticas</label>
             <select class="form-select" @onchange="ConditionChanged">
                 <option value="0" hidden disabled selected>--Seleccione una condición preanalítica--</option>
-                <!--
                 @if (PreanalyticConditions is not null)
                 {
                     @foreach (var c in PreanalyticConditions)
@@ -73,9 +72,8 @@
                         <option value="@c.Id">@c.Name</option>
                     }
                 }
-                -->
             </select>
-            <button class="btn btn-primary">Agregar</button>
+            <button class="btn btn-primary" type="button" onclick=@(() => AddCondition())>Agregar</button>
             <table class="table table-striped">
                 <thead>
                     <th>ID</th>

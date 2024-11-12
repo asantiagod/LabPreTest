@@ -12,7 +12,9 @@ namespace LabPreTest.Shared.Messages
         public const string HttpUnauthorizedMessage = "Tienes que estar logueado para ejecutar esta operación.";
         public const string HttpForbiddenMessage = "No tienes permisos para ejecutar esta operación.";
         public const string HttpUnexpectedMessage = "Error inesperado";
-        
+
+        public const string PreanalyticalConditionsNotFound = "No se ha seleccionado ninguna condición preanalítica.";
+
         public const string RecordCreatedMessage = "El registro se creó satisfactoriamente.";
         public const string RecordChangedMessage = "Los cambios se guardaron exitosamente.";
         public const string RecordDeletedMessage = "El registro se eliminó correctamente.";
@@ -22,5 +24,6 @@ namespace LabPreTest.Shared.Messages
         public const string DeleteButtonMessage = "Eliminar";
         public const string NextPageButtonMessage = "Siguiente";
         public const string PreviousPageButtonMessage = "Anterior";
+
     }
 }

@@ -17,9 +17,11 @@ namespace LabPreTest.Frontend.Shared
         private List<Section>? Sections;
         private List<TestTube>? TestTubes;
         private List<PreanalyticCondition>? PreanalyticConditions;
+        private int conditionIdTobeAdded;
 
         //variables to controll some UI variables
         private int ConditionDefaultValue;
+
         private int SectionDefaultValue;
 
         private int TestTubeDefaultValue;
@@ -41,6 +43,7 @@ namespace LabPreTest.Frontend.Shared
 
         private async Task LoadAsync()
         {
+            await LoadPreanalyticConditionsAsync();
             await LoadSectionsAsync();
             await LoadTestTubesAsync();
         }
@@ -57,16 +60,19 @@ namespace LabPreTest.Frontend.Shared
             return responseHttp.Response;
         }
 
+        private async Task LoadPreanalyticConditionsAsync()
+        {
+            PreanalyticConditions = await LoadListAsync<PreanalyticCondition>(ApiRoutes.PreanalyticConditionsFullRoute);
+        }
+
         private async Task LoadSectionsAsync()
         {
             Sections = await LoadListAsync<Section>(ApiRoutes.SectionRoute);
-            //if(Sections != null && Medics.Firs)
         }
 
         private async Task LoadTestTubesAsync()
         {
             TestTubes = await LoadListAsync<TestTube>(ApiRoutes.TestTubeRoute);
-            //if(Sections != null && Medics.Firs)
         }
 
         private async Task DeleteAsync(PreanalyticCondition condition)
@@ -77,7 +83,25 @@ namespace LabPreTest.Frontend.Shared
 
         private void ConditionChanged(ChangeEventArgs e)
         {
+            conditionIdTobeAdded = Convert.ToInt32(e.Value!);
+        }
 
+        private void AddCondition()
+        {
+            if (PreanalyticConditions == null)
+                return;
+            
+            var condition = PreanalyticConditions.FirstOrDefault(c => c.Id == conditionIdTobeAdded);
+            if (condition == null)
+                return;
+
+            if (Model.Conditions == null)
+                Model.Conditions = [];
+
+            if (Model.Conditions.FirstOrDefault(c => c.Id == condition.Id) != null)
+                return;
+
+            Model.Conditions.Add(condition);
         }
 
         private void SectionChanged(ChangeEventArgs e)

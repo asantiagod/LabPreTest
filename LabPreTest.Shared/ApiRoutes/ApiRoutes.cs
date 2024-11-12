@@ -24,10 +24,13 @@
         public const string TemporalOrdersFullRoute = $"{TemporalOrdersRoute}/{Full}";
         public const string TestRoute = "api/Test";
         public const string TestFullRoute = $"{TestRoute}/{Full}";
+        public const string TestDTORoute = $"{TestRoute}/dto";
         public const string TestTubeRoute = "api/TestTube";
         public const string PatientsRoute = "api/Patients";
         public const string PatientsDocumentRoute = $"{PatientsRoute}/document";
         public const string PatientsFullRoute = $"{PatientsRoute}/{Full}";
+        public const string PreanalyticConditionsRoute = "api/PreanalyticConditions";
+        public const string PreanalyticConditionsFullRoute= $"{PreanalyticConditionsRoute}/{Full}";
         public const string OrdersRoute = "api/Orders";
         public const string Accounts = "/api/accounts";
         public const string AccountsCreateUser = Accounts + $"/{CreateUser}";
