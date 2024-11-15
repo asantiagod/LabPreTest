@@ -5,7 +5,7 @@
 <EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
     <div class="mb-3 align-items-center">
-        <table class="table table-bordered table-striped w-100">
+        <table class="table table-bordered table-striped w-100" style="background-color: #FFFFFF;">
             <thead>
                 <tr>
                     <th>Información del @Label.ToLower()</th>
@@ -15,7 +15,7 @@
                 <tr>
                     <td>Número de documento </td>
                     <td>
-                        <InputText class="form-control" @bind-Value="@Model.DocumentId" disabled/>
+                        <InputText class="form-control" @bind-Value="@Model.DocumentId" disabled style="background-color: #FFFFFF;" />
                         <ValidationMessage For="@(() => Model.DocumentId)" />
                     </td>
                 </tr>
@@ -24,7 +24,7 @@
                         <label for="Nombre">Nombre </label>
                     </td>
                     <td>
-                        <InputText class="form-control" @bind-Value="@Model.Name" disabled />
+                        <InputText class="form-control" @bind-Value="@Model.Name" disabled style="background-color: #FFFFFF;" />
                         <ValidationMessage For="@(() => Model.Name)" />
                     </td>
                 </tr>
@@ -33,7 +33,7 @@
                         <label for="FNacimiento">Fecha de nacimiento </label>
                     </td>
                     <td>
-                        <InputDate class="form-control" @bind-Value="@Model.BirthDay" disabled />
+                        <InputDate class="form-control" @bind-Value="@Model.BirthDay" disabled style="background-color: #FFFFFF;" />
                         <ValidationMessage For="@(() => Model.BirthDay)" />
                     </td>
                 </tr>

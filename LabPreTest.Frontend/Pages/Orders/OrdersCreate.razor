@@ -63,7 +63,7 @@ else
                             var correspondingTest = tests.FirstOrDefault(t => t.Id == to.TestId);
                             <tr>
                                 <td>
-                                    <LabPreTest.Frontend.Pages.Tests.TestShowOrder Id="@to.TestId"></LabPreTest.Frontend.Pages.Tests.TestShowOrder>
+                                    <LabPreTest.Frontend.Pages.Tests.TestShowOrderCreate Id="@to.TestId"></LabPreTest.Frontend.Pages.Tests.TestShowOrderCreate>
                                 </td>
                             </tr>
                         }
@@ -78,6 +78,6 @@ else
         <div class="mb-3">
             <label>Numero de exámenes: @NumberOfTests</label>
         </div>
-        <button class="btn btn-primary" disabled=@IsAddButtonDisabled @onclick=@(()=>CreateAsync())>Crear orden</button>
-    </div>
+        <button class="btn btn-success d-flex justify-content-center align-items-md-center" style="font-size: 1.5rem; padding: 15px 30px" disabled=@IsAddButtonDisabled @onclick=@(()=>CreateAsync())>Crear orden</button>
+        </div>
 }

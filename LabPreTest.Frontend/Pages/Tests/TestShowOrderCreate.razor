@@ -1,0 +1,14 @@
+﻿@page "/orders/create/{Id:int}"
+
+@if (test is null)
+{
+    <Loading />
+}
+else
+{
+    <FormForShowTestOrderCreation @ref="testForm"
+                 Label="Examen:"
+                 Model="test"
+                 OnValidSubmit="Return"
+                 ReturnAction="Return" />
+}

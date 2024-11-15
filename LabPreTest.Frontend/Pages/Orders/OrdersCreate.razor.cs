@@ -15,6 +15,7 @@ using LabPreTest.Shared.PagesRoutes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System.Net;
+using System.Net.Http.Json;
 
 namespace LabPreTest.Frontend.Pages.Orders
 {
@@ -42,6 +43,8 @@ namespace LabPreTest.Frontend.Pages.Orders
         private Patient? SelectedPatient { get; set; }
         private Medic? SelectedMedic { get; set; }
 
+        private Order? CreatedOrder { get; set; }
+
         private Test? SelectedTest { get; set; }
         private bool PatientFound { get; set; }
 
@@ -59,13 +62,14 @@ namespace LabPreTest.Frontend.Pages.Orders
             await LoadTestConditions();
             SetButtonStatus();
             SetSelectorStatus();
+            await ClearTemporalOrder();
         }
 
         protected async Task SearchPatient()
         {
             if (!string.IsNullOrWhiteSpace(PatientDocumentValue))
             {
-                if (int.TryParse(PatientDocumentValue, out int documentId))
+                if (long.TryParse(PatientDocumentValue, out long documentId))
                 {
                     var responseHttp = await Repository.GetAsync<Patient>($"/api/Patients/document/{documentId}");
 
@@ -93,7 +97,7 @@ namespace LabPreTest.Frontend.Pages.Orders
                             await SweetAlertService.FireAsync(new SweetAlertOptions
                             {
                                 Title = "Error",
-                                Text = "Ocurrió un error al buscar el paciente. Por favor, intente nuevamente.",
+                                Text = $"Ocurrió un error al buscar el paciente. Por favor, intente nuevamente.",
                                 Icon = SweetAlertIcon.Error
                             });
                         }
@@ -110,7 +114,7 @@ namespace LabPreTest.Frontend.Pages.Orders
                     await SweetAlertService.FireAsync(new SweetAlertOptions
                     {
                         Title = "Error",
-                        Text = "Documento del paciente inválido.",
+                        Text = $"Documento del paciente inválido.",
                         Icon = SweetAlertIcon.Error
                     });
                 }
@@ -121,9 +125,9 @@ namespace LabPreTest.Frontend.Pages.Orders
         {
             if (!string.IsNullOrWhiteSpace(MedicDocumentValue))
             {
-                if (int.TryParse(MedicDocumentValue, out int documentId))
+                if (long.TryParse(MedicDocumentValue, out long documentIdMedic))
                 {
-                    var responseHttp = await Repository.GetAsync<Medic>($"/api/Medics/document/{documentId}");
+                    var responseHttp = await Repository.GetAsync<Medic>($"/api/Medics/document/{documentIdMedic}");
 
                     if (responseHttp.Error)
                     {
@@ -166,7 +170,7 @@ namespace LabPreTest.Frontend.Pages.Orders
                     await SweetAlertService.FireAsync(new SweetAlertOptions
                     {
                         Title = "Error",
-                        Text = "Documento del paciente inválido.",
+                        Text = "Documento del medico inválido.",
                         Icon = SweetAlertIcon.Error
                     });
                 }
@@ -193,7 +197,7 @@ namespace LabPreTest.Frontend.Pages.Orders
         private async Task ClearTemporalOrder()
         {
             TemporalOrders = await LoadListAsync<TemporalOrder>(ApiRoutes.TemporalOrdersMyRoute);
-            var responseHttp = await Repository.DeleteAsync<TemporalOrder>($"/api/temporalorders/1");
+            var responseHttp = await Repository.DeleteAsync<TemporalOrder>($"/api/temporalorders/full");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode != HttpStatusCode.NotFound)
@@ -230,16 +234,23 @@ namespace LabPreTest.Frontend.Pages.Orders
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
-
-            Return();
-            var toast = SweetAlertService.Mixin(new SweetAlertOptions
+            if (responseHttp.HttpResponseMessage.IsSuccessStatusCode)
             {
-                Toast = true,
-                Position = SweetAlertPosition.BottomEnd,
-                ShowConfirmButton = true,
-                Timer = 3000
-            });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordCreatedMessage);
+                var toast = SweetAlertService.Mixin(new SweetAlertOptions
+                {
+                    Toast = true,
+                    Position = SweetAlertPosition.Center,
+                    ShowConfirmButton = true,
+                    Timer = 3000000
+                });
+
+                var orderData = await responseHttp.HttpResponseMessage.Content.ReadFromJsonAsync<OrderDTO>();
+
+                await toast.FireAsync(icon: SweetAlertIcon.Success, message: $"Numero de orden creada: {orderData.Id}");
+
+                Return();
+            }
+
         }
 
         private void PatientChanged(ChangeEventArgs e)
