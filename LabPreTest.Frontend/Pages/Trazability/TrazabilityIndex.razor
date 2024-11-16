@@ -1,0 +1,60 @@
+﻿@page "/trazability"
+@using Newtonsoft.Json.Linq
+
+<h3>Trazabilidad</h3>
+
+
+<GenericList MyList="Trazability">
+    <Body>
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    SelectedPage="SelectedPageAsync" 
+                    SelectedRedordsNumber="SelectedRedordsNumberAsync" />
+        <Filter PlaceHolder="Buscar informacion de una orden..." Callback=@FilterCallback />s
+
+        <table class="table table-striped" style="vertical-align:middle">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Documento</th>
+                    <th>Celular</th>
+                    <th>Direccion</th>
+                    <th>Email</th>
+                    <th>Fecha de nacimiento</th>
+                    <th style="width:180px"></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var trazability in Trazability!)
+            {
+                <tr>
+                    <td>@trazability.Id</td>
+                    <td>@trazability.OrderId</td>
+                    <td>@trazability.ChangeDate</td>
+                    <td>
+                        @if (!string.IsNullOrWhiteSpace(trazability.NewValues))
+                        {
+                            var newChanges = Newtonsoft.Json.Linq.JObject.Parse(trazability.NewValues);
+                            <ul>
+                                <li><strong>Created At:</strong> @newChanges["CreatedAt"]</li>
+                                <li><strong>Status:</strong> @newChanges["Status"]</li>
+                                @if (newChanges["Details"] is JArray details)
+                                {
+                                    <li><strong>Details:</strong></li>
+                                    <ul>
+                                        @foreach (var detail in details)
+                                        {
+                                            <li>Test ID: @detail["TestId"], Medic ID: @detail["MedicId"]</li>
+                                        }
+                                    </ul>
+                                }
+                            </ul>
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+
+    </Body>
+</GenericList>
