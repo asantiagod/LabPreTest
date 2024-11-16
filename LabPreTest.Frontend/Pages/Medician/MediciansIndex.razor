@@ -36,7 +36,7 @@
                         <td>@medician.Cellphone</td>
                         <td>@medician.Address</td>
                         <td>@medician.Email</td>
-                        <td>@medician.BirthDay</td>
+                        <td>@DateOnly.FromDateTime(medician.BirthDay)</td>
                         <td>
                             <a @onclick=@(()=>ShowEditModal(medician.Id)) class="btn btn-warning">Editar</a>
                             <button @onclick=@(() => DeleteAsync(medician)) class="btn btn-danger">Borrar</button>

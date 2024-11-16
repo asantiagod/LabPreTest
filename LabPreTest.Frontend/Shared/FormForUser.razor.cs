@@ -21,6 +21,8 @@ namespace LabPreTest.Frontend.Shared
         protected override void OnInitialized()
         {
             editContext = new(Model);
+            if(Model.BirthDay == default(DateTime))
+                Model.BirthDay = DateTime.Now;
         }
 
         private async Task OnBeforeInternalNavigation(LocationChangingContext context)
