@@ -1,8 +1,9 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
+using LabPreTest.Shared.Enums;
 using LabPreTest.Shared.Interfaces;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Routing;
-using Microsoft.AspNetCore.Components;
 
 namespace LabPreTest.Frontend.Shared
 {
@@ -20,6 +21,8 @@ namespace LabPreTest.Frontend.Shared
         protected override void OnInitialized()
         {
             editContext = new(Model);
+            if(Model.BirthDay == default(DateTime))
+                Model.BirthDay = DateTime.Now;
         }
 
         private async Task OnBeforeInternalNavigation(LocationChangingContext context)
@@ -44,6 +47,11 @@ namespace LabPreTest.Frontend.Shared
             }
 
             context.PreventNavigation();
+        }
+
+        private void OnGenderChanged(ChangeEventArgs e)
+        {
+            Model.Gender = string.Compare(e.Value!.ToString(),"female",true) ==0 ? GenderType.Female : GenderType.Male;
         }
     }
 }
