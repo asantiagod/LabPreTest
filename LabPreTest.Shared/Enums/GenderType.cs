@@ -8,6 +8,7 @@ namespace LabPreTest.Shared.Enums
 {
     public enum GenderType
     {
+        NotDefined,
         Female,
         Male,
     }

@@ -74,7 +74,32 @@
                         <ValidationMessage For="@(() => Model.UserName)" />
                     </td>
                 </tr>
-
+                <tr>
+                    <td><label for="gender">Seleccione el genero del Usuario</label></td>
+                    <td>
+                        <select id="gender" class="form-select" @onchange="OnGenderChanged">
+                            @if (Model == null || Model.Gender == GenderType.NotDefined)
+                            {
+                                <option value="0" hidden disabled selected>--Seleccione un genero--</option>
+                                <option value="female">Femenino</option>
+                                <option value="male">Masculino</option>
+                            }
+                            else
+                            {
+                                if(Model.Gender == GenderType.Female)
+                                {
+                                    <option value="female" selected>Femenino</option>
+                                    <option value="male">Masculino</option>
+                                }
+                                else
+                                {
+                                    <option value="female">Femenino</option>
+                                    <option value="male" selected>Masculino</option>
+                                }
+                            }
+                        </select>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
