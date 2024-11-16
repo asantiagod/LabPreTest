@@ -14,67 +14,92 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Ingrese el documento:</td>
+                    <td><label for="id">Ingrese el documento</label>:</td>
                     <td>
-                        <InputText class="form-control" @bind-Value="@Model.DocumentId" />
+                        <InputText class="form-control" id="id" @bind-Value="@Model.DocumentId" />
                         <ValidationMessage For="@(() => Model.DocumentId)" />
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <label for="Nombre">Ingrese el nombre:</label>
+                        <label for="name">Ingrese el nombre:</label>
                     </td>
                     <td>
-                        <InputText class="form-control" @bind-Value="@Model.Name" />
+                        <InputText class="form-control" id="name" @bind-Value="@Model.Name" />
                         <ValidationMessage For="@(() => Model.Name)" />
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <label for="FNacimiento">Ingrese la fecha de nacimiento:</label>
+                        <label for="birthDay">Ingrese la fecha de nacimiento:</label>
                     </td>
                     <td>
-                        <InputDate class="form-control" @bind-Value="@Model.BirthDay" />
+                        <InputDate class="form-control" id="birthDay" @bind-Value="@Model.BirthDay" />
                         <ValidationMessage For="@(() => Model.BirthDay)" />
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <label for="Celular">Ingrese el número de celular</label>
+                        <label for="Cellphone">Ingrese el número de celular</label>
                     </td>
                     <td>
-                        <InputText class="form-control" @bind-Value="@Model.Cellphone" />
+                        <InputText class="form-control" id="Cellphone" @bind-Value="@Model.Cellphone" />
                         <ValidationMessage For="@(() => Model.Cellphone)" />
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <label for="Direccion">Ingrese la dirección de residencia</label>
+                        <label for="address">Ingrese la dirección de residencia</label>
                     </td>
                     <td>
-                        <InputText class="form-control" @bind-Value="@Model.Address" />
+                        <InputText class="form-control" id="address" @bind-Value="@Model.Address" />
                         <ValidationMessage For="@(() => Model.Address)" />
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <label for="Email">Ingrese el correo electrónico</label>
+                        <label for="email">Ingrese el correo electrónico</label>
                     </td>
                     <td>
-                        <InputText class="form-control" @bind-Value="@Model.Email" />
+                        <InputText class="form-control" id="email" @bind-Value="@Model.Email" />
                         <ValidationMessage For="@(() => Model.Email)" />
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <label for="UserName">Ingrese el nombre de usuario</label>
+                        <label for="userName">Ingrese el nombre de usuario</label>
                     </td>
                     <td>
-                        <InputText class="form-control" @bind-Value="@Model.UserName" />
+                        <InputText class="form-control" id="userName" @bind-Value="@Model.UserName" />
                         <ValidationMessage For="@(() => Model.UserName)" />
                     </td>
                 </tr>
-
+                <tr>
+                    <td><label for="gender">Seleccione el genero del Usuario</label></td>
+                    <td>
+                        <select id="gender" class="form-select" @onchange="OnGenderChanged">
+                            @if (Model == null || Model.Gender == GenderType.NotDefined)
+                            {
+                                <option value="0" hidden disabled selected>--Seleccione un genero--</option>
+                                <option value="female">Femenino</option>
+                                <option value="male">Masculino</option>
+                            }
+                            else
+                            {
+                                if(Model.Gender == GenderType.Female)
+                                {
+                                    <option value="female" selected>Femenino</option>
+                                    <option value="male">Masculino</option>
+                                }
+                                else
+                                {
+                                    <option value="female">Femenino</option>
+                                    <option value="male" selected>Masculino</option>
+                                }
+                            }
+                        </select>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

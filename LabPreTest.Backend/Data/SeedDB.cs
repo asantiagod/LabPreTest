@@ -295,16 +295,16 @@ namespace LabPreTest.Backend.Data
         {
             if (!_context.Medicians.Any())
             {
-                AddMedic("9988776655", "Valentina Salazar", "1994-02-14", "3112345678", "Calle 100 #20-30, Bogotá", "valentina.s@yopmail.com", "valensal94");
-                AddMedic("8877665544", "Fernando Morales", "1980-09-08", "3123456789", "Carrera 8 #35-50, Cali", "fernando.m@yopmail.com", "fermor80");
-                AddMedic("7766554433", "Daniela López", "1996-12-25", "3134567890", "Avenida 15 #25-80, Medellín", "daniela.l@yopmail.com", "dani.lopez96");
-                AddMedic("6655443322", "Jorge Castillo", "1989-03-14", "3145678901", "Calle 50 #18-22, Cartagena", "jorge.c@yopmail.com", "jorgecas89");
-                AddMedic("5544332211", "Isabella Nieto", "1992-07-30", "3156789012", "Carrera 12 #22-40, Barranquilla", "isabella.n@yopmail.com", "isabellan92");
-                AddMedic("4433221100", "Rafael Ortiz", "1987-10-21", "3167890123", "Calle 44 #10-60, Bogotá", "rafael.o@yopmail.com", "rafaelort87");
-                AddMedic("3322110099", "Paola Hernández", "1983-11-05", "3178901234", "Carrera 6 #18-35, Cali", "paola.h@yopmail.com", "paolah83");
-                AddMedic("2211009988", "Andrés Suárez", "1995-04-11", "3189012345", "Avenida 6 #30-50, Bucaramanga", "andres.s@yopmail.com", "andresua95");
-                AddMedic("1100998877", "Carolina Duarte", "1990-01-20", "3190123456", "Calle 13 #25-20, Manizales", "carolina.d@yopmail.com", "carodu90");
-                AddMedic("0099887766", "Camilo Vargas", "1984-05-27", "3201234567", "Carrera 10 #40-25, Medellín", "camilo.v@yopmail.com", "camiv84");
+                AddMedic("9988776655", "Valentina Salazar", "1994-02-14", "Female", "3112345678", "Calle 100 #20-30, Bogotá", "valentina.s@yopmail.com", "valensal94");
+                AddMedic("8877665544", "Fernando Morales", "1980-09-08", "Male", "3123456789", "Carrera 8 #35-50, Cali", "fernando.m@yopmail.com", "fermor80");
+                AddMedic("7766554433", "Daniela López", "1996-12-25", "Female", "3134567890", "Avenida 15 #25-80, Medellín", "daniela.l@yopmail.com", "dani.lopez96");
+                AddMedic("6655443322", "Jorge Castillo", "1989-03-14", "Male", "3145678901", "Calle 50 #18-22, Cartagena", "jorge.c@yopmail.com", "jorgecas89");
+                AddMedic("5544332211", "Isabella Nieto", "1992-07-30", "Female", "3156789012", "Carrera 12 #22-40, Barranquilla", "isabella.n@yopmail.com", "isabellan92");
+                AddMedic("4433221100", "Rafael Ortiz", "1987-10-21", "Male", "3167890123", "Calle 44 #10-60, Bogotá", "rafael.o@yopmail.com", "rafaelort87");
+                AddMedic("3322110099", "Paola Hernández", "1983-11-05", "Female", "3178901234", "Carrera 6 #18-35, Cali", "paola.h@yopmail.com", "paolah83");
+                AddMedic("2211009988", "Andrés Suárez", "1995-04-11", "Male", "3189012345", "Avenida 6 #30-50, Bucaramanga", "andres.s@yopmail.com", "andresua95");
+                AddMedic("1100998877", "Carolina Duarte", "1990-01-20", "Female", "3190123456", "Calle 13 #25-20, Manizales", "carolina.d@yopmail.com", "carodu90");
+                AddMedic("0099887766", "Camilo Vargas", "1984-05-27", "Male", "3201234567", "Carrera 10 #40-25, Medellín", "camilo.v@yopmail.com", "camiv84");
 
                 await _context.SaveChangesAsync();
             }
@@ -314,28 +314,29 @@ namespace LabPreTest.Backend.Data
         {
             if (!_context.Patients.Any())
             {
-                AddPatient("1023456789", "Ana Gómez", "1990-04-15", "3001234567", "Calle 10 #12-34, Bogotá", "ana.gomez@yopmail.com", "ana_gomez90");
-                AddPatient("1122334455", "Juan Pérez", "1985-06-20", "3012345678", "Carrera 15 #45-67, Cali", "juan.perez@yopmail.com", "juanperez85");
-                AddPatient("1234567890", "María Rodríguez", "1993-08-10", "3023456789", "Avenida 30 #10-20, Medellín", "maria.rod@yopmail.com", "mariarod93");
-                AddPatient("2233445566", "Carlos Sánchez", "1978-01-25", "3034567890", "Calle 25 #5-10, Bogotá", "carlos.s@yopmail.com", "carlos78");
-                AddPatient("3344556677", "Laura Ramírez", "1995-09-05", "3045678901", "Carrera 7 #45-89, Barranquilla", "laura.r@yopmail.com", "laurara95");
-                AddPatient("4455667788", "Pedro González", "1992-11-15", "3056789012", "Avenida 5 #20-15, Cartagena", "pedro.g@yopmail.com", "pedrogonz92");
-                AddPatient("5566778899", "Sofía Martínez", "1988-07-22", "3067890123", "Calle 8 #60-90, Medellín", "sofia.m@yopmail.com", "sofiamart88");
-                AddPatient("6677889900", "Diego Castro", "1983-12-02", "3078901234", "Carrera 12 #30-40, Cali", "diego.c@yopmail.com", "diegocastro83");
-                AddPatient("7788990011", "Luisa Fernández", "1997-03-30", "3089012345", "Calle 50 #10-15, Bucaramanga", "luisa.f@yopmail.com", "luisafern97");
-                AddPatient("8899001122", "Andrés Ramírez", "1991-05-18", "3090123456", "Carrera 9 #55-23, Manizales", "andres.r@yopmail.com", "andresram91");
+                AddPatient("1023456789", "Ana Gómez", "1990-04-15", "Female", "3001234567", "Calle 10 #12-34, Bogotá", "ana.gomez@yopmail.com", "ana_gomez90");
+                AddPatient("1122334455", "Juan Pérez", "1985-06-20", "Male", "3012345678", "Carrera 15 #45-67, Cali", "juan.perez@yopmail.com", "juanperez85");
+                AddPatient("1234567890", "María Rodríguez", "1993-08-10", "Female", "3023456789", "Avenida 30 #10-20, Medellín", "maria.rod@yopmail.com", "mariarod93");
+                AddPatient("2233445566", "Carlos Sánchez", "1978-01-25", "Male", "3034567890", "Calle 25 #5-10, Bogotá", "carlos.s@yopmail.com", "carlos78");
+                AddPatient("3344556677", "Laura Ramírez", "1995-09-05", "Female", "3045678901", "Carrera 7 #45-89, Barranquilla", "laura.r@yopmail.com", "laurara95");
+                AddPatient("4455667788", "Pedro González", "1992-11-15", "Male", "3056789012", "Avenida 5 #20-15, Cartagena", "pedro.g@yopmail.com", "pedrogonz92");
+                AddPatient("5566778899", "Sofía Martínez", "1988-07-22", "Female", "3067890123", "Calle 8 #60-90, Medellín", "sofia.m@yopmail.com", "sofiamart88");
+                AddPatient("6677889900", "Diego Castro", "1983-12-02", "Male", "3078901234", "Carrera 12 #30-40, Cali", "diego.c@yopmail.com", "diegocastro83");
+                AddPatient("7788990011", "Luisa Fernández", "1997-03-30", "Female", "3089012345", "Calle 50 #10-15, Bucaramanga", "luisa.f@yopmail.com", "luisafern97");
+                AddPatient("8899001122", "Andrés Ramírez", "1991-05-18", "Male", "3090123456", "Carrera 9 #55-23, Manizales", "andres.r@yopmail.com", "andresram91");
 
                 await _context.SaveChangesAsync();
             }
         }
 
-        private void AddPatient(string id_document, string name, string birth_date, string cell_number, string address, string email, string username)
+        private void AddPatient(string id_document, string name, string birth_date, string gender, string cell_number, string address, string email, string username)
         {
             _context.Patients.Add(new Patient
             {
                 DocumentId = id_document,
                 Name = name,
                 BirthDay = DateTime.ParseExact(birth_date, "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                Gender = string.Compare(gender, "Female", true) == 0 ? GenderType.Female : GenderType.Male,
                 Cellphone = cell_number,
                 Address = address,
                 Email = email,
@@ -343,13 +344,14 @@ namespace LabPreTest.Backend.Data
             });
         }
 
-        private void AddMedic(string id_document, string name, string birth_date, string cell_number, string address, string email, string username)
+        private void AddMedic(string id_document, string name, string birth_date, string gender, string cell_number, string address, string email, string username)
         {
             _context.Medicians.Add(new Medic
             {
                 DocumentId = id_document,
                 Name = name,
                 BirthDay = DateTime.ParseExact(birth_date, "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                Gender = string.Compare(gender, "Female", true) == 0 ? GenderType.Female : GenderType.Male,
                 Cellphone = cell_number,
                 Address = address,
                 Email = email,

@@ -1,4 +1,5 @@
-﻿using LabPreTest.Shared.Interfaces;
+﻿using LabPreTest.Shared.Enums;
+using LabPreTest.Shared.Interfaces;
 using LabPreTest.Shared.Messages;
 using System.ComponentModel.DataAnnotations;
 
@@ -18,7 +19,10 @@ namespace LabPreTest.Shared.Entities
         public string Name { get; set; } = null!;
 
         [DataType(DataType.Date)]
-        public DateTime BirthDay { get ; set; }
+        public DateTime BirthDay { get; set; }
+
+        [Required(ErrorMessage = EntityMessages.RequiredErrorMessage)]
+        public GenderType Gender { get; set; }
 
         [MaxLength(100, ErrorMessage = EntityMessages.MaxLengthErrorMessage)]
         [DataType(DataType.PhoneNumber)]
@@ -37,6 +41,5 @@ namespace LabPreTest.Shared.Entities
         public ICollection<TemporalOrder>? TemporalOrders { get; set; }
 
         public ICollection<OrderDetail>? Details { get; set; }
-        
     }
 }
