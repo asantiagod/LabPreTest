@@ -12,15 +12,15 @@ namespace LabPreTest.Shared.Enums
         NotDefined,
 
         [Description("Asignada")]
-        Idle,
+        OrdenCreada,
 
         [Description("En proceso")]
-        InProcess,
+        OrdenEnProceso,
 
         [Description("Cerrada")]
-        Closed,
+        OrdenFinalizada,
 
         [Description("Cancelada")]
-        Canceled
+        OrdenAnulada
     }
 }

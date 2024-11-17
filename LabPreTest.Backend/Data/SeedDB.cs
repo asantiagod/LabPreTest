@@ -102,7 +102,7 @@ namespace LabPreTest.Backend.Data
                     _context.Orders.Add(new Order
                     {
                         CreatedAt = DateTime.Now,
-                        Status = OrderStatus.Idle
+                        Status = OrderStatus.OrdenCreada
                     });
                 }
             }
