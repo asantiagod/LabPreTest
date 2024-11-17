@@ -67,6 +67,7 @@ namespace LabPreTest.Backend.Helpers
                     Test = testResponse.Result,
                     Medic = medicResponse.Result,
                     Patient = patientResponse.Result,
+                    Status = OrderStatus.Idle
                 });
             }
 

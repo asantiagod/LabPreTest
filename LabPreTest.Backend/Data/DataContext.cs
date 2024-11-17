@@ -215,6 +215,7 @@ namespace LabPreTest.Backend.Data
             {
                 ReferenceHandler = ReferenceHandler.IgnoreCycles,
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
             };
 
             string json = JsonSerializer.Serialize(objDic, options);
