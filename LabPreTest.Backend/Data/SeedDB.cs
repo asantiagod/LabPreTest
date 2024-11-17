@@ -38,14 +38,14 @@ namespace LabPreTest.Backend.Data
             await CheckUserAsync("123456789",
                                  "Default",
                                  "User",
-                                 "default.user@yopmail.com",
+                                 "admin.user@yopmail.com",
                                  "3140000123",
                                  "any street in any city",
                                  UserType.Admin);
             await CheckUserAsync("111111",
                     "First",
                     "User",
-                    "first.user@yopmail.com",
+                    "aux.user@yopmail.com",
                     "1111111111",
                     "first street of first city",
                     UserType.User);
