@@ -149,9 +149,6 @@ namespace LabPreTest.Frontend.Pages.Trazability
             else
                 url += $"?page={page}&{RecordNumberQueryString}";
 
-            if (!string.IsNullOrWhiteSpace(Filter))
-                url += $"&filter={Filter}";
-
             var responseHttp = await Repository.GetAsync<List<OrderAudit>>(url);
             if (responseHttp.Error)
             {
@@ -163,13 +160,6 @@ namespace LabPreTest.Frontend.Pages.Trazability
             Trazability = responseHttp.Response;
 
             return true;
-        }
-
-        private async Task FilterCallback(string filter)
-        {
-            Filter = filter;
-            await ApplyFilterAsync();
-            StateHasChanged();
         }
 
         private async Task ApplyFilterAsync()
