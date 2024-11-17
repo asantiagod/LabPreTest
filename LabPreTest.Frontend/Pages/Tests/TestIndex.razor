@@ -1,9 +1,9 @@
 ﻿@page "/tests"
 
-<h3>Examenes</h3>
+<h3>Exámenes</h3>
 
 <div class="mb-3">
-    <a class="btn btn-primary" @onclick=@(()=>ShowCreateModal())>Nuevo Examen</a>
+    <a class="btn btn-primary" @onclick=@(()=>ShowCreateModal())>Nuevo Exámen</a>
 </div>
 
 <GenericList MyList="Tests">
@@ -12,12 +12,12 @@
                     TotalPages="totalPages"
                     SelectedPage="SelectedPageAsync"
                     SelectedRedordsNumber="SelectedRedordsNumberAsync" />
-        <Filter PlaceHolder="Buscar Examenes..." Callback=@FilterCallback />
+        <Filter PlaceHolder="Buscar Exámenes..." Callback=@FilterCallback />
         <table class="table table-striped" style="vertical-align:middle">
             <thead>
                 <tr>
-                    <th>Id del examen</th>
-                    <th>Nombre del examen</th>
+                    <th>Id del exámen</th>
+                    <th>Nombre del exámen</th>
                     <th>Recipiente</th>
                     <th>Sección</th>
                     <th style="width:180px"></th>

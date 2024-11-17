@@ -10,17 +10,14 @@
                     TotalPages="totalPages"
                     SelectedPage="SelectedPageAsync" 
                     SelectedRedordsNumber="SelectedRedordsNumberAsync" />
-        <Filter PlaceHolder="Buscar informacion de una orden..." Callback=@FilterCallback />s
+        <Filter PlaceHolder="Buscar informacion de una orden..." Callback=@FilterCallback />
 
         <table class="table table-striped" style="vertical-align:middle">
             <thead>
                 <tr>
                     <th>Numero de orden</th>
-                    <th>Documento</th>
-                    <th>Celular</th>
-                    <th>Direccion</th>
-                    <th>Email</th>
-                    <th>Fecha de nacimiento</th>
+                    <th>Responsable del movimiento</th>
+                    <th>Detalles</th>
                     <th style="width:180px"></th>
                 </tr>
             </thead>
@@ -29,7 +26,6 @@
             {
                 <tr>
                     <td>@trazability.OrderId</td>
-                    <td>@trazability.ChangeDate</td>
                     <td>@trazability.ChangeBy</td>
                     <td>
                         @if (!string.IsNullOrWhiteSpace(trazability.NewValues))
@@ -41,14 +37,14 @@
                                 <li><strong>Estado:</strong> @newChanges["Status"]</li>
                                 @if (newChanges["Details"] is JArray details)
                                 {
-                                    <li><strong>Examenes relacionados:</strong></li>
+                                    <li><strong>Examenes relacionados por ID:</strong></li>
                                     <ul>
                                         @foreach (var detail in details)
                                         {
                                             var uniqueKey = $"{detail["TestId"]}_{detail["MedicId"]}";
-                                            if (uniqueDetails.Add(uniqueKey)) // Si el par no existe, lo añadimos al conjunto
+                                            if (uniqueDetails.Add(uniqueKey)) 
                                             {
-                                                <li>Test ID: @detail["TestId"]</li>
+                                                <li>Código del exámen: @detail["TestId"]</li>
                                             }
 
                                         }

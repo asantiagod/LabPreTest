@@ -7,13 +7,13 @@
     <div class="mb-3">
         <label>@Label</label>
         <div class="mb-3">
-            <label for="Documento">Ingrese el Codigo de examen:</label>
+            <label for="Documento">Ingrese el código del exámen:</label>
             <InputNumber class="form-control" @bind-Value="@Model.TestID" />
             <ValidationMessage For="@(() => Model.TestID)" />
         </div>
         
         <div class="mb-3">
-            <label for="Nombre">Ingrese el nombre del examen:</label>
+            <label for="Nombre">Ingrese el nombre del exámen:</label>
             <InputText class="form-control" @bind-Value="@Model.Name" />
             <ValidationMessage For="@(() => Model.Name)" />
         </div>
