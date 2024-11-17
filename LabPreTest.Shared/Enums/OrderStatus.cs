@@ -9,15 +9,17 @@ namespace LabPreTest.Shared.Enums
 {
     public enum OrderStatus
     {
+        NotDefined,
+
         [Description("Asignada")]
         Idle,
-        
+
         [Description("En proceso")]
         InProcess,
-        
+
         [Description("Cerrada")]
         Closed,
-        
+
         [Description("Cancelada")]
         Canceled
     }
