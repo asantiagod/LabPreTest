@@ -20,6 +20,7 @@ namespace LabPreTest.Frontend.Pages.Trazability
         private int currentPage = 1;
         private int totalPages;
         private string newChanges;
+        private int orderValue;
 
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
@@ -31,6 +32,8 @@ namespace LabPreTest.Frontend.Pages.Trazability
         [CascadingParameter] private IModalService ModalService { get; set; } = null!;
 
         public List<OrderAudit>? Trazability { get; set; }
+
+        public OrderAudit? orderAuditFiltered {  get; set; } 
 
         private JObject? orderAudit;
 
@@ -84,7 +87,60 @@ namespace LabPreTest.Frontend.Pages.Trazability
             }
             totalPages = responseHttp.Response;
         }
+        protected async Task SearchOrder()
+        {
 
+            if (orderValue != 0)
+            {
+                var responseHttp = await Repository.GetAsync<OrderAudit>($"/api/orderaudits/{orderValue}");
+
+                if (responseHttp.Error)
+                {
+                    if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        var result = await SweetAlertService.FireAsync(new SweetAlertOptions
+                        {
+                            Title = "Orden no encontrada",
+                            Icon = SweetAlertIcon.Error,
+                            ShowCancelButton = true,
+                            ConfirmButtonText = "Aceptar",
+                        });
+                        ResetValue();
+                    }
+                    else
+                    {
+                        await SweetAlertService.FireAsync(new SweetAlertOptions
+                        {
+                            Title = "Error",
+                            Text = "Ocurrió un error al buscar la orden. Por favor, intente nuevamente.",
+                            Icon = SweetAlertIcon.Error
+                        });
+                        ResetValue();
+                    }
+                }
+                else
+                {
+                    orderAuditFiltered = responseHttp.Response;
+                    StateHasChanged();
+                }
+            }
+            else
+            {
+                await SweetAlertService.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Error",
+                    Text = "Orden sin informacion de trazabilidad.",
+                    Icon = SweetAlertIcon.Error
+                });
+            }
+
+        }
+        private void ResetValue()
+        {
+            if (orderValue != 0)
+                orderValue = 0;
+            StateHasChanged();
+        }
         private async Task<bool> LoadListAsync(int page)
         {
             var url = "api/OrderAudits/";
