@@ -13,41 +13,18 @@ using System.Net;
 namespace LabPreTest.Frontend.Pages.PreanalyticConditions
 {
     //[Authorize(Roles = FrontendStrings.AdminString)]
-    public partial class PreanalyticConditionEdit
+    public partial class  PreanalyticConditionCreate
     {
         private FormForPreanalyticCondition<PreanalyticCondition>? preanalyticConditionForm;
 
-        private PreanalyticCondition? preanalyticCond;
+        private PreanalyticCondition preanalyticCond = new PreanalyticCondition();
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
 
-        [EditorRequired, Parameter] public int Id { get; set; }
-
-        protected override async Task OnParametersSetAsync()
+        private async Task CreateAsync()
         {
-            var responseHttp = await Repository.GetAsync<PreanalyticCondition>($"{ApiRoutes.PreanalyticConditionsRoute}/{Id}");
-            if (responseHttp.Error)
-            {
-                if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
-                {
-                    NavigationManager.NavigateTo(PagesRoutes.PreanalyticConditions);
-                }
-                else
-                {
-                    var messsage = await responseHttp.GetErrorMessageAsync();
-                    await SweetAlertService.FireAsync("Error", messsage, SweetAlertIcon.Error);
-                }
-            }
-            else
-            {
-                preanalyticCond = responseHttp.Response;
-            }
-        }
-
-        private async Task EditAsync()
-        {
-            var responseHttp = await Repository.PutAsync(ApiRoutes.PreanalyticConditionsRoute, preanalyticCond);
+            var responseHttp = await Repository.PostAsync(ApiRoutes.PreanalyticConditionsRoute, preanalyticCond);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
