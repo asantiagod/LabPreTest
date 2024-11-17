@@ -1,0 +1,53 @@
+﻿@page "/preanalyticConditions"
+
+<h3>Condiciones Preanaliticas</h3>
+
+@* <div class="mb-3">
+    <a class="btn btn-primary" @onclick=@(()=>ShowCreateModal())>Nueva Condicion</a>
+</div>
+ *@
+<GenericList MyList="PreanalyticConditions">
+    <Body>
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    SelectedPage="SelectedPageAsync"
+                    SelectedRedordsNumber="SelectedRedordsNumberAsync" />
+        <Filter PlaceHolder="Buscar Condiciones..." Callback=@FilterCallback />
+        <table class="table table-striped" style="vertical-align:middle">
+            <thead>
+                <tr>
+                    <th>Id </th>
+                    <th>Nombre de la condicion</th>
+                    <th>Detalles</th>
+                    <th style="width:180px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (PreanalyticConditions == null)
+                {
+                    <tr>
+                        <td>
+                            No hay registros para mostrar
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var condition in PreanalyticConditions)
+                    {
+                        <tr>
+                            <td>@condition.Id</td>
+                            <td>@condition.Name</td>
+                            <td>@condition.Description</td>
+                            <td>
+                                <a class="btn btn-warning" @onclick=@(()=>ShowEditModal(condition.Id))>Editar</a>
+                                <button @onclick=@(() => DeleteAsync(condition)) class="btn btn-danger">Borrar</button>
+                            </td>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    </Body>
+</GenericList>

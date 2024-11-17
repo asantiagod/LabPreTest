@@ -14,7 +14,7 @@ using Newtonsoft.Json.Linq;
 
 namespace LabPreTest.Frontend.Pages.Trazability
 {
-    [Authorize(Roles = FrontendStrings.UserString)]
+    [Authorize(Roles = FrontendStrings.AdminString)]
     public partial class TrazabilityIndex
     {
         private int currentPage = 1;

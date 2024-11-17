@@ -1,20 +1,18 @@
-﻿using Blazored.Modal.Services;
-using Blazored.Modal;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
-using LabPreTest.Frontend.Pages.Cities;
 using LabPreTest.Frontend.Repositories;
 using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Messages;
-using LabPreTest.Shared.PagesRoutes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System.Net;
 
-namespace LabPreTest.Frontend.Pages.Sections
+namespace LabPreTest.Frontend.Pages.PreanalyticConditions
 {
     [Authorize(Roles = FrontendStrings.AdminString)]
-    public partial class SectionIndex
+    public partial class PreanalyticConditionIndex
     {
         private int currentPage = 1;
         private int totalPages;
@@ -28,7 +26,7 @@ namespace LabPreTest.Frontend.Pages.Sections
         [Parameter, SupplyParameterFromQuery] public string RecordNumberQueryString { get; set; } = string.Empty;
         [CascadingParameter] private IModalService ModalService { get; set; } = null!;
 
-        public List<Section>? Sections { get; set; }
+        public List<PreanalyticCondition>? PreanalyticConditions { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -66,7 +64,7 @@ namespace LabPreTest.Frontend.Pages.Sections
                 return;
             }
 
-            var url = ApiRoutes.SectionRoute + "/" + ApiRoutes.TotalPages;
+            var url = "/PreanalyticConditions" +"/"+ ApiRoutes.TotalPages;
             url += $"?{RecordNumberQueryString}";
             if (!string.IsNullOrWhiteSpace(Filter))
                 url += $"&filter={Filter}";
@@ -83,7 +81,7 @@ namespace LabPreTest.Frontend.Pages.Sections
 
         private async Task<bool> LoadListAsync(int page)
         {
-            var url = ApiRoutes.SectionRoute;
+            var url = "/PreanalyticConditions";
             if (RecordNumberQueryString.ToLower().Contains("full"))
                 url += $"/{ApiRoutes.Full}";
             else
@@ -92,7 +90,7 @@ namespace LabPreTest.Frontend.Pages.Sections
             if (!string.IsNullOrWhiteSpace(Filter))
                 url += $"&filter={Filter}";
 
-            var responseHttp = await Repository.GetAsync<List<Section>>(url);
+            var responseHttp = await Repository.GetAsync<List<PreanalyticCondition>>(url);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -100,9 +98,10 @@ namespace LabPreTest.Frontend.Pages.Sections
                 return false;
             }
 
-            Sections = responseHttp.Response;
+            PreanalyticConditions = responseHttp.Response;
             return true;
         }
+
 
         private async Task FilterCallback(string filter)
         {
@@ -117,12 +116,12 @@ namespace LabPreTest.Frontend.Pages.Sections
             await SelectedPageAsync(page);
         }
 
-        private async Task DeleteAsync(Section test)
+        private async Task DeleteAsync(PreanalyticCondition preanalyticCondition)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
-                Title = "Confirmation",
-                Text = $"Are you sure you want to delete the section: {test.Name}?",
+                Title = "Confirmación",
+                Text = $"¿Está seguro que desea eliminar la condicion: {preanalyticCondition.Name}?",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
             });
@@ -132,12 +131,12 @@ namespace LabPreTest.Frontend.Pages.Sections
                 return;
             }
 
-            var responseHttp = await Repository.DeleteAsync<Section>(ApiRoutes.SectionRoute + $"/{test.Id}");
+            var responseHttp = await Repository.DeleteAsync<PreanalyticCondition>($"/PreanalyticConditions/{preanalyticCondition.Id}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo(PagesRoutes.Sections);
+                    NavigationManager.NavigateTo("/preanalyticConditions");
                 }
                 else
                 {
@@ -158,9 +157,17 @@ namespace LabPreTest.Frontend.Pages.Sections
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordDeletedMessage);
         }
 
-        private void ShowCreateModal()
+        private void ShowEditModal(int preanalyticConditionId)
         {
-            ModalService.Show<SectionCreate>();
+            var parameter = new ModalParameters()
+                .Add(nameof(PreanalyticConditionEdit.Id), preanalyticConditionId);
+            ModalService.Show<PreanalyticConditionEdit>(parameter);
         }
+
+        //private void ShowCreateModal()
+        //{
+        //    ModalService.Show<PreanalyticConditionCreate>();
+        //    StateHasChanged();
+        //}
     }
 }

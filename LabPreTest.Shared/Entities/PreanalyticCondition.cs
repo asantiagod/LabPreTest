@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LabPreTest.Shared.Entities
 {
-    public class PreanalyticCondition : IEntityWithId, IEntityWithName
+    public class PreanalyticCondition : IEntityWithId, IEntityWithName, IEntityWithDescription
     {
         public int Id { get; set; }
 
