@@ -5,13 +5,14 @@ using LabPreTest.Frontend.Repositories;
 using LabPreTest.Shared.ApiRoutes;
 using LabPreTest.Shared.Entities;
 using LabPreTest.Shared.Messages;
+using LabPreTest.Shared.PagesRoutes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System.Net;
 
 namespace LabPreTest.Frontend.Pages.PreanalyticConditions
 {
-    [Authorize(Roles = FrontendStrings.AdminString)]
+    //[Authorize(Roles = FrontendStrings.AdminString)]
     public partial class PreanalyticConditionIndex
     {
         private int currentPage = 1;
@@ -31,7 +32,7 @@ namespace LabPreTest.Frontend.Pages.PreanalyticConditions
         protected override async Task OnInitializedAsync()
         {
             await SelectedRedordsNumberAsync("10");
-            await LoadAsync();
+            //await LoadAsync();
         }
 
         private async Task SelectedPageAsync(int page)
@@ -64,7 +65,7 @@ namespace LabPreTest.Frontend.Pages.PreanalyticConditions
                 return;
             }
 
-            var url = "/PreanalyticConditions" +"/"+ ApiRoutes.TotalPages;
+            var url = ApiRoutes.PreanalyticConditionsRoute + "/" + ApiRoutes.TotalPages;
             url += $"?{RecordNumberQueryString}";
             if (!string.IsNullOrWhiteSpace(Filter))
                 url += $"&filter={Filter}";
@@ -81,7 +82,7 @@ namespace LabPreTest.Frontend.Pages.PreanalyticConditions
 
         private async Task<bool> LoadListAsync(int page)
         {
-            var url = "/PreanalyticConditions";
+            var url = ApiRoutes.PreanalyticConditionsRoute;
             if (RecordNumberQueryString.ToLower().Contains("full"))
                 url += $"/{ApiRoutes.Full}";
             else
@@ -131,12 +132,12 @@ namespace LabPreTest.Frontend.Pages.PreanalyticConditions
                 return;
             }
 
-            var responseHttp = await Repository.DeleteAsync<PreanalyticCondition>($"/PreanalyticConditions/{preanalyticCondition.Id}");
+            var responseHttp = await Repository.DeleteAsync<PreanalyticCondition>($"{ApiRoutes.PreanalyticConditionsRoute}/{preanalyticCondition.Id}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo("/preanalyticConditions");
+                    NavigationManager.NavigateTo(PagesRoutes.PreanalyticConditions);
                 }
                 else
                 {
@@ -164,10 +165,10 @@ namespace LabPreTest.Frontend.Pages.PreanalyticConditions
             ModalService.Show<PreanalyticConditionEdit>(parameter);
         }
 
-        //private void ShowCreateModal()
-        //{
-        //    ModalService.Show<PreanalyticConditionCreate>();
-        //    StateHasChanged();
-        //}
+        private void ShowCreateModal()
+        {
+           ModalService.Show<PreanalyticConditionCreate>();
+           StateHasChanged();
+        }
     }
 }
