@@ -132,7 +132,7 @@ namespace LabPreTest.Frontend.Pages.Sections
                 return;
             }
 
-            var responseHttp = await Repository.DeleteAsync<Section>(ApiRoutes.SectionRoute + $"/{test.Id}");
+            var responseHttp = await Repository.DeleteAsync<Section>(ApiRoutes.SectionRoute + $"/{section.Id}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)

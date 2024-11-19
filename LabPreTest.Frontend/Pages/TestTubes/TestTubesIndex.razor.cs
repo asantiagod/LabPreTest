@@ -131,7 +131,7 @@ namespace LabPreTest.Frontend.Pages.TestTubes
                 return;
             }
 
-            var responseHttp = await Repository.DeleteAsync<TestTube>(ApiRoutes.TestTubeRoute + $"/{test.Id}");
+            var responseHttp = await Repository.DeleteAsync<TestTube>(ApiRoutes.TestTubeRoute + $"/{tube.Id}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
