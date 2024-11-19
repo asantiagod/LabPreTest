@@ -32,6 +32,7 @@
                     <tr>
                         <th>Numero de orden</th>
                         <th>Responsable del movimiento</th>
+                        <th>Fecha y hora del movimiento</th>
                         <th>Detalles</th>
                         <th style="width:180px"></th>
                     </tr>
@@ -42,13 +43,14 @@
                         <tr>
                             <td>@trazability.OrderId</td>
                             <td>@trazability.ChangeBy</td>
+                            <td>@trazability.ChangeDate.ToLocalTime()</td>
                             <td>
                                 @if (!string.IsNullOrWhiteSpace(trazability.NewValues))
                                 {
                                     var newChanges = Newtonsoft.Json.Linq.JObject.Parse(trazability.NewValues);
                                     var uniqueDetails = new HashSet<string>();
                                     <ul>
-                                        <li><strong>Fecha y hora del movimiento:</strong> @newChanges["CreatedAt"]</li>
+                                        <li><strong>Fecha de creacion de la orden:</strong> @newChanges["CreatedAt"]</li>
                                         <li><strong>Estado:</strong> @newChanges["Status"]</li>
                                         @if (newChanges["Details"] is JArray details)
                                         {
