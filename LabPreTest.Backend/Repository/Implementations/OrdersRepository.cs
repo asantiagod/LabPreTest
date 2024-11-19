@@ -132,6 +132,40 @@ namespace LabPreTest.Backend.Repository.Implementations
             if (orderDetailDTO.Status.HasValue)
                 newDetail.Status = orderDetailDTO.Status;
 
+            int nTestsInProcess = 0;
+            int nTestsClosed = 0;
+            int nTestsCanceled = 0;
+            foreach (var d in order.Details)
+            {
+                switch (d.Status)
+                {
+                    case OrderStatus.OrdenEnProceso:
+                        nTestsInProcess++;
+                        break;
+
+                    case OrderStatus.OrdenFinalizada:
+                        nTestsClosed++;
+                        break;
+
+                    case OrderStatus.OrdenAnulada:
+                        nTestsCanceled++;
+                        break;
+                }
+            }
+            
+            var nTestProcessed = nTestsClosed + nTestsCanceled;
+            if (nTestProcessed == order.Details.Count)
+            {
+                if (nTestsCanceled == order.Details.Count)
+                    order.Status = OrderStatus.OrdenAnulada;
+                else
+                    order.Status = OrderStatus.OrdenFinalizada;
+            }
+            else if (nTestsInProcess > 0 || nTestProcessed > 0)
+                order.Status = OrderStatus.OrdenEnProceso;
+            else
+                order.Status = OrderStatus.OrdenCreada;
+
             _context.Orders.Update(order);
             return await SaveContextChangesAsync<OrderDetailDTO>(orderDetailDTO);
         }
