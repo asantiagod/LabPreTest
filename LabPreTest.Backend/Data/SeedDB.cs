@@ -237,7 +237,7 @@ namespace LabPreTest.Backend.Data
             if (!_context.Tests.Any())
             {
                 await AddTestAsync(++i, "Hemograma", "Hematología", "Tapa lila", ["Sin ejercicio"]);
-                await AddTestAsync(++i, "Vitamina D", "Inmunología", "Tapa Dorada", ["Ayuno estándar,Sin vacunas"]);
+                await AddTestAsync(++i, "Vitamina D", "Inmunología", "Tapa Dorada", ["Ayuno estándar","Sin vacunas"]);
                 await AddTestAsync(++i, "Colesterol HDL", "Química General", "Tapa Dorada", ["Ayuno estándar", "Sin licor"]);
                 await AddTestAsync(++i, "Tiempo de protrombina (TP)", "Hemostasia", "Tapa Azul", ["Sin ejercicio"]);
                 await AddTestAsync(++i, "Serología presuntiva para sifílis", "Microbiología", "Tapa Dorada", ["Sin vacunas"]);
