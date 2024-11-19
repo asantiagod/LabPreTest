@@ -117,12 +117,12 @@ namespace LabPreTest.Frontend.Pages.Sections
             await SelectedPageAsync(page);
         }
 
-        private async Task DeleteAsync(Section test)
+        private async Task DeleteAsync(Section section)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
-                Title = "Confirmation",
-                Text = $"Are you sure you want to delete the section: {test.Name}?",
+                Title = "Confirmación",
+                Text = $"¿Está seguro de eliminar la sección? : {section.Name}",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
             });

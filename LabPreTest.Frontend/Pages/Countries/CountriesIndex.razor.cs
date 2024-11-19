@@ -120,8 +120,8 @@ namespace LabPreTest.Frontend.Pages.Countries
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
-                Title = "Confirmation",
-                Text = $"Are you sure you want to delete the country: {country.Name}?",
+                Title = "Confirmación",
+                Text = $"¿Está seguro de eliminar país? : {country.Name}",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
             });
