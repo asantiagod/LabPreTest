@@ -293,7 +293,7 @@ namespace LabPreTest.Backend.Data
                 AddMedic("3322110099", "Paola Hernández", "1983-11-05", "Female", "3178901234", "Carrera 6 #18-35, Cali", "paola.h@yopmail.com", "paolah83");
                 AddMedic("2211009988", "Andrés Suárez", "1995-04-11", "Male", "3189012345", "Avenida 6 #30-50, Bucaramanga", "andres.s@yopmail.com", "andresua95");
                 AddMedic("1100998877", "Carolina Duarte", "1990-01-20", "Female", "3190123456", "Calle 13 #25-20, Manizales", "carolina.d@yopmail.com", "carodu90");
-                AddMedic("0099887766", "Camilo Vargas", "1984-05-27", "Male", "3201234567", "Carrera 10 #40-25, Medellín", "camilo.v@yopmail.com", "camiv84");
+                AddMedic("1099887766", "Camilo Vargas", "1984-05-27", "Male", "3201234567", "Carrera 10 #40-25, Medellín", "camilo.v@yopmail.com", "camiv84");
 
                 await _context.SaveChangesAsync();
             }
@@ -303,7 +303,7 @@ namespace LabPreTest.Backend.Data
         {
             if (!_context.Patients.Any())
             {
-                AddPatient("123456", "Ana Gómez", "1990-04-15", "Female", "3001234567", "Calle 10 #12-34, Bogotá", "ana.gomez@yopmail.com", "ana_gomez90");
+                AddPatient("654321", "Ana Gómez", "1990-04-15", "Female", "3001234567", "Calle 10 #12-34, Bogotá", "ana.gomez@yopmail.com", "ana_gomez90");
                 AddPatient("1122334455", "Juan Pérez", "1985-06-20", "Male", "3012345678", "Carrera 15 #45-67, Cali", "juan.perez@yopmail.com", "juanperez85");
                 AddPatient("1234567890", "María Rodríguez", "1993-08-10", "Female", "3023456789", "Avenida 30 #10-20, Medellín", "maria.rod@yopmail.com", "mariarod93");
                 AddPatient("2233445566", "Carlos Sánchez", "1978-01-25", "Male", "3034567890", "Calle 25 #5-10, Bogotá", "carlos.s@yopmail.com", "carlos78");
