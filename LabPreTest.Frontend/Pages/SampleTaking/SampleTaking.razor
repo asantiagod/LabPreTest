@@ -1,7 +1,7 @@
 ﻿@page "/sample_taking"
 <div class="main-container">
     <div class="header">
-    <h3 class="mb-4">Toma de muestra</h3>
+    <h1 class="mb-4">Toma de muestra</h1>
     </div>
 
     <div class="content-container">
@@ -171,6 +171,7 @@
                 }
 
             }
+            <button class="btn btn-primary w-100" @onclick="async () => await ChangeState()">Tomar orden</button>
         }
 
     </div>
