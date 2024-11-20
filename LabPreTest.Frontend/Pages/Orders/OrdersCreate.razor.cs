@@ -135,7 +135,7 @@ namespace LabPreTest.Frontend.Pages.Orders
                         {
                             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
                             {
-                                Title = "Búsqueda de paciente",
+                                Title = "Búsqueda de médico",
                                 Text = "Medico no encontrado. ¿Deseas crear un nuevo Medico?",
                                 Icon = SweetAlertIcon.Error,
                                 ShowCancelButton = true,

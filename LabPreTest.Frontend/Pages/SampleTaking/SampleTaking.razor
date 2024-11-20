@@ -97,6 +97,7 @@
                         @{
                             var tubosAzules = new List<string>();
                             var tubosDorados = new List<string>();
+                            var tubosRojos = new List<string>();
                             var tubosVerdes = new List<string>();
                             var tubosLilas = new List<string>();
                             var tubosYaProcesados = new HashSet<string>();
@@ -111,6 +112,10 @@
                                     if (tube.Value.Contains("Azul"))
                                     {
                                         tubosAzules.Add(tube.Value);
+                                    }
+                                    else if (tube.Value.Contains("Roja"))
+                                    {
+                                        tubosRojos.Add(tube.Value);
                                     }
                                     else if (tube.Value.Contains("Dorada"))
                                     {
@@ -141,6 +146,13 @@
                             {
                                 <td style="padding: 10px; display: flex; justify-content: center; align-items: center; background-color: transparent;">
                                     <i class="fas fa-vial" style="color: gold; font-size: 4rem;"></i>
+                                    <span>&nbsp;&nbsp; - @tube</span>
+                                </td>
+                            }
+                            @foreach (var tube in tubosRojos)
+                            {
+                                <td style="padding: 10px; display: flex; justify-content: center; align-items: center; background-color: transparent;">
+                                    <i class="fas fa-vial" style="color: Red; font-size: 4rem;"></i>
                                     <span>&nbsp;&nbsp; - @tube</span>
                                 </td>
                             }

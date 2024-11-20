@@ -88,7 +88,7 @@
                             <tr>
                                 <td>@condition.Id</td>
                                 <td>@condition.Name</td>
-                                <td><button onclick=@(() => DeleteAsync(condition)) class="btn btn-danger">Borrar</button></td>
+                                <td><button type="button" onclick=@(() => DeleteAsync(condition)) class="btn btn-danger">Borrar</button></td>
                             </tr>
                         }
                     }
