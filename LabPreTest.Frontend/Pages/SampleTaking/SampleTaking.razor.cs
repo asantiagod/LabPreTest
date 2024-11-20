@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Org.BouncyCastle.Asn1;
 using LabPreTest.Shared.Enums;
+using LabPreTest.Shared.DTO;
 
 namespace LabPreTest.Frontend.Pages.SampleTaking
 {
@@ -144,10 +145,13 @@ namespace LabPreTest.Frontend.Pages.SampleTaking
         }
         private async Task ChangeState()
         {
+            var detailDTO = new OrderDetailDTO();
+            detailDTO.OrderId = (int)orderValue!;
+            detailDTO.Status = OrderStatus.OrdenFinalizada;
             foreach (var detail in ordersDetails!)
             {
                 detail.Status = OrderStatus.OrdenFinalizada;
-                var responseHttp = await Repository.PutAsync(ApiRoutes.OrdersRoute + $"/details/{orderValue}", detail);
+                var responseHttp = await Repository.PutAsync(ApiRoutes.OrdersRoute + $"/details/{detail.Id}", detailDTO);
                 if (responseHttp.Error)
                 {
                     var message = await responseHttp.GetErrorMessageAsync();
