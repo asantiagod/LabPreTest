@@ -89,10 +89,10 @@ namespace LabPreTest.Frontend.Pages.Trazability
         }
         protected async Task SearchOrder()
         {
-
             if (orderValue != 0)
             {
-                var responseHttp = await Repository.GetAsync<OrderAudit>($"/api/orderaudits/{orderValue}");
+                //var responseHttp = await Repository.GetAsync<OrderAudit>($"/api/orderaudits/{orderValue}");
+                var responseHttp = await Repository.GetAsync<List<OrderAudit>>($"/api/orderaudits/?RecordsNumber=50&Id={orderValue}");
 
                 if (responseHttp.Error)
                 {
@@ -120,7 +120,8 @@ namespace LabPreTest.Frontend.Pages.Trazability
                 }
                 else
                 {
-                    orderAuditFiltered = responseHttp.Response;
+                    //orderAuditFiltered = responseHttp.Response;
+                    Trazability = responseHttp.Response;
                     StateHasChanged();
                 }
             }
