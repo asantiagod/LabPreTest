@@ -116,12 +116,12 @@ namespace LabPreTest.Frontend.Pages.TestTubes
             await SelectedPageAsync(page);
         }
 
-        private async Task DeleteAsync(TestTube test)
+        private async Task DeleteAsync(TestTube tube)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
-                Title = "Confirmation",
-                Text = $"Are you sure you want to delete the test tube: {test.Name}?",
+                Title = "Confirmación",
+                Text = $"¿Está seguro de eliminar el recipiente? : {tube.Name}",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
             });
@@ -131,7 +131,7 @@ namespace LabPreTest.Frontend.Pages.TestTubes
                 return;
             }
 
-            var responseHttp = await Repository.DeleteAsync<TestTube>(ApiRoutes.TestTubeRoute + $"/{test.Id}");
+            var responseHttp = await Repository.DeleteAsync<TestTube>(ApiRoutes.TestTubeRoute + $"/{tube.Id}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)

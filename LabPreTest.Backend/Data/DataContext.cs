@@ -4,6 +4,7 @@ using LabPreTest.Shared.Messages;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Collections;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -194,28 +195,45 @@ namespace LabPreTest.Backend.Data
 
             foreach (var navigation in entry.Navigations)
             {
-                if (navigation.CurrentValue is ICollection<OrderDetail> collection)
+                if (navigation.CurrentValue is IEnumerable collection)
                 {
                     List<object> collectionList = [];
                     foreach (var item in collection)
                     {
+                        if(item is OrderDetail) 
+                            collectionList.Add(ParseOrderDetail((OrderDetail)item));
                         collectionList.Add(item);
                         Console.WriteLine(item.ToString());
                     }
                     objDic.Add(navigation.Metadata.Name, collectionList);
                 }
-                else
-                    objDic.Add(navigation.Metadata.Name, navigation.CurrentValue);
+                //else
+                    //objDic.Add(navigation.Metadata.Name, navigation.CurrentValue);
             }
 
             var options = new JsonSerializerOptions
             {
                 ReferenceHandler = ReferenceHandler.IgnoreCycles,
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
             };
 
             string json = JsonSerializer.Serialize(objDic, options);
             return json;
+        }
+
+        private static OrderDetail ParseOrderDetail(OrderDetail orderDetail)
+        {
+            var detail = new OrderDetail();
+            
+            detail.Id = orderDetail.Id;
+            detail.MedicId = orderDetail.MedicId;
+            detail.OrderId = orderDetail.OrderId;
+            detail.PatientId = orderDetail.PatientId;
+            detail.TestId = orderDetail.TestId;
+            detail.Status = orderDetail.Status;
+            
+            return detail;
         }
     }
 }

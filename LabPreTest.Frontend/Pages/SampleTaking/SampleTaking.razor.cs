@@ -8,6 +8,9 @@ using LabPreTest.Shared.Messages;
 using LabPreTest.Shared.PagesRoutes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using Org.BouncyCastle.Asn1;
+using LabPreTest.Shared.Enums;
+using LabPreTest.Shared.DTO;
 
 namespace LabPreTest.Frontend.Pages.SampleTaking
 {
@@ -30,7 +33,6 @@ namespace LabPreTest.Frontend.Pages.SampleTaking
         private int patientId;
         private bool showContent = false;
         private Order? SelectedOrder;
-
         private List<Dictionary<string, string>> testTubes { get; set; } = new List<Dictionary<string, string>>();
         private List<Dictionary<string, string>> preanaliticalConditions { get; set; } = new List<Dictionary<string, string>>();
 
@@ -52,7 +54,7 @@ namespace LabPreTest.Frontend.Pages.SampleTaking
             else
             {
                 test = responseHttp.Response;
-                foreach( var condition in test!.Conditions! ) 
+                foreach (var condition in test!.Conditions!)
                 {
                     if (condition.Id != null && !preanaliticalConditions.Any(d => d.ContainsKey(condition.Id.ToString())))
                     {
@@ -60,7 +62,7 @@ namespace LabPreTest.Frontend.Pages.SampleTaking
                     {
                         { condition.Id.ToString(), condition.Description }
                     };
-                        if(condition.Id.ToString() == "2")
+                        if (condition.Id.ToString() == "2")
                         {
                             continue;
                         }
@@ -139,9 +141,34 @@ namespace LabPreTest.Frontend.Pages.SampleTaking
         }
         private void ToggleContent()
         {
-            showContent = !showContent; 
+            showContent = !showContent;
         }
+        private async Task ChangeState()
+        {
+            var detailDTO = new OrderDetailDTO();
+            detailDTO.OrderId = (int)orderValue!;
+            detailDTO.Status = OrderStatus.OrdenFinalizada;
+            foreach (var detail in ordersDetails!)
+            {
+                detail.Status = OrderStatus.OrdenFinalizada;
+                var responseHttp = await Repository.PutAsync(ApiRoutes.OrdersRoute + $"/details/{detail.Id}", detailDTO);
+                if (responseHttp.Error)
+                {
+                    var message = await responseHttp.GetErrorMessageAsync();
+                    await SweetAlertService.FireAsync("Error", message);
+                    return;
+                }
 
 
-    }
+            }
+            var toast = SweetAlertService.Mixin(new SweetAlertOptions
+            {
+                Toast = true,
+                Position = SweetAlertPosition.BottomEnd,
+                ShowConfirmButton = true,
+                Timer = 3000
+            });
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordChangedMessage);
+        }
+    } 
 }

@@ -38,14 +38,14 @@ namespace LabPreTest.Backend.Data
             await CheckUserAsync("123456789",
                                  "Default",
                                  "User",
-                                 "default.user@yopmail.com",
+                                 "admin.user@yopmail.com",
                                  "3140000123",
                                  "any street in any city",
                                  UserType.Admin);
             await CheckUserAsync("111111",
                     "First",
                     "User",
-                    "first.user@yopmail.com",
+                    "aux.user@yopmail.com",
                     "1111111111",
                     "first street of first city",
                     UserType.User);
@@ -102,7 +102,7 @@ namespace LabPreTest.Backend.Data
                     _context.Orders.Add(new Order
                     {
                         CreatedAt = DateTime.Now,
-                        Status = OrderStatus.Idle
+                        Status = OrderStatus.OrdenCreada
                     });
                 }
             }
@@ -115,31 +115,31 @@ namespace LabPreTest.Backend.Data
             {
                 _context.PreanalyticConditions.Add(new PreanalyticCondition
                 {
-                    Name = "Ayuno",
-                    Description = "No ingerir alimentos durante 8 horas.",
+                    Name = "Ayuno estándar",
+                    Description = "No ingerir alimentos ni bebidas de 8 a 12 horas.",
                 });
 
                 _context.PreanalyticConditions.Add(new PreanalyticCondition
                 {
-                    Name = "Nada",
-                    Description = "No existe ninguna restricción.",
+                    Name = "Sin condiciones",
+                    Description = "No existen condiciones preanalíticas para este exámen.",
                 });
 
                 _context.PreanalyticConditions.Add(new PreanalyticCondition
                 {
-                    Name = "Supresión",
-                    Description = "Supresión de medicamentos.",
+                    Name = "Sin vacunas",
+                    Description = "No haberse aplicado vacunas o inmunoterapia en los últimos tres días.",
                 });
 
                 _context.PreanalyticConditions.Add(new PreanalyticCondition
                 {
-                    Name = "Especial",
-                    Description = "Necesita supervición especial.",
+                    Name = "Sin ejercicio",
+                    Description = "No realizar ejercicio en las últimas 24 horas.",
                 });
                 _context.PreanalyticConditions.Add(new PreanalyticCondition
                 {
                     Name = "Sin licor",
-                    Description = "Sin consumo de licor en las últimas 24 horas",
+                    Description = "Sin consumo de licor en las últimas 24 horas.",
                 });
 
                 await _context.SaveChangesAsync();
@@ -153,41 +153,30 @@ namespace LabPreTest.Backend.Data
                 _context.TestTubes.Add(new TestTube
                 {
                     Name = "Tapa Dorada",
-                    Description = "Activador de coagulación y gel para la separación de suero."
+                    Description = "Tubo tapa dorada con activador de coagulación y gel para la separación de suero."
                 });
 
                 _context.TestTubes.Add(new TestTube
                 {
                     Name = "Tapa Azul",
-                    Description = "Con citrato de sodio"
+                    Description = "Tubo tapa azul con citrato de sodio"
                 });
                 _context.TestTubes.Add(new TestTube
                 {
                     Name = "Tapa Roja",
-                    Description = "Recubierta de silicona."
-                });
-
-                _context.TestTubes.Add(new TestTube
-                {
-                    Name = "Tapa Naranja",
-                    Description = "Activador de coagulación a base de trombina."
+                    Description = "Tubo tapa roja sin aditivos."
                 });
 
                 _context.TestTubes.Add(new TestTube
                 {
                     Name = "Tapa Verde",
-                    Description = "Heparína de sodio."
+                    Description = "Tubo con heparína de sodio."
                 });
 
                 _context.TestTubes.Add(new TestTube
                 {
-                    Name = "Tapa Blanca",
-                    Description = "K2EDTA y gel para la separación de plasma."
-                });
-                _context.TestTubes.Add(new TestTube
-                {
                     Name = "Tapa Lila",
-                    Description = "Tupo con EDTA dipotásico."
+                    Description = "Tubo tapa lila con K2EDTA."
                 });
             }
             await _context.SaveChangesAsync();
@@ -247,12 +236,12 @@ namespace LabPreTest.Backend.Data
             int i = 0;
             if (!_context.Tests.Any())
             {
-                await AddTestAsync(++i, "Hemograma", "Hematología", "Tapa lila", ["Nada"]);
-                await AddTestAsync(++i, "Vitamina D", "Inmunología", "Tapa Dorada", ["Supresión"]);
-                await AddTestAsync(++i, "Perfil lipídico", "Química General", "Tapa Dorada", ["Ayuno", "Sin licor"]);
-                await AddTestAsync(++i, "Tiempo de protrombina", "Hemostasia", "Tapa Azul", ["Especial"]);
-                await AddTestAsync(++i, "Serología presuntiva para sifílis", "Microbiología", "Tapa Dorada", ["Nada"]);
-                await AddTestAsync(++i, "PCR para Covid-19", "Biología molecular", "Tapa Verde", ["Nada"]);
+                await AddTestAsync(++i, "Hemograma", "Hematología", "Tapa lila", ["Sin ejercicio"]);
+                await AddTestAsync(++i, "Vitamina D", "Inmunología", "Tapa Dorada", ["Ayuno estándar","Sin vacunas"]);
+                await AddTestAsync(++i, "Colesterol HDL", "Química General", "Tapa Dorada", ["Ayuno estándar", "Sin licor"]);
+                await AddTestAsync(++i, "Tiempo de protrombina (TP)", "Hemostasia", "Tapa Azul", ["Sin ejercicio"]);
+                await AddTestAsync(++i, "Serología presuntiva para sifílis", "Microbiología", "Tapa Dorada", ["Sin vacunas"]);
+                await AddTestAsync(++i, "Rastreo molecular de defectos congénitos", "Biología molecular", "Tapa Verde", ["Sin condiciones"]);
 
                 await _context.SaveChangesAsync();
             }
@@ -295,7 +284,7 @@ namespace LabPreTest.Backend.Data
         {
             if (!_context.Medicians.Any())
             {
-                AddMedic("9988776655", "Valentina Salazar", "1994-02-14", "Female", "3112345678", "Calle 100 #20-30, Bogotá", "valentina.s@yopmail.com", "valensal94");
+                AddMedic("123456", "Valentina Salazar", "1994-02-14", "Female", "3112345678", "Calle 100 #20-30, Bogotá", "valentina.s@yopmail.com", "valensal94");
                 AddMedic("8877665544", "Fernando Morales", "1980-09-08", "Male", "3123456789", "Carrera 8 #35-50, Cali", "fernando.m@yopmail.com", "fermor80");
                 AddMedic("7766554433", "Daniela López", "1996-12-25", "Female", "3134567890", "Avenida 15 #25-80, Medellín", "daniela.l@yopmail.com", "dani.lopez96");
                 AddMedic("6655443322", "Jorge Castillo", "1989-03-14", "Male", "3145678901", "Calle 50 #18-22, Cartagena", "jorge.c@yopmail.com", "jorgecas89");
@@ -304,7 +293,7 @@ namespace LabPreTest.Backend.Data
                 AddMedic("3322110099", "Paola Hernández", "1983-11-05", "Female", "3178901234", "Carrera 6 #18-35, Cali", "paola.h@yopmail.com", "paolah83");
                 AddMedic("2211009988", "Andrés Suárez", "1995-04-11", "Male", "3189012345", "Avenida 6 #30-50, Bucaramanga", "andres.s@yopmail.com", "andresua95");
                 AddMedic("1100998877", "Carolina Duarte", "1990-01-20", "Female", "3190123456", "Calle 13 #25-20, Manizales", "carolina.d@yopmail.com", "carodu90");
-                AddMedic("0099887766", "Camilo Vargas", "1984-05-27", "Male", "3201234567", "Carrera 10 #40-25, Medellín", "camilo.v@yopmail.com", "camiv84");
+                AddMedic("1099887766", "Camilo Vargas", "1984-05-27", "Male", "3201234567", "Carrera 10 #40-25, Medellín", "camilo.v@yopmail.com", "camiv84");
 
                 await _context.SaveChangesAsync();
             }
@@ -314,7 +303,7 @@ namespace LabPreTest.Backend.Data
         {
             if (!_context.Patients.Any())
             {
-                AddPatient("1023456789", "Ana Gómez", "1990-04-15", "Female", "3001234567", "Calle 10 #12-34, Bogotá", "ana.gomez@yopmail.com", "ana_gomez90");
+                AddPatient("654321", "Ana Gómez", "1990-04-15", "Female", "3001234567", "Calle 10 #12-34, Bogotá", "ana.gomez@yopmail.com", "ana_gomez90");
                 AddPatient("1122334455", "Juan Pérez", "1985-06-20", "Male", "3012345678", "Carrera 15 #45-67, Cali", "juan.perez@yopmail.com", "juanperez85");
                 AddPatient("1234567890", "María Rodríguez", "1993-08-10", "Female", "3023456789", "Avenida 30 #10-20, Medellín", "maria.rod@yopmail.com", "mariarod93");
                 AddPatient("2233445566", "Carlos Sánchez", "1978-01-25", "Male", "3034567890", "Calle 25 #5-10, Bogotá", "carlos.s@yopmail.com", "carlos78");

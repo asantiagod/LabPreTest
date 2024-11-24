@@ -135,7 +135,7 @@ namespace LabPreTest.Frontend.Pages.Orders
                         {
                             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
                             {
-                                Title = "Búsqueda de paciente",
+                                Title = "Búsqueda de médico",
                                 Text = "Medico no encontrado. ¿Deseas crear un nuevo Medico?",
                                 Icon = SweetAlertIcon.Error,
                                 ShowCancelButton = true,
@@ -227,7 +227,7 @@ namespace LabPreTest.Frontend.Pages.Orders
         private async Task CreateAsync()
         {
             var responseHttp = await Repository.PostAsync(ApiRoutes.OrdersRoute,
-                                                          new OrderDTO { Status = OrderStatus.Idle });
+                                                          new OrderDTO { Status = OrderStatus.OrdenCreada });
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -314,7 +314,7 @@ namespace LabPreTest.Frontend.Pages.Orders
         private async void ProcessOrder()
         {
             var responseHttp = await Repository.PostAsync(ApiRoutes.OrdersRoute,
-                                                          new OrderDTO { Status = OrderStatus.Idle });
+                                                          new OrderDTO { Status = OrderStatus.OrdenCreada });
 
             if (responseHttp.Error)
             {

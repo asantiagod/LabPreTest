@@ -117,12 +117,12 @@ namespace LabPreTest.Frontend.Pages.Sections
             await SelectedPageAsync(page);
         }
 
-        private async Task DeleteAsync(Section test)
+        private async Task DeleteAsync(Section section)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
-                Title = "Confirmation",
-                Text = $"Are you sure you want to delete the section: {test.Name}?",
+                Title = "Confirmación",
+                Text = $"¿Está seguro de eliminar la sección? : {section.Name}",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
             });
@@ -132,7 +132,7 @@ namespace LabPreTest.Frontend.Pages.Sections
                 return;
             }
 
-            var responseHttp = await Repository.DeleteAsync<Section>(ApiRoutes.SectionRoute + $"/{test.Id}");
+            var responseHttp = await Repository.DeleteAsync<Section>(ApiRoutes.SectionRoute + $"/{section.Id}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
@@ -157,13 +157,6 @@ namespace LabPreTest.Frontend.Pages.Sections
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: FrontendMessages.RecordDeletedMessage);
         }
-
-        //private void ShowEditModal(int sectionId)
-        //{
-        //    var parameter = new ModalParameters()
-        //        .Add(nameof(SectionEdit.Id), sectionId);
-        //    ModalService.Show<SectionEdit>(parameter);
-        //}
 
         private void ShowCreateModal()
         {

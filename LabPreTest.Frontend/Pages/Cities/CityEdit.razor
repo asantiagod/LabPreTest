@@ -1,6 +1,6 @@
 ﻿@*@page "/cities/edit/{CityId:int}"*@
 
-<h3>Edit City</h3>
+<h3>Editar ciudad</h3>
 
 @if (city is null)
 {
@@ -8,5 +8,5 @@
 }
 else
 {
-    <FormWithName @ref="cityForm" Label="City:" Model="city" OnValidSubmit="SaveAsync" ReturnAction="Return" />
+    <FormWithName @ref="cityForm" Label="Ciudad:" Model="city" OnValidSubmit="SaveAsync" ReturnAction="Return" />
 }

@@ -1,6 +1,6 @@
 ﻿@page "/sections/create"
 
-<h3>Create Section</h3>
+<h3>Crear sección</h3>
 
 @if (section is null)
 {
@@ -8,5 +8,5 @@
 }
 else
 {
-    <FormForSection @ref="sectionForm" Label="Section:" Model="section" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+    <FormForSection @ref="sectionForm" Label="Sección:" Model="section" OnValidSubmit="CreateAsync" ReturnAction="Return" />
 }

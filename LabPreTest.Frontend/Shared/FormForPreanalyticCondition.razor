@@ -1,0 +1,22 @@
+﻿@typeparam TModel where TModel : IEntityWithDescription
+
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
+
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label>@Label</label>
+        <div>
+            <label for="Nombre">Ingrese el nombre de la condicion:</label>
+            <InputText class="form-control" @bind-Value="@Model.Name" />
+            <ValidationMessage For="@(() => Model.Name)" />
+        </div>
+        <div>
+            <label for="Nombre">Ingrese los detalles de la condicion:</label>
+            <InputText class="form-control" @bind-Value="@Model.Description" />
+            <ValidationMessage For="@(() => Model.Name)" />
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+    <button class="btn btn-success" @onclick="ReturnAction">Regresar</button>
+</EditForm>

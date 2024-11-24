@@ -120,8 +120,8 @@ namespace LabPreTest.Frontend.Pages.Patients
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
-                Title = "Confirmation",
-                Text = $"Are you sure you want to delete the patient: {patient.Name}?",
+                Title = "Confirmación",
+                Text = $"¿Está seguro de eliminar el paciente? : {patient.Name}",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
             });

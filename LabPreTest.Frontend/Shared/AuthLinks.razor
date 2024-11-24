@@ -4,7 +4,7 @@
             @if (!string.IsNullOrEmpty(photoUser))
             {
                 <div>
-                    <img class="card-img" src="@photoUser" width="100" height="100"   />
+                    <img class="card-img" src="@photoUser" width="100" height="200"   />
                 </div>
             }
             else
@@ -21,7 +21,7 @@
         <div class="top-row px-3 d-flex justify-content-lg-end">
             <a href="/" class="me-auto bi bi-house-door-fill-nav-menu btn btn-md btn-lg-custom btn-primary mx-2 flex-grow-0 fs-5"></a>
             <h1 class="me-auto" >Labpretest</h1>
-            <a href="Register" class="btn btn-sm btn-secondary mx-2 flex-grow-0 fs-5">Registro</a>
+            @*<a href="Register" class="btn btn-sm btn-secondary mx-2 flex-grow-0 fs-5">Registro</a>*@
             <a class="btn btn-primary mx-2 flex-grow-0 fs-5" @onclick=@(()=> ShowModal())>Iniciar Sesión</a>
         </div>
     </NotAuthorized>

@@ -31,6 +31,7 @@ namespace LabPreTest.Frontend.Pages.Sections
             }
 
             Return();
+
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,
@@ -43,8 +44,10 @@ namespace LabPreTest.Frontend.Pages.Sections
 
         private void Return()
         {
+            StateHasChanged();
             sectionForm!.FormPostedSuccessfully = true;
             NavigationManager.NavigateTo(PagesRoutes.Sections);
+
         }
     }
 }

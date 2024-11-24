@@ -1,9 +1,9 @@
 ﻿@page "/sections"
 
-<h3>Sections</h3>
+<h3>Secciones</h3>
 
 <div class="mb-3">
-    <a class="btn btn-primary" @onclick=@(()=>ShowCreateModal())>Nuevo sección</a>
+    <a class="btn btn-primary" @onclick=@(()=>ShowCreateModal())>Nueva sección</a>
 </div>
 
 <GenericList MyList="Sections">
@@ -12,7 +12,7 @@
                     TotalPages="totalPages"
                     SelectedPage="SelectedPageAsync"
                     SelectedRedordsNumber="SelectedRedordsNumberAsync" />
-        <Filter PlaceHolder="Buscar Examenes..." Callback=@FilterCallback />
+        <Filter PlaceHolder="Buscar sección por nombre..." Callback=@FilterCallback />
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -25,6 +25,7 @@
                 @foreach (var s in Sections!)
                 {
                     <tr>
+                        <td>@s.Id</td>
                         <td>@s.Name</td>
 
                         <td>

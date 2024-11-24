@@ -48,7 +48,7 @@ namespace LabPreTest.Backend.Helpers
             var order = new Order
             {
                 CreatedAt = DateTime.Now,
-                Status = OrderStatus.Idle,
+                Status = OrderStatus.OrdenCreada,
                 User = user,
                 Details = new List<OrderDetail>()
             };
@@ -67,6 +67,7 @@ namespace LabPreTest.Backend.Helpers
                     Test = testResponse.Result,
                     Medic = medicResponse.Result,
                     Patient = patientResponse.Result,
+                    Status = OrderStatus.OrdenCreada
                 });
             }
 

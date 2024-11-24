@@ -1,0 +1,129 @@
+﻿@page "/trazability"
+@using Newtonsoft.Json.Linq
+
+<h3>Trazabilidad</h3>
+
+<div class="d-flex align-items-center mb-3">
+    <div class="flex-grow-3 me-2" style="flex: 2;">
+        <input type="number" class="form-control" @bind="orderValue" placeholder="Ingrese el número de orden a buscar..." />
+    </div>
+    <div style="flex: 1;">
+        <button class="btn btn-primary w-100" @onclick="async () => await SearchOrder()">Buscar orden</button>
+    </div>
+</div>
+<div style="flex: 1;">
+    <button class="btn btn-warning w-100" @onclick="() => ResetValue()">Buscar todas las órdenes</button>
+</div>
+<div>
+
+</div>
+<Pagination CurrentPage="currentPage"
+            TotalPages="totalPages"
+            SelectedPage="SelectedPageAsync" 
+            SelectedRedordsNumber="SelectedRedordsNumberAsync" />
+@*
+@if(orderValue == 0)
+{
+*@
+    <GenericList MyList="Trazability">
+        <Body>
+            <table class="table table-striped" style="vertical-align:middle">
+                <thead>
+                    <tr>
+                        <th>Numero de orden</th>
+                        <th>Responsable del movimiento</th>
+                        <th>Fecha y hora del movimiento</th>
+                        <th>Detalles</th>
+                        <th style="width:180px"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var trazability in Trazability!)
+                    {
+                        <tr>
+                            <td>@trazability.OrderId</td>
+                            <td>@trazability.ChangeBy</td>
+                            <td>@trazability.ChangeDate.ToLocalTime()</td>
+                            <td>
+                                @if (!string.IsNullOrWhiteSpace(trazability.NewValues))
+                                {
+                                    var newChanges = Newtonsoft.Json.Linq.JObject.Parse(trazability.NewValues);
+                                    var uniqueDetails = new HashSet<string>();
+                                    <ul>
+                                        <li><strong>Fecha de creacion de la orden:</strong> @newChanges["CreatedAt"]</li>
+                                        <li><strong>Estado:</strong> @newChanges["Status"]</li>
+                                        @if (newChanges["Details"] is JArray details)
+                                        {
+                                            <li><strong>Examenes relacionados por ID:</strong></li>
+                                            <ul>
+                                                @foreach (var detail in details)
+                                                {
+                                                    var uniqueKey = $"{detail["TestId"]}_{detail["MedicId"]}";
+                                                    if (uniqueDetails.Add(uniqueKey))
+                                                    {
+                                                        <li>Código del exámen: @detail["TestId"]</li>
+                                                    }
+
+                                                }
+                                            </ul>
+                                        }
+                                    </ul>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </Body>
+    </GenericList>
+@*
+}
+else
+{
+    <table class="table table-striped" style="vertical-align:middle">
+        <thead>
+            <tr>
+                <th>Numero de orden</th>
+                <th>Responsable del movimiento</th>
+                <th>Detalles</th>
+                <th style="width:180px"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (orderAuditFiltered != null)
+            {
+                <tr>
+                    <td>@orderAuditFiltered.OrderId</td>
+                    <td>@orderAuditFiltered.ChangeBy</td>
+                    <td>
+                        @if (!string.IsNullOrWhiteSpace(orderAuditFiltered.NewValues))
+                        {
+                            var newChanges = Newtonsoft.Json.Linq.JObject.Parse(orderAuditFiltered.NewValues);
+                            var uniqueDetails = new HashSet<string>();
+                            <ul>
+                                <li><strong>Fecha y hora del movimiento:</strong> @newChanges["CreatedAt"]</li>
+                                <li><strong>Estado:</strong> @newChanges["Status"]</li>
+                                @if (newChanges["Details"] is JArray details)
+                                {
+                                    <li><strong>Examenes relacionados por ID:</strong></li>
+                                    <ul>
+                                        @foreach (var detail in details)
+                                        {
+                                            var uniqueKey = $"{detail["TestId"]}_{detail["MedicId"]}";
+                                            if (uniqueDetails.Add(uniqueKey))
+                                            {
+                                                <li>Código del exámen: @detail["TestId"]</li>
+                                            }
+
+                                        }
+                                    </ul>
+                                }
+                            </ul>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+*@

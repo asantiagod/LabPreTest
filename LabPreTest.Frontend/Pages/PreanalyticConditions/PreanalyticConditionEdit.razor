@@ -1,0 +1,16 @@
+﻿@* @page "/preanalyticConditions/edit/{Id:int}" *@
+
+<h3>Editar condicion</h3>
+
+@if (preanalyticCond is null)
+{
+    <Loading />
+}
+else
+{
+    <FormForPreanalyticCondition @ref="preanalyticConditionForm"
+                 Label="Condicion preanalitica:"
+                Model="preanalyticCond"
+                 OnValidSubmit="EditAsync"
+                 ReturnAction="Return" />
+}

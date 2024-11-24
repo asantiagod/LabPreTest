@@ -5,7 +5,7 @@
 <EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
     <div class="mb-3 align-items-center">
-        <table class="table table-bordered table-striped w-100">
+        <table class="table table-bordered table-striped w-100" style="vertical-align: middle">
             <thead>
                 <tr>
                     <th>@Label</th>
@@ -65,7 +65,7 @@
                         <ValidationMessage For="@(() => Model.Email)" />
                     </td>
                 </tr>
-                <tr>
+@*                 <tr>
                     <td>
                         <label for="userName">Ingrese el nombre de usuario</label>
                     </td>
@@ -73,9 +73,9 @@
                         <InputText class="form-control" id="userName" @bind-Value="@Model.UserName" />
                         <ValidationMessage For="@(() => Model.UserName)" />
                     </td>
-                </tr>
+                </tr> *@
                 <tr>
-                    <td><label for="gender">Seleccione el genero del Usuario</label></td>
+                    <td><label for="gender">Seleccione el genero</label></td>
                     <td>
                         <select id="gender" class="form-select" @onchange="OnGenderChanged">
                             @if (Model == null || Model.Gender == GenderType.NotDefined)

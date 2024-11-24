@@ -1,7 +1,7 @@
 ﻿@page "/sample_taking"
 <div class="main-container">
     <div class="header">
-    <h3 class="mb-4">Toma de muestra</h3>
+    <h1 class="mb-4">Toma de muestra</h1>
     </div>
 
     <div class="content-container">
@@ -90,55 +90,88 @@
             }
             else
             {
-                <table class="table table-bordered table-striped w-100">
+                <table>
                     <th>
                        Tubos a tomar
                     </th>
-                    @foreach (var testube in testTubes)
-                    {
-                        @foreach (var tube in testube)
-                        {
-                                <tr>
-                                    @if (tube.Value.Contains("Lila"))
+                        @{
+                            var tubosAzules = new List<string>();
+                            var tubosDorados = new List<string>();
+                            var tubosRojos = new List<string>();
+                            var tubosVerdes = new List<string>();
+                            var tubosLilas = new List<string>();
+                            var tubosYaProcesados = new HashSet<string>();
+
+                            foreach (var testube in testTubes)
+                            {
+
+                                foreach (var tube in testube)
+                                {
+                                    @if (!tubosYaProcesados.Contains(tube.Value)) ;
+                                    tubosYaProcesados.Add(tube.Value);
+                                    if (tube.Value.Contains("Azul"))
                                     {
-                                        <td style="padding: 10px; background-color:blueviolet">
-                                            -
-                                        </td>
-                                        <td style="padding: 10px; ">
-                                            - @tube.Value
-                                        </td>
+                                        tubosAzules.Add(tube.Value);
                                     }
-                                    @if (tube.Value.Contains("Verde"))
+                                    else if (tube.Value.Contains("Roja"))
                                     {
-                                        <td style="padding: 10px; background-color:green">
-                                            -
-                                        </td>
-                                        <td style="padding: 10px; ">
-                                            - @tube.Value
-                                        </td>
+                                        tubosRojos.Add(tube.Value);
                                     }
-                                    @if (tube.Value.Contains("Dorada"))
+                                    else if (tube.Value.Contains("Dorada"))
                                     {
-                                        <td style="padding: 10px; background-color:yellow">
-                                            -
-                                        </td>
-                                        <td style="padding: 10px; ">
-                                            - @tube.Value
-                                        </td>
+                                        tubosDorados.Add(tube.Value);
                                     }
-                                    @if (tube.Value.Contains("Azul"))
+                                    else if (tube.Value.Contains("Verde"))
                                     {
-                                        <td style="padding: 10px; background-color:blue">
-                                            -
-                                        </td>
-                                        <td style="padding: 10px; ">
-                                            - @tube.Value
-                                        </td>
+                                        tubosVerdes.Add(tube.Value);
                                     }
-                            </tr>
+                                    else if (tube.Value.Contains("Lila"))
+                                    {
+                                        tubosLilas.Add(tube.Value);
+                                    }
+                                }
+                            }
                         }
 
-                    }
+                        <tr>
+                            @foreach (var tube in tubosAzules)
+                            {
+                                <td style="padding: 10px; display: flex; justify-content: center; align-items: center; background-color: transparent;">
+                                    <i class="fas fa-vial" style="color: deepskyblue; font-size: 4rem;"></i>
+                                    <span>&nbsp;&nbsp; - @tube</span>
+                                </td>
+                            }
+
+                            @foreach (var tube in tubosDorados)
+                            {
+                                <td style="padding: 10px; display: flex; justify-content: center; align-items: center; background-color: transparent;">
+                                    <i class="fas fa-vial" style="color: gold; font-size: 4rem;"></i>
+                                    <span>&nbsp;&nbsp; - @tube</span>
+                                </td>
+                            }
+                            @foreach (var tube in tubosRojos)
+                            {
+                                <td style="padding: 10px; display: flex; justify-content: center; align-items: center; background-color: transparent;">
+                                    <i class="fas fa-vial" style="color: Red; font-size: 4rem;"></i>
+                                    <span>&nbsp;&nbsp; - @tube</span>
+                                </td>
+                            }
+                            @foreach (var tube in tubosVerdes)
+                            {
+                                <td style="padding: 10px; display: flex; justify-content: center; align-items: center; background-color: transparent;">
+                                    <i class="fas fa-vial" style="color: darkgreen; font-size: 4rem;"></i>
+                                    <span>&nbsp;&nbsp; - @tube</span>
+                                </td>
+                            }
+
+                            @foreach (var tube in tubosLilas)
+                            {
+                                <td style="padding: 10px; display: flex; justify-content: center; align-items: center; background-color: transparent;">
+                                    <i class="fas fa-vial" style="color: darkviolet; font-size: 4rem;"></i>
+                                    <span>&nbsp;&nbsp; - @tube</span>
+                                </td>
+                            }
+                        </tr>
                 </table>
             }
             <button class="btn btn-warning" @onclick="ToggleContent">@(showContent ? "Ocultar informacion detallada" : "Mostrar informacion detallada")</button>
@@ -150,6 +183,7 @@
                 }
 
             }
+            <button class="btn btn-primary w-100" @onclick="async () => await ChangeState()">Tomar orden</button>
         }
 
     </div>
