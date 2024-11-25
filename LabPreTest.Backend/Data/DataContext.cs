@@ -17,8 +17,10 @@ namespace LabPreTest.Backend.Data
         public DataContext(DbContextOptions<DataContext> options,
             IHttpContextAccessor httpContextAccessor) : base(options)
         {
-            Database.SetCommandTimeout(600);
             _httpContextAccessor = httpContextAccessor;
+
+            if (Database.IsRelational())
+                Database.SetCommandTimeout(600);
         }
 
         // for each database entity you need create a DbSet
@@ -84,6 +86,9 @@ namespace LabPreTest.Backend.Data
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
+            if (!Database.IsRelational())
+                return await base.SaveChangesAsync(cancellationToken);
+
             var transaction = await Database.BeginTransactionAsync(cancellationToken);
             await ApplyAuditInfoAsync(cancellationToken);
             var r = await base.SaveChangesAsync(cancellationToken);
@@ -93,6 +98,9 @@ namespace LabPreTest.Backend.Data
 
         public override int SaveChanges()
         {
+            if (!Database.IsRelational())
+                return base.SaveChanges();
+
             var transaction = Database.BeginTransaction();
             ApplyAuditInfo();
             var r = base.SaveChanges();
@@ -200,7 +208,7 @@ namespace LabPreTest.Backend.Data
                     List<object> collectionList = [];
                     foreach (var item in collection)
                     {
-                        if(item is OrderDetail) 
+                        if (item is OrderDetail)
                             collectionList.Add(ParseOrderDetail((OrderDetail)item));
                         collectionList.Add(item);
                         Console.WriteLine(item.ToString());
@@ -208,7 +216,7 @@ namespace LabPreTest.Backend.Data
                     objDic.Add(navigation.Metadata.Name, collectionList);
                 }
                 //else
-                    //objDic.Add(navigation.Metadata.Name, navigation.CurrentValue);
+                //objDic.Add(navigation.Metadata.Name, navigation.CurrentValue);
             }
 
             var options = new JsonSerializerOptions
@@ -225,14 +233,14 @@ namespace LabPreTest.Backend.Data
         private static OrderDetail ParseOrderDetail(OrderDetail orderDetail)
         {
             var detail = new OrderDetail();
-            
+
             detail.Id = orderDetail.Id;
             detail.MedicId = orderDetail.MedicId;
             detail.OrderId = orderDetail.OrderId;
             detail.PatientId = orderDetail.PatientId;
             detail.TestId = orderDetail.TestId;
             detail.Status = orderDetail.Status;
-            
+
             return detail;
         }
     }
