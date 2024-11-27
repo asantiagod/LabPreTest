@@ -80,25 +80,6 @@ namespace LabPreTest.Backend.Repository.Implementations
             return ActionResponse<Order>.BuildSuccessful(order);
         }
 
-        //TODO: check if is necessary delete this method
-        public async Task<ActionResponse<Order>> UpdateFullAsync(string email, OrderDTO orderDTO)
-        {
-            if (!await HavePermissionsAsync(email))
-                return ActionResponse<Order>.BuildFailed(MessageStrings.UserDoesNotHavePermissions);
-
-            var order = await _context.Orders
-                .Include(o => o.Details)
-                .FirstOrDefaultAsync(o => o.Id != orderDTO.Id);
-            if (order == null)
-                return ActionResponse<Order>.BuildFailed("La orden no existe");
-
-            order.Status = orderDTO.Status;
-            _context.Update(order);
-            await _context.SaveChangesAsync();
-
-            return ActionResponse<Order>.BuildSuccessful(order);
-        }
-
         public async Task<ActionResponse<OrderDetailDTO>> UpdateAsync(string email, int detailId, OrderDetailDTO orderDetailDTO)
         {
             if (!await HavePermissionsAsync(email))

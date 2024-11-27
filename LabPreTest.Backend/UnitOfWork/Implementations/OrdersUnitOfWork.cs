@@ -21,8 +21,6 @@ namespace LabPreTest.Backend.UnitOfWork.Implementations
 
         public Task<ActionResponse<int>> GetTotalPagesAsync(string email, PagingDTO pagination) => _ordersRepository.GetTotalPagesAsync(email, pagination);
 
-        public Task<ActionResponse<Order>> UpdateFullAsync(string email, OrderDTO orderDTO) => _ordersRepository.UpdateFullAsync(email, orderDTO);
-
         public Task<ActionResponse<OrderDetailDTO>> UpdateAsync(string email, int detailId, OrderDetailDTO orderDetailDTO) => _ordersRepository.UpdateAsync(email, detailId, orderDetailDTO);
     }
 }

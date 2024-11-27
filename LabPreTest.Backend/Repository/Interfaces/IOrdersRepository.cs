@@ -12,8 +12,6 @@ namespace LabPreTest.Backend.Repository.Interfaces
 
         Task<ActionResponse<Order>> GetAsync(int id);
 
-        Task<ActionResponse<Order>> UpdateFullAsync(string email, OrderDTO orderDTO);
-
         Task<ActionResponse<OrderDetailDTO>> UpdateAsync(string email, int detailId, OrderDetailDTO orderDetailDTO);
     }
 }
